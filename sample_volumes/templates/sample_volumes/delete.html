@@ -1,0 +1,9 @@
+{% extends 'sample_volumes/main.html' %} {% block content %}
+<p>Are you sure you want to delete "{{item}}"?</p>
+<form method="POST">
+  {% csrf_token %}
+  <a class="btn btn-light" href="{% url 'home' %}">Cancel</a>
+  <input class="btn btn-danger" type="submit" value="Confirm" />
+</form>
+
+{% endblock %}

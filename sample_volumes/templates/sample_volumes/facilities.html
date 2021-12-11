@@ -1,0 +1,52 @@
+{% extends 'sample_volumes/main.html' %} {% block content %}
+<div class="col-md-9">
+  <div class="row">
+    <h2>Facilities</h2>
+    <a
+      href="{% url 'create_facility' %}"
+      class="btn btn-sm btn-info ml-auto mr-3 d-flex align-items-center"
+    >
+      Add Facility
+    </a>
+  </div>
+  <br />
+  <div class="card card-body">
+    <table
+      class="table table-sm table-striped table-bordered table-sm"
+      id="data_table"
+    >
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Code</th>
+          <th>District</th>
+          <th>Facility Type</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for facility in facilities %}
+
+        <tr>
+          <td>{{facility.name}}</td>
+          <td>{{facility.facility_code}}</td>
+          <td>{{facility.district}}</td>
+          <td>{{facility.facility_type}}</td>
+          <td>
+            <a href="{% url 'update_facility' facility.id %}"
+              ><i class="fas fa-edit"></i
+            ></a>
+            <a href="{% url 'delete_facility' facility.id %}"
+              ><i class="fas fa-trash"></i
+            ></a>
+          </td>
+        </tr>
+
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock content%}

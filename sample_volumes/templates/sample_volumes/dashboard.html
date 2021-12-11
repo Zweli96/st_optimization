@@ -1,0 +1,98 @@
+{% extends 'sample_volumes/main.html' %} {% block content %}
+
+<div class="row">
+  <div class="col-md-3">
+    <form class="form-inline" action="" method="post">
+      {% csrf_token %}
+      <div class="form-group mb-2">
+        <label for="staticEmail" class="col-form-label">District</label>
+        <select
+          class="custom-select mr-sm-2"
+          name="district"
+          id="select_district"
+        >
+          {% comment %} Fix this {% if %} {% endif %} {% endcomment %}
+
+          <option value="" selected>Malawi</option>
+          {% for district in districts %}
+          <option value="{{district.id}}">{{district.name}}</option>
+          {% endfor %}
+        </select>
+        <script>
+          var selected_district = "{{selected_district}}";
+          document.addEventListener("DOMContentLoaded", function (event) {
+            document.getElementById("select_district").value =
+              selected_district;
+          });
+        </script>
+        <button type="submit" class="btn btn-primary btn-sm mb-2">
+          Search
+        </button>
+      </div>
+    </form>
+    <div class="row d-flex justify-content-center"></div>
+    <br />
+    <div class="card">
+      <div class="card-header">
+        <p>
+          Date:
+          <script>
+            document.write(new Date().toLocaleDateString());
+          </script>
+        </p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          Facilities
+          <span class="badge badge-primary">{{facility_count}}</span>
+        </li>
+        <li class="list-group-item">
+          Reported <span class="badge badge-primary">10</span>
+        </li>
+        <li class="list-group-item">
+          Not Reported <span class="badge badge-danger">5</span>
+        </li>
+        <li class="list-group-item">
+          Reporting Rate <span class="badge badge-warning">50%</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-md-9">
+    <h1>Volumes</h1>
+    <div class="card card-body">
+      <table
+        class="table table-sm table-striped table-bordered table-sm"
+        id="data_table"
+      >
+        <thead>
+          <tr>
+            <th>Facility</th>
+            <th>District</th>
+            <th>Last Reported</th>
+            <th>Last Visit</th>
+            <th>Volumes</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for facility in facilities %}
+          <tr>
+            <td>{{facility.name}}</td>
+            <td>{{facility.district}}</td>
+            <td></td>
+            <td></td>
+            <td>{{facility.get_daily_sample_volumes}}</td>
+            <td>
+              <a href=""><i class="fas fa-edit"></i></a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock content%}

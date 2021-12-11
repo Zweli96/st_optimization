@@ -1,0 +1,208 @@
+{% extends 'sample_volumes/main.html' %} {% block content %}
+<div class="row">
+  <div class="col-md-8">
+    <form method="POST" action="" class="form-inline">
+      {% csrf_token %}
+      <div class="form-group py-2 px-2">
+        <label for="districtList" class="sr-only">Select District</label>
+        <select class="form-control" id="select_district" name="district">
+          <option value="" disabled selected>Select your district</option>
+          {% for district in districts %}
+          <option value="{{district.id}}">{{district.name}}</option>
+          {% endfor %}
+        </select>
+        <script>
+          var selected_district = "{{selected_district.id}}";
+          document.addEventListener("DOMContentLoaded", function (event) {
+            document.getElementById("select_district").value =
+              selected_district;
+          });
+        </script>
+      </div>
+      <button type="submit" class="btn btn-sm btn-primary py-2 px-2">
+        Search
+      </button>
+    </form>
+  </div>
+  <div class="col-md-4">
+    <div class="row py-2 px-2">
+      <p>
+        Route Date:
+        <span class="badge badge-pill badge-dark"
+          ><script>
+            var tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const options = {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            };
+            document.write(tomorrow.toLocaleDateString(undefined, options));
+          </script></span
+        >
+      </p>
+      &nbsp;
+      <p>
+        Route Status:
+        <span class="badge badge-{{route_status.badge_color}}">Not Saved</span>
+      </p>
+    </div>
+  </div>
+</div>
+<hr />
+
+{% if selected_district %}
+<div class="row">
+  <div class="col-md-8">
+    <div class="card card-inverse card-primary">
+      <div class="card-body">
+        <h4 class="card-description">{{district.name}}</h4>
+        <div style="overflow-x: hidden">
+          <table class="table table-sm" id="data_table_routes">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">Route</th>
+                <th scope="col">Facility</th>
+                <th scope="col">Visits This Week</th>
+                <th scope="col">Previous Visit</th>
+                <th scope="col">Days Since Last Visit</th>
+                {% for date in date_list %}
+                <th scope="col">{{date.date_string}}</th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for facility in facilities %}
+              <tr>
+                <td>
+                  <select name="route" id="choose_route_44" class="addroutes">
+                    <option value="">------</option>
+                    <option value="1">Route 1</option>
+                    <option value="2">Route 2</option>
+                  </select>
+                </td>
+                <td>{{facility.name}}</td>
+                <td>NA</td>
+                <td>NA</td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+                <td>8</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="row h-100">
+      <div class="col-md-12 h-100 pb-4 card" style="overflow-y: scroll">
+        <div class="accordion" id="accordionPanelsStayOpenExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+              <button
+                class="accordion-button"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#panelsStayOpen-collapseOne"
+                aria-expanded="true"
+                aria-controls="panelsStayOpen-collapseOne"
+              >
+                Accordion Item #1
+              </button>
+            </h2>
+            <div
+              id="panelsStayOpen-collapseOne"
+              class="accordion-collapse collapse show"
+              aria-labelledby="panelsStayOpen-headingOne"
+            >
+              <div class="accordion-body">
+                <strong>This is the first item's accordion body.</strong> It is
+                shown by default, until the collapse plugin adds the appropriate
+                classes that we use to style each element. These classes control
+                the overall appearance, as well as the showing and hiding via
+                CSS transitions. You can modify any of this with custom CSS or
+                overriding our default variables. It's also worth noting that
+                just about any HTML can go within the
+                <code>.accordion-body</code>, though the transition does limit
+                overflow.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#panelsStayOpen-collapseTwo"
+                aria-expanded="false"
+                aria-controls="panelsStayOpen-collapseTwo"
+              >
+                Accordion Item #2
+              </button>
+            </h2>
+            <div
+              id="panelsStayOpen-collapseTwo"
+              class="accordion-collapse collapse"
+              aria-labelledby="panelsStayOpen-headingTwo"
+            >
+              <div class="accordion-body">
+                <strong>This is the second item's accordion body.</strong> It is
+                hidden by default, until the collapse plugin adds the
+                appropriate classes that we use to style each element. These
+                classes control the overall appearance, as well as the showing
+                and hiding via CSS transitions. You can modify any of this with
+                custom CSS or overriding our default variables. It's also worth
+                noting that just about any HTML can go within the
+                <code>.accordion-body</code>, though the transition does limit
+                overflow.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingThree">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#panelsStayOpen-collapseThree"
+                aria-expanded="false"
+                aria-controls="panelsStayOpen-collapseThree"
+              >
+                Accordion Item #3
+              </button>
+            </h2>
+            <div
+              id="panelsStayOpen-collapseThree"
+              class="accordion-collapse collapse"
+              aria-labelledby="panelsStayOpen-headingThree"
+            >
+              <div class="accordion-body">
+                <strong>This is the third item's accordion body.</strong> It is
+                hidden by default, until the collapse plugin adds the
+                appropriate classes that we use to style each element. These
+                classes control the overall appearance, as well as the showing
+                and hiding via CSS transitions. You can modify any of this with
+                custom CSS or overriding our default variables. It's also worth
+                noting that just about any HTML can go within the
+                <code>.accordion-body</code>, though the transition does limit
+                overflow.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% else %}
+<p>Please Select District</p>
+{% endif %} {% endblock content%}

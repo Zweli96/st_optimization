@@ -1,0 +1,14 @@
+{% extends 'sample_volumes/main.html' %} {% block content %}
+<div class="col-9">
+  <h1>Add User</h1>
+  <form action="" method="post">
+    {% csrf_token %} {{form.as_p}}
+    <input
+      type="submit"
+      class="btn btn-primary"
+      name="Create User"
+      value="Submit"
+    />
+  </form>
+</div>
+{% endblock %}

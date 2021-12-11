@@ -1,0 +1,48 @@
+{% extends 'sample_volumes/main.html' %} {% block content %}
+<div class="col-md-9">
+  <div class="row">
+    <h2>Districts</h2>
+    <a
+      href="{% url 'create_district' %}"
+      class="btn btn-sm btn-info ml-auto mr-3 d-flex align-items-center"
+    >
+      Add District
+    </a>
+  </div>
+  <br />
+  <div class="card card-body">
+    <table
+      class="table table-sm table-striped table-bordered table-sm"
+      id="data_table"
+    >
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Region</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for district in districts %}
+
+        <tr>
+          <td>{{district.name}}</td>
+          <td>{{district.region}}</td>
+          <td>
+            <a href="{% url 'update_district' district.id %}"
+              ><i class="fas fa-edit"></i
+            ></a>
+            <a href="{% url 'delete_district' district.id %}"
+              ><i class="fas fa-trash"></i
+            ></a>
+          </td>
+        </tr>
+
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock content%}

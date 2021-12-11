@@ -1,0 +1,37 @@
+{% extends 'sample_volumes/main.html' %} {% block content %}
+<div class="col-md-9">
+  <div class="row">
+    <h2>Couriers</h2>
+    <button type="button" class="btn btn-sm btn-info ml-auto mr-3">
+      Add Courier
+    </button>
+  </div>
+  <br />
+  <div class="card card-body">
+    <table
+      class="table table-sm table-striped table-bordered table-sm"
+      id="data_table"
+    >
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>District</th>
+          <th>Phone Number</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for courier in couriers %}
+        <tr>
+          <td>{{courier.name}}</td>
+          <td>{{courier.district}}</td>
+          <td>{{courier.phone_number}}</td>
+          <td></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock content%}

@@ -1,0 +1,50 @@
+{% extends 'sample_volumes/main.html' %} {% block content %}
+<div class="col-md-9">
+  <div class="row">
+    <h2>Health Workers</h2>
+    <a
+      href="{% url 'create_health_worker' %}"
+      class="btn btn-sm btn-info ml-auto mr-3 d-flex align-items-center"
+    >
+      Add Health Worker
+    </a>
+  </div>
+  <br />
+  <div class="card card-body">
+    <table
+      class="table table-sm table-striped table-bordered table-sm"
+      id="data_table"
+    >
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Position</th>
+          <th>Facility</th>
+          <th>Phone Number</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for health_worker in health_workers %}
+        <tr>
+          <td>{{health_worker.name}}</td>
+          <td>{{health_worker.position}}</td>
+          <td>{{health_worker.facility}}</td>
+          <td>{{health_worker.phone_number}}</td>
+          <td>
+            <a href="{% url 'update_health_worker' health_worker.id %}"
+              ><i class="fas fa-edit"></i
+            ></a>
+            <a href="{% url 'delete_health_worker' health_worker.id %}"
+              ><i class="fas fa-trash"></i
+            ></a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock content%}

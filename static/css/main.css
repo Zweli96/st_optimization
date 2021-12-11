@@ -1,0 +1,40 @@
+.content {
+  padding-top: 110px; /* height of header + navbar*/
+  padding-right: 30px;
+  padding-bottom: 30px;
+  padding-left: 30px;
+}
+
+@media (min-width: 768px) {
+  .navbar {
+    top: 54px;
+  }
+
+  .pagewide {
+    height: 60px;
+  }
+
+  nav .navbar-nav li a:not(.dropdown-menu *) {
+    color: white !important;
+  }
+
+  nav .navbar-nav li a:hover {
+    color: grey !important;
+  }
+}
+
+.scrollable-routes {
+  overflow-y: auto;
+  max-height: 400px;
+}
+
+#data_table_routes th,
+td {
+  white-space: nowrap;
+}
+
+#trips_table .form-control {
+  width: auto;
+  height: 35px;
+  line-height: 35px;
+}
