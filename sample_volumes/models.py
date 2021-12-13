@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from phonenumber_field.modelfields import PhoneNumberField
 
 
@@ -218,21 +218,30 @@ class Courier(models.Model):
 #     #deleted_by = models.ForeignKey(to, on_delete)
 #     status = models.CharField(choices=STATUS)
 
+def tomorrows_date():
+    return datetime.now() + timedelta(days=1)
 
-# class Routes(models.Model):
-#     name = models.CharField(max_length=200)
-#     district = models.CharField(max_length=200, blank=True)
-#     facility_code = models.CharField(max_length=200)
-#     #operator = models.ManyToManyField()
-#     #programs = models.ManyToManyField()
-#     #facility_types = models.ManyToManyField()
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     #created_by = models.ForeignKey(to, on_delete)
-#     edited_at = models.DateField(auto_now=True)
-#     #edited_by = models.ForeignKey(to, on_delete)
-#     #deleted_at = models.DateTimeField(blank=True, null=True)
-#     #deleted_by = models.ForeignKey(to, on_delete)
-#     status = models.CharField(choices=STATUS)
+
+class Route(models.Model):
+    route_date = models.DateTimeField(default=tomorrows_date)
+    district = models.ForeignKey(District, models.SET_NULL, null=True)
+    facilies = models.ManyToManyField(Facility, through='RouteFacility')
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    created_by = models.ForeignKey(
+        User, null=True, blank=True, on_delete=models.SET_NULL)
+    # edited_at = models.DateField(auto_now=True, null=True)
+    # edited_by = models.ForeignKey(
+    #     User, null=True, blank=True, on_delete=models.SET_NULL)
+    # deleted_at = models.DateTimeField(blank=True, null=True)
+    # deleted_by = models.ForeignKey(to, on_delete, null=True)
+    status = models.CharField(max_length=200, choices=STATUS, null=True)
+
+
+class RouteFacility(models.Model):
+    facility = models.ForeignKey(
+        Facility, on_delete=models.SET_NULL, null=True)
+    route = models.ForeignKey(Route, on_delete=models.SET_NULL, null=True)
+    created = models.DateTimeField(auto_now_add=True, null=True)
 
 
 # class Visits(models.Model):

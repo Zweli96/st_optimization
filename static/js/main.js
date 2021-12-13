@@ -1,3 +1,17 @@
+function facility_count() {
+  $(".route_list").each(function () {
+    var route_list = $(this);
+    var id = route_list.attr("id");
+    console.log(id);
+    var count_id = route_list.attr("id").replace("facilities_route_", "");
+    var count = $("#" + id + " li").length;
+    var route_list_count = $("#route_facilities_count_" + count_id);
+    route_list_count.text(count);
+    console.log(count); // if it is an input/select/textarea field
+    // TODO: do something with the value
+  });
+}
+
 $(document).ready(function () {
   $("#data_table").DataTable();
   $("#data_table_routes").DataTable({
@@ -24,18 +38,12 @@ $(document).ready(function () {
     var facility_id = parseInt(
       $(select_item).attr("id").replace("choose_route_", "")
     );
-    console.log(facility_id);
+
+    if ($("#facility_added_" + facility_id).length) {
+      $("#facility_added_" + facility_id).remove();
+    }
 
     var facility_name = parent.find("td:nth-child(2)").text();
-    console.log("parent element  " + parent[0].nodeName.toLowerCase());
-    console.log("facility name  " + facility_name);
-
-    console.log("html elememnt " + optionSelected);
-    console.log("value selected " + valueSelected);
-    console.log("text selected " + textSelected);
-
-    console.log("facility id  " + facility_id);
-    console.log("facility name  " + facility_name);
 
     var list_id = "facilities_route_" + valueSelected;
     var list_item = $(
@@ -52,13 +60,19 @@ $(document).ready(function () {
 
     $(list_item).appendTo($("#" + list_id));
     $(".route_list").sortable("refresh");
+
+    facility_count();
   });
 
   $(document).on("click", ".remove_facility", function () {
     var facility = $(this).parent();
+    var facility_id = facility.attr("id").replace("facility_added_", "");
     console.log(facility.attr("id"));
-    $("#choose_route_" + facility.attr("id"))
+    $("#choose_route_" + facility_id)
       .val("")
       .change();
+    console.log($("#choose_route_" + facility_id).find("option:selected"));
+    facility.remove();
+    facility_count();
   });
 });

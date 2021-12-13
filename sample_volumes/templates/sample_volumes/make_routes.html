@@ -1,6 +1,6 @@
 {% extends 'sample_volumes/main.html' %} {% block content %}
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-4">
     <form method="POST" action="" class="form-inline">
       {% csrf_token %}
       <div class="form-group py-2 px-2">
@@ -49,6 +49,9 @@
       </p>
     </div>
   </div>
+  <div class="col-md-4 d-flex justify-content-center" style="height:40px;">
+    <button type="button" class="btn btn-sm btn-success">Save Routes</button>
+  </div>
 </div>
 <hr />
 
@@ -82,8 +85,12 @@
                     class="addroutes"
                   >
                     <option value="">------</option>
-                    <option value="1">Route 1</option>
-                    <option value="2">Route 2</option>
+
+                    {% if courier_count %} 
+                      {% for x in courier_count%}
+                        <option value="{{x|add:"1"}}">{{x|add:"1"}}</option>
+                      {% endfor %} 
+                    {% endif %}
                   </select>
                 </td>
                 <td>{{facility.name}}</td>
@@ -107,74 +114,38 @@
   </div>
   <div class="col-md-4">
     <div id="accordion">
-      <div class="card">
-        <div class="card-header d-flex align-items-center">
-          <h5 class="card-title">Route 1</h5>
-          <div class="input-group input-group-sm col-sm-3 ml-auto">
-            <button
-              class="btn btn-link"
-              data-toggle="collapse"
-              data-target="#collapse1"
-              aria-expanded="true"
-              aria-controls="collapse1"
-            >
-              <span class="badge badge-primary badge-pill">14 Facilities </span>
-            </button>
+      {% for x in courier_count%}
+        <div class="card">
+          <div class="card-header" id="headingOne">
+            <div class="mb-0 justify-content-between align-items-center">
+              <button
+                class="btn btn-link"
+                data-toggle="collapse"
+                data-target="#collapse{{x|add:'1'}}"
+                aria-expanded="true"
+                aria-controls="collapse{{x|add:'1'}}"
+              >
+                Route {{x|add:'1'}}
+                <span
+                  class="badge badge-primary badge-pill"
+                  id="route_facilities_count_{{x|add:'1'}}"
+                  >0</span
+                >
+              </button>
+            </div>
+          </div>
+          <div
+            id="collapse{{x|add:'1'}}"
+            class="collapse show"
+            aria-labelledby="heading1"
+            data-parent="#accordion"
+          >
+            <div class="card-body">
+              <ul class="list-group route_list" id="facilities_route_{{x|add:'1'}}"></ul>
+            </div>
           </div>
         </div>
-        {% comment %}
-        <div class="card-header" id="headingOne">
-          <div class="mb-0 justify-content-between align-items-center">
-            Route 1
-            <button
-              class="btn btn-link"
-              data-toggle="collapse"
-              data-target="#collapse1"
-              aria-expanded="true"
-              aria-controls="collapse1"
-            >
-              <span class="badge badge-primary badge-pill">14</span>
-            </button>
-          </div>
-        </div>
-        {% endcomment %}
-
-        <div
-          id="collapse1"
-          class="collapse show"
-          aria-labelledby="heading1"
-          data-parent="#accordion"
-        >
-          <div class="card-body">
-            <ul class="list-group route_list" id="facilities_route_1"></ul>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header" id="headingTwo">
-          <h5 class="mb-0">
-            <button
-              class="btn btn-link collapsed"
-              data-toggle="collapse"
-              data-target="#collapseTwo"
-              aria-expanded="false"
-              aria-controls="collapseTwo"
-            >
-              Route 2
-            </button>
-          </h5>
-        </div>
-        <div
-          id="collapseTwo"
-          class="collapse"
-          aria-labelledby="headingTwo"
-          data-parent="#accordion"
-        >
-          <div class="card-body">
-            <ul class="list-group route_list" id="facilities_route_2"></ul>
-          </div>
-        </div>
-      </div>
+      {% endfor %}
     </div>
   </div>
   {% else %}

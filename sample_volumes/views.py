@@ -230,6 +230,7 @@ def makeRoutes(request, pk=""):
     facilities = ""
 
     selected_district = ""
+    courier_count = 0
 
     if request.method == 'POST':
         selected_district = districts.get(id=request.POST['district'])
@@ -237,11 +238,15 @@ def makeRoutes(request, pk=""):
     if selected_district:
         context.update({'selected_district': selected_district})
         facilities = Facility.objects.filter(district=selected_district.id)
+        courier_count = Courier.objects.filter(
+            district=selected_district.id).count()
 
     route_status = {"status": "not_published",
                     "badge_color": "danger",
                     "display_text": "Not Published", }
 
     context.update({'districts': districts,
-                   'route_status': route_status, 'facilities': facilities, 'date_list': date_list})
+                   'route_status': route_status, 'facilities': facilities,
+                    'date_list': date_list, 'courier_count': range(courier_count)})
+
     return render(request, 'sample_volumes/make_routes.html', context)
