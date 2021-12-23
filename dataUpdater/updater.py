@@ -8,4 +8,4 @@ def start():
     # scheduler.add_job(dataFetch.updateData, 'interval', minutes=10)
     # scheduler.start()
     # dataFetch.updateData()
-    print('start')
+    print('No Import')

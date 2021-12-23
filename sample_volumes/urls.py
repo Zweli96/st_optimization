@@ -24,10 +24,14 @@ urlpatterns = [
     path('health_workers/', views.health_workers, name="health_workers"),
     path('create_health_worker/', views.createHealth_Worker,
          name="create_health_worker"),
+    path('create_courier/', views.createCourier,
+         name="create_courier"),
     path('update_health_worker/<str:pk>/',
          views.updateHealth_Worker, name="update_health_worker"),
     path('delete_health_worker/<str:pk>/',
          views.deleteHealth_Worker, name="delete_health_worker"),
     path('make_routes/', views.makeRoutes, name="make_routes"),
+    path('view_routes/', views.viewRoutes, name="view_routes"),
+    path('facility_groups/', views.facility_groups, name="facility_groups"),
 
 ]

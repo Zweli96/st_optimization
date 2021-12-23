@@ -12,8 +12,30 @@ function facility_count() {
   });
 }
 
+function getCookie(name) {
+  var dc = document.cookie;
+  var prefix = name + "=";
+  var begin = dc.indexOf("; " + prefix);
+  if (begin == -1) {
+    begin = dc.indexOf(prefix);
+    if (begin != 0) return null;
+  } else {
+    begin += 2;
+    var end = document.cookie.indexOf(";", begin);
+    if (end == -1) {
+      end = dc.length;
+    }
+  }
+  // because unescape has been deprecated, replaced with decodeURI
+  //return unescape(dc.substring(begin + prefix.length, end));
+  return decodeURI(dc.substring(begin + prefix.length, end));
+}
+
 $(document).ready(function () {
+  // Turn tables into data tables
   $("#data_table").DataTable();
+
+  // Turn the routes table into a data table with defined settings
   $("#data_table_routes").DataTable({
     scrollX: true,
     scrollCollapse: true,
@@ -22,12 +44,17 @@ $(document).ready(function () {
       left: 2,
     },
   });
+
+  // I'm not sure if this is working
   $("#data_table_routes").css("overflow", "unset");
+
+  // sortable list for the routes
   $(".route_list").sortable({
     opacity: 0.5,
     cursor: "move",
   });
 
+  // adding the routes from the facilities list into the specific route list
   $(document).on("change", ".addroutes", function () {
     var optionSelected = $(this).find("option:selected");
     var valueSelected = optionSelected.val();
@@ -47,7 +74,7 @@ $(document).ready(function () {
 
     var list_id = "facilities_route_" + valueSelected;
     var list_item = $(
-      "<li class='list-group-item d-flex justify-content-between align-items-center'" +
+      "<li class='route_list_item list-group-item d-flex justify-content-between align-items-center'" +
         "id='facility_added_" +
         facility_id +
         "'>" +
@@ -64,6 +91,7 @@ $(document).ready(function () {
     facility_count();
   });
 
+  // when you click the x on a facility that has already been added into route list
   $(document).on("click", ".remove_facility", function () {
     var facility = $(this).parent();
     var facility_id = facility.attr("id").replace("facility_added_", "");
@@ -75,4 +103,54 @@ $(document).ready(function () {
     facility.remove();
     facility_count();
   });
+
+  // Save the routes when the
+  $(document).on("click", "#save_routes", function () {
+    var csrftoken = getCookie("csrftoken");
+
+    var routes = [];
+
+    $(".route_list").each(function (route_index) {
+      var route_facilities = { route: route_index + 1, facilities: [] };
+      $(this)
+        .sortable("refreshPositions")
+        .children(".route_list_item")
+        .each(function () {
+          console.log($(this).attr("id"));
+          facility_id = parseInt(
+            $(this).attr("id").replace("facility_added_", "")
+          );
+          route_facilities.facilities.push(facility_id);
+        });
+      routes.push(route_facilities);
+    });
+
+    console.log(routes);
+    $.ajax({
+      url: "",
+      type: "post",
+      headers: {
+        "X-CSRFToken": csrftoken,
+      },
+      data: {
+        routes: JSON.stringify(routes),
+        selected_district: JSON.stringify(parseInt(selected_district)),
+        courier_count: JSON.stringify(courier_count),
+        user_id: JSON.parse(document.getElementById("user_id").textContent),
+      },
+      success: function (data) {
+        // console.log(data.created_routes);
+        alert(
+          "Routes for " +
+            selected_district_name +
+            " have been successfully created"
+        );
+      },
+      content_type: "application/json",
+    });
+  });
+
+  if ($(".route_date_picker").attr("id") == "default_date") {
+    $(".route_date_picker").val(new Date().toDateInputValue());
+  }
 });

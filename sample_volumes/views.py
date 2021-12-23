@@ -1,11 +1,17 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
-from .models import Facility, District, Health_Worker, Courier
-from .forms import DistrictForm, FacilityForm, Health_WorkerForm, CreateUserForm
-from datetime import datetime, timedelta
+from django.contrib.auth.models import User
+from .models import Facility, District, Health_Worker, Courier, Route
+from .forms import DistrictForm, FacilityForm, Health_WorkerForm, CreateUserForm, CourierForm
+from datetime import date, datetime, timedelta
+from django.utils.timezone import localtime
+from .commcare_submsission_api.submit_data import main
+from django.forms.models import model_to_dict
+from django.core import serializers
+import json
 
 
 # Create your views here.
@@ -189,6 +195,20 @@ def createHealth_Worker(request):
     return render(request, 'sample_volumes/health_worker_form.html', context)
 
 
+def createCourier(request):
+    form = CourierForm()
+    context = {'form': form}
+
+    if request.method == 'POST':
+        # print('Printing POST: ', request.POST)
+        form = CourierForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+
+    return render(request, 'sample_volumes/courier_form.html', context)
+
+
 def updateHealth_Worker(request, pk):
     health_worker = Health_Worker.objects.get(id=pk)
     form = Health_WorkerForm(instance=health_worker)
@@ -218,6 +238,11 @@ def makeRoutes(request, pk=""):
     districts = District.objects.order_by('name')
     date_list = []
 
+    route_status = {"status": "not_published",
+                    "badge_color": "danger",
+                    "display_text": "Not Saved",
+                    "button_text": "Save Routes"}
+
     for i in range(0, 7):
         date_list.append({
             "index": i,
@@ -233,7 +258,58 @@ def makeRoutes(request, pk=""):
     courier_count = 0
 
     if request.method == 'POST':
-        selected_district = districts.get(id=request.POST['district'])
+        route_date = date.today() + timedelta(days=1)
+        if 'district' in request.POST:
+            # if you have selected a district show information on when route was saved
+            selected_district = districts.get(id=request.POST['district'])
+            tomorrows_routes = Route.objects.filter(
+                district=selected_district.id, route_date=route_date).order_by('-created_at')
+            # if the route has been created
+            if tomorrows_routes.count() > 0:
+                tr = tomorrows_routes.first()
+                route_created_by = tr.created_by
+                route_created_at = localtime(tr.created_at)
+                route_created_at = route_created_at.strftime(
+                    "%a, %d %b %I:%M %p")
+                route_status['status'] = 'published'
+                route_status['badge_color'] = 'success'
+                route_status['display_text'] = f'Saved on {route_created_at} by {route_created_by}'
+                route_status['button_text'] = 'Update Routes'
+
+        # When you click save or update routes check if all
+        if all(params in request.POST for params in ('routes', 'selected_district', 'courier_count')):
+            routes = json.loads(request.POST['routes'])
+            selected_district = json.loads(request.POST['selected_district'])
+            courier_count = json.loads(request.POST['courier_count'])
+            user_id = json.loads(request.POST['user_id'])
+            route_date = date.today() + timedelta(days=1)
+            created_routes = []
+            updated = True
+
+            selected_district = District.objects.get(id=selected_district)
+            route_number = 1
+            for route in routes:
+                # Check if route exists or a new one is being created.
+                created_route = Route.objects.filter(
+                    district=selected_district, route_date=route_date, route_number=route_number).first()
+                if created_route is None:
+                    created_route = Route(route_number=route_number,
+                                          route_date=route_date, district=selected_district, created_by=User.objects.get(id=user_id))
+                    created_route.save()
+                    updated = False
+
+                created_route.facilities.set(Facility.objects.filter(
+                    id__in=route['facilities']), through_defaults={'created': datetime.now()})
+                created_route.save()
+
+                created_routes.append(model_to_dict(created_route))
+                route_number += 1
+            success, message = main(created_routes, updated)
+
+            if request.is_ajax():
+                return JsonResponse({'created_routes': 'created successfully'}, status=200)
+
+            print('Hello')
 
     if selected_district:
         context.update({'selected_district': selected_district})
@@ -241,12 +317,28 @@ def makeRoutes(request, pk=""):
         courier_count = Courier.objects.filter(
             district=selected_district.id).count()
 
-    route_status = {"status": "not_published",
-                    "badge_color": "danger",
-                    "display_text": "Not Published", }
-
     context.update({'districts': districts,
                    'route_status': route_status, 'facilities': facilities,
                     'date_list': date_list, 'courier_count': range(courier_count)})
 
     return render(request, 'sample_volumes/make_routes.html', context)
+
+
+def viewRoutes(request):
+    routes = []
+    districts = District.objects.order_by('name')
+    route_date = date.today() + timedelta(days=1)
+
+    if request.method == 'POST':
+        if 'date' in request.POST:
+            route_date = request.POST['date']
+
+    for district in districts:
+        num_of_couriers = District.objects.get(
+            id=district.id).courier_set.count()
+        district_routes = Route.objects.filter(district=district.id, route_date=route_date).order_by(
+            '-created_at')[:num_of_couriers]
+        routes += district_routes
+
+    context = {'routes': routes}
+    return render(request, 'sample_volumes/routes.html', context)

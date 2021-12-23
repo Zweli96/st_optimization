@@ -1,37 +1,58 @@
 import pandas as pd
 import os
 import uuid
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from django.conf import settings
+from .data_pull import pull
 
 from sample_volumes.models import Sample_Volumes, Facility, SampleType
 
 VALID_SAMPLE_CODES = [1, 2, 3, 4]
 
 
-def _get_dataset():
+def _get_dataset(latest_file):
+
+    # Read in the file
+    with open('C:/Users/itszw/Desktop/Sample Volumes/'+latest_file, 'r') as file:
+        filedata = file.read()
+
+    # Replace the target string
+    filedata = filedata.replace('* Closing connection 0\n', '')
+    filedata = filedata.replace('* Closing connection 0', '')
+
+    # Write the file out again
+    with open('C:/Users/itszw/Desktop/Sample Volumes/'+latest_file, 'w') as file:
+        file.write(filedata)
 
     try:
         df = pd.read_csv(
-            'C:/Users/LENOVO/Desktop/Excel files/sample_collection-20211208130041.csv')
+            'C:/Users/itszw/Desktop/Sample Volumes/'+latest_file)
         print('success fetching')
     except:
         return 'Error fetching'
 
+    date_today = datetime.now() + timedelta(days=1)
+    date_yesterday = date_today - timedelta(days=10)
+
     if df is not None:
         df['date'] = pd.to_datetime(df.date)
-        start_day = '2021-12-07'
-        end_day = '2021-12-09'
+        start_day = date_today.strftime("%Y-%m-%d")
+        end_day = date_yesterday.strftime("%Y-%m-%d")
 
         # Convert start / end dates to datetime
         start_day = pd.to_datetime(start_day)
         end_day = pd.to_datetime(end_day)
 
-        return df[df['date'].between(start_day, end_day)]
+        return df[df['date'].between(end_day, start_day)]
 
 
 def updateData():
-    sample_volume_data = _get_dataset()
+    latest_file = pull()
+
+    sample_volume_data = None
+
+    if latest_file:
+        sample_volume_data = _get_dataset(latest_file)
 
     sample_volumes_added = {'total_added': 0, 'session_ids': []}
 
@@ -71,7 +92,7 @@ def updateData():
 
             try:
                 new_sample_volume.facility = Facility.objects.get(
-                    facility_code=row['facility'])
+                    facility_code=int(row['facility']))
             except:
                 sample_volumes_rejected['total_rejected'] += 1
                 sample_volumes_rejected['session_ids'].append(row['session'])

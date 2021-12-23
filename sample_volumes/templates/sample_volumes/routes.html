@@ -1,3 +1,52 @@
 {% extends 'sample_volumes/main.html' %} {% block content %}
-<h1>Routes Page</h1>
+<div class="col-md-12">
+  <div class="row">
+    <h2>Routes</h2>
+  </div>
+  <br />
+  <form class="form-inline">
+    <label class="sr-only" for="inlineFormInputGroupUsername2"
+      >Route Date</label
+    >
+    <div class="input-group mb-2 mr-sm-2 route_date_picker">
+      <input
+        type="date"
+        class="form-control"
+        id="default_date"
+        placeholder="Select Date"
+      />
+    </div>
+
+    <button type="submit" class="btn btn-primary mb-2">Submit</button>
+  </form>
+  <div class="card card-body">
+    <table
+      class="table table-sm table-striped table-bordered table-sm"
+      id="data_table"
+    >
+      <thead>
+        <tr>
+          <th>District</th>
+          <th>Date</th>
+          <th>Route #</th>
+          <th>Facilities</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for route in routes %}
+
+        <tr>
+          <td>{{route.district}}</td>
+          <td>{{route.route_date|date:"d M, Y"}}</td>
+          <td>{{route.route_number}}</td>
+          <td>{{route.get_facilities}}</td>
+        </tr>
+
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
 {% endblock content%}

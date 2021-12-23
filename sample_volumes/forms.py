@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import District, Facility, Health_Worker
+from .models import District, Facility, Health_Worker, Courier
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -14,6 +14,12 @@ class DistrictForm(ModelForm):
 class FacilityForm(ModelForm):
     class Meta:
         model = Facility
+        fields = '__all__'
+
+
+class CourierForm(ModelForm):
+    class Meta:
+        model = Courier
         fields = '__all__'
 
 

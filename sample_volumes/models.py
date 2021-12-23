@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from datetime import date, datetime, timedelta
 from phonenumber_field.modelfields import PhoneNumberField
+import uuid
 
 
 # Create your models here.
@@ -41,6 +42,7 @@ DISTRICT_REGIONS = (
 class District(models.Model):
     name = models.CharField(max_length=200)
     region = models.CharField(choices=DISTRICT_REGIONS, max_length=200)
+    commcare_district_group_id = models.CharField(max_length=200, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
         User, null=True, blank=True, on_delete=models.SET_NULL)
@@ -77,9 +79,11 @@ class Facility(models.Model):
     def __str__(self):
         return self.name
 
-    def get_daily_sample_volumes(self, format='types'):
+    def get_daily_sample_volumes(self, format='types', selected_date=None):
         # today = date.today()
-        today = date(2021, 12, 8)
+        if selected_date is None:
+            selected_date = datetime.now()
+        today = selected_date
 
         # samples = self.sample_volumes_set.all()
 
@@ -105,7 +109,7 @@ class Facility(models.Model):
                 volumes[s[1]] = 'NA'
 
         for key, value in volumes.items():
-            volume_string += f'{key}: {value}, '
+            volume_string += f'{value}_ '
 
         volume_string = volume_string[:-2]
         if format == "types":
@@ -223,9 +227,16 @@ def tomorrows_date():
 
 
 class Route(models.Model):
+    route_number = models.IntegerField()
     route_date = models.DateTimeField(default=tomorrows_date)
     district = models.ForeignKey(District, models.SET_NULL, null=True)
-    facilies = models.ManyToManyField(Facility, through='RouteFacility')
+    facilities = models.ManyToManyField(Facility, through='RouteFacility')
+    confirmed = models.CharField(max_length=10, default='no')
+    confirmed_time = models.DateTimeField(null=True)
+    added_facilities = models.CharField(max_length=1000, null=True)
+    rider = models.ForeignKey(Courier, models.SET_NULL, null=True)
+    reason_for_adding_facilities = models.CharField(max_length=1000, null=True)
+    commcare_id = models.CharField(max_length=200, default=uuid.uuid4)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     created_by = models.ForeignKey(
         User, null=True, blank=True, on_delete=models.SET_NULL)
@@ -236,12 +247,45 @@ class Route(models.Model):
     # deleted_by = models.ForeignKey(to, on_delete, null=True)
     status = models.CharField(max_length=200, choices=STATUS, null=True)
 
+    def get_facilities(self):
+        facilities_string = ""
+        list_of_facilities = self.facilities.all()
+
+        if list_of_facilities:
+            for facility in list_of_facilities:
+                facilities_string += f'{facility.name}, '
+        else:
+            facilities_string = "On Call"
+
+        if facilities_string != "On Call":
+            facilities_string = facilities_string[:-2]
+
+        return facilities_string
+
 
 class RouteFacility(models.Model):
     facility = models.ForeignKey(
         Facility, on_delete=models.SET_NULL, null=True)
     route = models.ForeignKey(Route, on_delete=models.SET_NULL, null=True)
     created = models.DateTimeField(auto_now_add=True, null=True)
+
+    class Meta:
+        ordering = ('created',)
+
+
+class FacilityGroup(models.Model):
+    name = models.CharField(max_length=200)
+    district = models.ForeignKey(District, models.SET_NULL, null=True)
+    facilities = models.ManyToManyField(Facility)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    created_by = models.ForeignKey(
+        User, null=True, blank=True, on_delete=models.SET_NULL)
+    # edited_at = models.DateField(auto_now=True, null=True)
+    # edited_by = models.ForeignKey(
+    #     User, null=True, blank=True, on_delete=models.SET_NULL)
+    # deleted_at = models.DateTimeField(blank=True, null=True)
+    # deleted_by = models.ForeignKey(to, on_delete, null=True)
+    status = models.CharField(max_length=200, choices=STATUS, null=True)
 
 
 # class Visits(models.Model):

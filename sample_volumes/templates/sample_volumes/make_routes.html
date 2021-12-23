@@ -1,4 +1,4 @@
-{% extends 'sample_volumes/main.html' %} {% block content %}
+{% extends 'sample_volumes/main.html' %} {% load custom_tags %} {% block content %}
 <div class="row">
   <div class="col-md-4">
     <form method="POST" action="" class="form-inline">
@@ -11,8 +11,10 @@
           <option value="{{district.id}}">{{district.name}}</option>
           {% endfor %}
         </select>
+        {{ request.user.id|json_script:"user_id" }}
         <script>
           var selected_district = "{{selected_district.id}}";
+          var selected_district_name = "{{selected_district.name}}";  
           document.addEventListener("DOMContentLoaded", function (event) {
             document.getElementById("select_district").value =
               selected_district;
@@ -45,13 +47,14 @@
       &nbsp;
       <p>
         Route Status:
-        <span class="badge badge-{{route_status.badge_color}}">Not Saved</span>
+        <span class="badge badge-{{route_status.badge_color}} route_status">{{route_status.display_text}}</span>
       </p>
     </div>
   </div>
   <div class="col-md-4 d-flex justify-content-center" style="height:40px;">
-    <button type="button" class="btn btn-sm btn-success">Save Routes</button>
+    <button type="button" class="btn btn-sm btn-success" id="save_routes">{{route_status.button_text}}</button>
   </div>
+</div>
 </div>
 <hr />
 
@@ -60,7 +63,7 @@
   <div class="col-md-8">
     <div class="card card-inverse card-primary">
       <div class="card-body">
-        <h4 class="card-description">{{district.name}}</h4>
+        <h4 class="card-description">{{selected_district.name}}</h4>
         <div style="overflow-x: hidden">
           <table class="table table-sm" id="data_table_routes">
             <thead class="thead-light">
@@ -87,6 +90,9 @@
                     <option value="">------</option>
 
                     {% if courier_count %} 
+                    <script>
+                      var courier_count = "{{courier_count}}";
+                    </script>
                       {% for x in courier_count%}
                         <option value="{{x|add:"1"}}">{{x|add:"1"}}</option>
                       {% endfor %} 
@@ -96,14 +102,20 @@
                 <td>{{facility.name}}</td>
                 <td>NA</td>
                 <td>NA</td>
+                {% comment %} {% for date in date_list %}
+                <td>{% get_daily_volumes_from_faciliy facility 'types' date.date %}</td>
+                {% endfor %} {% endcomment %}
                 <td>1</td>
-                <td>2</td>
+                {% for date in date_list %}
+                <td>{% get_daily_volumes_from_faciliy facility 'types' date.date %}</td>
+                {% endfor %}
+                {% comment %} <td>2</td>
                 <td>3</td>
                 <td>4</td>
                 <td>5</td>
                 <td>6</td>
                 <td>7</td>
-                <td>8</td>
+                <td>8</td>  {% endcomment %}
               </tr>
               {% endfor %}
             </tbody>
