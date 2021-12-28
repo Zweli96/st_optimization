@@ -4,6 +4,7 @@ from django.contrib import admin
 from .models import *
 
 admin.site.register(Facility)
+admin.site.register(FacilityGroup)
 admin.site.register(Sample_Volumes)
 admin.site.register(SampleType)
 admin.site.register(District)

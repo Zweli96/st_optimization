@@ -150,7 +150,6 @@ $(document).ready(function () {
     });
   });
 
-  if ($(".route_date_picker").attr("id") == "default_date") {
-    $(".route_date_picker").val(new Date().toDateInputValue());
-  }
+  // Get todays date for the date picker
+  $("#datePicker").val(new Date().toJSON().slice(0, 10));
 });

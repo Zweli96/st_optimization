@@ -107,15 +107,8 @@
                 {% endfor %} {% endcomment %}
                 <td>1</td>
                 {% for date in date_list %}
-                <td>{% get_daily_volumes_from_faciliy facility 'types' date.date %}</td>
+                <td>{% get_daily_volumes_from_faciliy facility 'string' date.date %}</td>
                 {% endfor %}
-                {% comment %} <td>2</td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
-                <td>7</td>
-                <td>8</td>  {% endcomment %}
               </tr>
               {% endfor %}
             </tbody>

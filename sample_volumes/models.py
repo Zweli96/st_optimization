@@ -79,7 +79,7 @@ class Facility(models.Model):
     def __str__(self):
         return self.name
 
-    def get_daily_sample_volumes(self, format='types', selected_date=None):
+    def get_daily_sample_volumes(self, format='string', selected_date=None):
         # today = date.today()
         if selected_date is None:
             selected_date = datetime.now()
@@ -91,7 +91,7 @@ class Facility(models.Model):
             reported_date__year=today.year, reported_date__month=today.month, reported_date__day=today.day)
         # reported_date__year=2021, reported_date__month=12, reported_date__day=6
 
-        if samples.count() == 0:
+        if samples.count() == 0 and format != 'types':
             return 'Not yet reported'
 
         volumes = {}
@@ -99,21 +99,25 @@ class Facility(models.Model):
         total_volumes = 0
 
         for s in SAMPLE_TYPE:
+            # Get the most recently reported sample on that day
             sample = samples.filter(sample_type=s[0]).order_by(
                 '-reported_date').first()
 
             if sample:
+                # VL = the volume in the volumes dictionary
                 volumes[s[1]] = sample.volume
                 total_volumes += sample.volume
             else:
                 volumes[s[1]] = 'NA'
 
         for key, value in volumes.items():
-            volume_string += f'{value}_ '
+            volume_string += f'{value}_'
 
-        volume_string = volume_string[:-2]
-        if format == "types":
+        volume_string = volume_string[:-1]
+        if format == "string":
             return volume_string
+        elif format == "types":
+            return volumes
         elif format == "total":
             return
 
@@ -275,8 +279,8 @@ class RouteFacility(models.Model):
 
 class FacilityGroup(models.Model):
     name = models.CharField(max_length=200)
+    code = models.CharField(max_length=200, unique=True)
     district = models.ForeignKey(District, models.SET_NULL, null=True)
-    facilities = models.ManyToManyField(Facility)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     created_by = models.ForeignKey(
         User, null=True, blank=True, on_delete=models.SET_NULL)
@@ -286,6 +290,20 @@ class FacilityGroup(models.Model):
     # deleted_at = models.DateTimeField(blank=True, null=True)
     # deleted_by = models.ForeignKey(to, on_delete, null=True)
     status = models.CharField(max_length=200, choices=STATUS, null=True)
+
+    def get_facilities(self):
+        facilities_string = ""
+        list_of_facilities = self.facilities.all()
+        if list_of_facilities:
+            for facility in list_of_facilities:
+                facilities_string += f'{facility.name}, '
+
+        if facilities_string:
+            facilities_string = facilities_string[:-2]
+        else:
+            facilities_string = "Empty"
+
+        return facilities_string
 
 
 # class Visits(models.Model):

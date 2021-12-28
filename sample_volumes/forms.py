@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import District, Facility, Health_Worker, Courier
+from .models import District, Facility, Health_Worker, Courier, FacilityGroup
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -70,3 +70,9 @@ class CreateUserForm(UserCreationForm):
             #     'class': 'form-control',
             #     'placeholder': 'Confirm'})
         }
+
+
+class FacilityGroupForm(ModelForm):
+    class Meta:
+        model = FacilityGroup
+        fields = '__all__'

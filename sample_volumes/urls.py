@@ -32,6 +32,9 @@ urlpatterns = [
          views.deleteHealth_Worker, name="delete_health_worker"),
     path('make_routes/', views.makeRoutes, name="make_routes"),
     path('view_routes/', views.viewRoutes, name="view_routes"),
-    path('facility_groups/', views.facility_groups, name="facility_groups"),
+    path('facility_groups/', views.facilityGroups, name="facility_groups"),
+    path('create_facility_group/', views.createFacilityGroup,
+         name="create_facility_group"),
+    path('daily_report/', views.render_pdf_view, name='daily_report')
 
 ]

@@ -4,13 +4,20 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Facility, District, Health_Worker, Courier, Route
-from .forms import DistrictForm, FacilityForm, Health_WorkerForm, CreateUserForm, CourierForm
+from .models import Facility, District, Health_Worker, Courier, Route, FacilityGroup, SAMPLE_TYPE
+from .forms import DistrictForm, FacilityForm, Health_WorkerForm, CreateUserForm, CourierForm, FacilityGroupForm
 from datetime import date, datetime, timedelta
 from django.utils.timezone import localtime
 from .commcare_submsission_api.submit_data import main
 from django.forms.models import model_to_dict
 from django.core import serializers
+
+from django.conf import settings
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from django.contrib.staticfiles import finders
+
+import os
 import json
 
 
@@ -342,3 +349,66 @@ def viewRoutes(request):
 
     context = {'routes': routes}
     return render(request, 'sample_volumes/routes.html', context)
+
+
+def facilityGroups(request):
+    facility_groups = FacilityGroup.objects.all()
+    context = {'facility_groups': facility_groups}
+    return render(request, 'sample_volumes/facility_groups.html', context)
+
+
+def createFacilityGroup(request):
+    form = FacilityGroupForm
+    context = {'form': form}
+
+    if request.method == 'POST':
+        # print('Printing POST: ', request.POST)
+        form = FacilityGroupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+
+    return render(request, 'sample_volumes/facility_group_form.html', context)
+
+
+def render_pdf_view(request):
+    data = {}
+    context = {}
+    districts = District.objects.order_by('name')
+
+    if request.method == 'POST':
+        date = request.POST['date']
+        district = request.POST['district']
+
+        if date and district:
+            date = datetime.strptime(date, "%Y-%m-%d")
+            district = District.objects.get(id=district)
+
+            facilities = Facility.objects.filter(district=district)
+            facility_count = facilities.count()
+
+            for facility in facilities:
+                data[facility.name] = facility.get_daily_sample_volumes(
+                    format="types", selected_date=date)
+                data[facility.name]['code'] = facility.facility_code
+
+        context.update({'date': date, 'district': district, 'data': data})
+        template_path = 'sample_volumes/daily_report_template.html'
+        # Create a Django response object, and specify content_type as pdf
+        response = HttpResponse(content_type='application/pdf')
+        response[
+            'Content-Disposition'] = f'attachment; filename="{district.name}_USSD_{date.strftime("%Y-%m-%d")}_report.pdf"'
+        # find the template and render it.
+        template = get_template(template_path)
+        html = template.render(context)
+
+        # create a pdf
+        pisa_status = pisa.CreatePDF(
+            html, dest=response,)
+        # if error then show some funy view
+        if pisa_status.err:
+            return HttpResponse('We had some errors <pre>' + html + '</pre>')
+        return response
+
+    context.update({"districts": districts})
+    return render(request, 'sample_volumes/daily_report.html', context)

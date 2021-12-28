@@ -62,8 +62,28 @@
             >
           </div>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Reports</a>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link"
+            href="#"
+            id="navbarDropdownMenuLink"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Reports
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" href="{% url 'daily_report' %}"
+              >Daily Reports</a
+            >
+            <a class="dropdown-item" href="{% url 'view_routes' %}"
+              >Weekly Reports</a
+            >
+            <a class="dropdown-item" href="{% url 'health_workers' %}"
+              >Monthly Reports</a
+            >
+          </div>
         </li>
         <li class="nav-item dropdown">
           <a
@@ -86,7 +106,7 @@
             >
             <a class="dropdown-item" href="{% url 'couriers' %}">Couriers</a>
             <a class="dropdown-item" href="{% url 'couriers' %}">Users</a>
-            <a class="dropdown-item" href="{% url 'facilities' %}"
+            <a class="dropdown-item" href="{% url 'facility_groups' %}"
               >Facility Groups</a
             >
           </div>
