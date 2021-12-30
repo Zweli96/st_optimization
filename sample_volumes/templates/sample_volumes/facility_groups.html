@@ -20,6 +20,7 @@
           <th>Name</th>
           <th>Code</th>
           <th>District</th>
+          <th>Facilities</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -30,12 +31,16 @@
           <td>{{fgroup.name}}</td>
           <td>{{fgroup.code}}</td>
           <td>{{fgroup.district}}</td>
+          <td>{{fgroup.get_facilities|truncatechars:70}}</td>
           <td>
             <a href="{% url 'update_facility' fgroup.id %}"
               ><i class="fas fa-edit"></i
             ></a>
             <a href="{% url 'delete_facility' fgroup.id %}"
               ><i class="fas fa-trash"></i
+            ></a>
+            <a href="{% url 'facility_group_facilities' fgroup.id %}"
+              ><i class="fas fa-clinic-medical"></i
             ></a>
           </td>
         </tr>

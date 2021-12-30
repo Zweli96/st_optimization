@@ -61,14 +61,6 @@ class CreateUserForm(UserCreationForm):
             'email': forms.EmailInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'email'}),
-            # 'password1': forms.PasswordInput(attrs={
-            #     'class': 'form-control',
-            #     'type': 'password',
-            #     'name': 'password',
-            #     'placeholder': 'Password'}),
-            # 'password2': forms.PasswordInput(attrs={
-            #     'class': 'form-control',
-            #     'placeholder': 'Confirm'})
         }
 
 

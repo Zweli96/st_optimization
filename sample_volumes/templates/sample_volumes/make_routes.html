@@ -64,12 +64,14 @@
     <div class="card card-inverse card-primary">
       <div class="card-body">
         <h4 class="card-description">{{selected_district.name}}</h4>
+        <small>USSD Reporting (VL_EID_TB_Other)</small>
         <div style="overflow-x: hidden">
           <table class="table table-sm" id="data_table_routes">
             <thead class="thead-light">
               <tr>
                 <th scope="col">Route</th>
                 <th scope="col">Facility</th>
+                <th scope="col">Group</th>
                 <th scope="col">Visits This Week</th>
                 <th scope="col">Previous Visit</th>
                 <th scope="col">Days Since Last Visit</th>
@@ -100,6 +102,7 @@
                   </select>
                 </td>
                 <td>{{facility.name}}</td>
+                <td>{{facility.facility_group}}</td>
                 <td>NA</td>
                 <td>NA</td>
                 {% comment %} {% for date in date_list %}

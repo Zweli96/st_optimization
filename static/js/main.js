@@ -35,6 +35,7 @@ $(document).ready(function () {
   // Turn tables into data tables
   $("#data_table").DataTable();
 
+  var groupColumn = 2;
   // Turn the routes table into a data table with defined settings
   $("#data_table_routes").DataTable({
     scrollX: true,
@@ -43,6 +44,42 @@ $(document).ready(function () {
     fixedColumns: {
       left: 2,
     },
+    ///////////////////////////////////////////////
+    columnDefs: [{ visible: false, targets: groupColumn }],
+    order: [[groupColumn, "asc"]],
+    displayLength: 10,
+    drawCallback: function (settings) {
+      var api = this.api();
+      var rows = api.rows({ page: "current" }).nodes();
+      var last = null;
+
+      api
+        .column(groupColumn, { page: "current" })
+        .data()
+        .each(function (group, i) {
+          if (last !== group) {
+            $(rows)
+              .eq(i)
+              .before(
+                '<tr class="group" style="background-color:#89CFF0"><td colspan="12"><strong>' +
+                  group +
+                  "</strong></td></tr>"
+              );
+
+            last = group;
+          }
+        });
+    },
+  });
+
+  // Order by the grouping
+  $("#data_table_routes tbody").on("click", "tr.group", function () {
+    var currentOrder = table.order()[0];
+    if (currentOrder[0] === groupColumn && currentOrder[1] === "asc") {
+      table.order([groupColumn, "desc"]).draw();
+    } else {
+      table.order([groupColumn, "asc"]).draw();
+    }
   });
 
   // I'm not sure if this is working
@@ -152,4 +189,14 @@ $(document).ready(function () {
 
   // Get todays date for the date picker
   $("#datePicker").val(new Date().toJSON().slice(0, 10));
+
+  // Make the facilities group a select 2
+  $("#facility_group_facilities_select").select2();
+
+  if (JSON.parse(document.getElementById("fg_facilities").textContent)) {
+    $("#facility_group_facilities_select").val(
+      JSON.parse(document.getElementById("fg_facilities").textContent)
+    );
+    $("#facility_group_facilities_select").trigger("change");
+  }
 });

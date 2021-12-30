@@ -11,6 +11,7 @@ from django.utils.timezone import localtime
 from .commcare_submsission_api.submit_data import main
 from django.forms.models import model_to_dict
 from django.core import serializers
+from django.db.models import Q
 
 from django.conf import settings
 from django.template.loader import get_template
@@ -412,3 +413,47 @@ def render_pdf_view(request):
 
     context.update({"districts": districts})
     return render(request, 'sample_volumes/daily_report.html', context)
+
+
+def facilityGroupFacilities(request, pk):
+
+    context = {}
+    fg = FacilityGroup.objects.get(id=pk)
+    fg_facilities = fg.facility_set.values_list('id', flat=True)
+    fg_facilities = list(fg_facilities)
+    facilities_list = Facility.objects.filter(district=fg.district)
+    facilities_list = facilities_list.filter(
+        Q(facility_group=None) | Q(facility_group=fg))
+    context.update({'facility_group': fg, 'fg_facilities': fg_facilities,
+                   'facilities_list': facilities_list})
+
+    removed = []
+    added = []
+
+    if request.method == "POST":
+        submitted_facilities = request.POST.getlist('facilities[]')
+        submitted_facilities = list(map(int, submitted_facilities))
+
+        for item in fg_facilities:
+            if int(item) not in submitted_facilities:
+                removed.append(item)
+
+        for item in submitted_facilities:
+            if int(item) not in fg_facilities:
+                added.append(item)
+
+        if len(added) > 0:
+            for a_facility in added:
+                f = Facility.objects.get(id=a_facility)
+                f.facility_group = fg
+                f.save()
+
+        if len(removed) > 0:
+            for r_facility in removed:
+                f = Facility.objects.get(id=r_facility)
+                f.facility_group = None
+                f.save()
+
+        return redirect('home')
+
+    return render(request, 'sample_volumes/facility_group_members.html', context)

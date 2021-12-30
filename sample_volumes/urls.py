@@ -35,6 +35,8 @@ urlpatterns = [
     path('facility_groups/', views.facilityGroups, name="facility_groups"),
     path('create_facility_group/', views.createFacilityGroup,
          name="create_facility_group"),
+    path('facility_group_facilities/<str:pk>', views.facilityGroupFacilities,
+         name="facility_group_facilities"),
     path('daily_report/', views.render_pdf_view, name='daily_report')
 
 ]

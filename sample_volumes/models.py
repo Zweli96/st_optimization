@@ -57,6 +57,38 @@ class District(models.Model):
         return self.name
 
 
+class FacilityGroup(models.Model):
+    name = models.CharField(max_length=200)
+    code = models.CharField(max_length=200, unique=True)
+    district = models.ForeignKey(District, models.SET_NULL, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    created_by = models.ForeignKey(
+        User, null=True, blank=True, on_delete=models.SET_NULL)
+    # edited_at = models.DateField(auto_now=True, null=True)
+    # edited_by = models.ForeignKey(
+    #     User, null=True, blank=True, on_delete=models.SET_NULL)
+    # deleted_at = models.DateTimeField(blank=True, null=True)
+    # deleted_by = models.ForeignKey(to, on_delete, null=True)
+    status = models.CharField(max_length=200, choices=STATUS, null=True)
+
+    def __str__(self):
+        return self.name
+
+    def get_facilities(self):
+        facilities_string = ""
+        list_of_facilities = self.facility_set.all()
+        if list_of_facilities:
+            for facility in list_of_facilities:
+                facilities_string += f'{facility.name}, '
+
+        if facilities_string:
+            facilities_string = facilities_string[:-2]
+        else:
+            facilities_string = "Empty"
+
+        return facilities_string
+
+
 class Facility(models.Model):
     name = models.CharField(max_length=200, null=True)
     district = models.ForeignKey(
@@ -64,6 +96,8 @@ class Facility(models.Model):
     facility_code = models.CharField(max_length=200, null=True, unique=True)
     operator = models.CharField(
         max_length=200, choices=FACILITY_OPERATOR, null=True)
+    facility_group = models.ForeignKey(
+        FacilityGroup, on_delete=models.SET_NULL, null=True)
     facility_type = models.CharField(
         max_length=200, choices=FACILITY_TYPE, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
@@ -92,7 +126,7 @@ class Facility(models.Model):
         # reported_date__year=2021, reported_date__month=12, reported_date__day=6
 
         if samples.count() == 0 and format != 'types':
-            return 'Not yet reported'
+            return 'not yet reported'
 
         volumes = {}
         volume_string = ""
@@ -275,35 +309,6 @@ class RouteFacility(models.Model):
 
     class Meta:
         ordering = ('created',)
-
-
-class FacilityGroup(models.Model):
-    name = models.CharField(max_length=200)
-    code = models.CharField(max_length=200, unique=True)
-    district = models.ForeignKey(District, models.SET_NULL, null=True)
-    created_at = models.DateTimeField(auto_now_add=True, null=True)
-    created_by = models.ForeignKey(
-        User, null=True, blank=True, on_delete=models.SET_NULL)
-    # edited_at = models.DateField(auto_now=True, null=True)
-    # edited_by = models.ForeignKey(
-    #     User, null=True, blank=True, on_delete=models.SET_NULL)
-    # deleted_at = models.DateTimeField(blank=True, null=True)
-    # deleted_by = models.ForeignKey(to, on_delete, null=True)
-    status = models.CharField(max_length=200, choices=STATUS, null=True)
-
-    def get_facilities(self):
-        facilities_string = ""
-        list_of_facilities = self.facilities.all()
-        if list_of_facilities:
-            for facility in list_of_facilities:
-                facilities_string += f'{facility.name}, '
-
-        if facilities_string:
-            facilities_string = facilities_string[:-2]
-        else:
-            facilities_string = "Empty"
-
-        return facilities_string
 
 
 # class Visits(models.Model):
