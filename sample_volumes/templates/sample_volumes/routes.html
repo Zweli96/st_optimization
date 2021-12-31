@@ -4,19 +4,18 @@
     <h2>Routes</h2>
   </div>
   <br />
-  <form class="form-inline">
-    <label class="sr-only" for="inlineFormInputGroupUsername2"
-      >Route Date</label
-    >
+  <form class="form-inline" method="post" action="">
+    {% csrf_token %}
+    <label class="sr-only" for="date">Route Date</label>
     <div class="input-group mb-2 mr-sm-2 route_date_picker">
       <input
         type="date"
+        name="date"
         class="form-control"
         id="default_date"
         placeholder="Select Date"
       />
     </div>
-
     <button type="submit" class="btn btn-primary mb-2">Submit</button>
   </form>
   <div class="card card-body">

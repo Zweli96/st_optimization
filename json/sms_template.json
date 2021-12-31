@@ -1,0 +1,1 @@
+{"reference":"[arg:ref]","user_id":"368","org_id":"167","src_address":"126","dst_address":"[arg:phone_number]","message_type":"1","auth_key":"[arg:auth]","message":"[arg:message]","app_id":"600184","operation":"send","timestamp":"[arg:timestamp]"}

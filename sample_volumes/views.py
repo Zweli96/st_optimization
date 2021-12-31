@@ -80,7 +80,7 @@ def dashboard(request, pk=''):
         facility_count = facilities.count()
 
     context.update({'facilities': facilities,
-                   'facility_count': facility_count, 'districts': districts})
+                   'facility_count': facility_count, 'districts': districts, 'selected_district': selected_district})
 
     return render(request, 'sample_volumes/dashboard.html', context)
 
@@ -340,6 +340,7 @@ def viewRoutes(request):
     if request.method == 'POST':
         if 'date' in request.POST:
             route_date = request.POST['date']
+            route_date = datetime.strptime(route_date, "%Y-%m-%d")
 
     for district in districts:
         num_of_couriers = District.objects.get(
