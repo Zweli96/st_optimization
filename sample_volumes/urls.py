@@ -37,6 +37,8 @@ urlpatterns = [
          name="create_facility_group"),
     path('facility_group_facilities/<str:pk>', views.facilityGroupFacilities,
          name="facility_group_facilities"),
-    path('daily_report/', views.render_pdf_view, name='daily_report')
-
+    path('daily_sample_report/', views.daily_sample_report,
+         name='daily_sample_report'),
+    path('daily_courier_report/', views.daily_courier_report,
+         name='daily_courier_report')
 ]

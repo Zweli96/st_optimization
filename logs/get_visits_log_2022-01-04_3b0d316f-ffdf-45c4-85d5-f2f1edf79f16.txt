@@ -1,0 +1,16 @@
+Total Visits Successfully Saved: 0#, id, messageTotal Visits With Errors: 16#, id, message1,df6b38a6-8460-4cc3-92f3-6fd0077ebd4f,Facility doesn't exist
+2,f7b9ea78-25e7-4a7f-a452-f89d4c5ad63b,Facility doesn't exist
+3,c3ca7457-7fd1-48a7-b18a-4542e821d18c,Facility doesn't exist
+4,fb3564dc-8179-475c-983d-690070f84e65,Facility doesn't exist
+5,7f4d5047-0b33-4f2a-9592-d58b098c265e,Facility doesn't exist
+6,2f69f767-d441-4181-8630-44381bbe7331,Facility doesn't exist
+7,d226d2d1-ae63-4559-8531-cccf34fb97f3,Facility doesn't exist
+8,1129b2b6-fb58-440c-833e-13378b67687f,Facility doesn't exist
+9,03114eb3-6532-4b8e-858f-ac461688105b,Facility doesn't exist
+10,b67f6c0c-1d59-4033-9c8f-06db88f48bed,Facility doesn't exist
+11,12e3d1e3-aac3-4dfc-ad09-564fdde128d4,Facility doesn't exist
+12,7340d72f-a048-4e53-a59b-e333a9bbe5e8,Facility doesn't exist
+13,cc61d2d7-62a6-4095-b1e0-ff8f04ebb408,Facility doesn't exist
+14,5ee8b250-6227-4556-bbfa-ec77eec8d921,Facility doesn't exist
+15,0efa1633-7354-4871-b221-e2bec440ac27,Facility doesn't exist
+16,8acbe6f1-9c7d-4e18-890c-46d7595176b0,Facility doesn't exist

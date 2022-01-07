@@ -23,6 +23,7 @@ FACILITY_TYPE = (
     ('District Hospital', 'District Hospital'),
     ('Clinic', 'Clinic'),
     ('Rural Community Hospital', 'Rural Community Hospital'),
+    ('Central Hospital', 'Central Hospital'),
 )
 
 SAMPLE_TYPE = (
@@ -42,13 +43,14 @@ DISTRICT_REGIONS = (
 class District(models.Model):
     name = models.CharField(max_length=200)
     region = models.CharField(choices=DISTRICT_REGIONS, max_length=200)
-    commcare_district_group_id = models.CharField(max_length=200, null=True)
+    commcare_district_group_id = models.CharField(
+        max_length=200, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
-        User, null=True, blank=True, on_delete=models.SET_NULL)
+        User, blank=True, null=True, on_delete=models.SET_NULL)
     edited_at = models.DateField(auto_now=True)
     # edited_by = models.ForeignKey(
-    #     User, null=True, blank=True, on_delete=models.SET_NULL)
+    #     User, blank=True, null=True, on_delete=models.SET_NULL)
     # deleted_at = models.DateTimeField(blank=True, null=True)
     # deleted_by = models.ForeignKey(to, on_delete)
     status = models.CharField(max_length=200, choices=STATUS, null=True)
@@ -63,10 +65,10 @@ class FacilityGroup(models.Model):
     district = models.ForeignKey(District, models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     created_by = models.ForeignKey(
-        User, null=True, blank=True, on_delete=models.SET_NULL)
+        User, blank=True, null=True, on_delete=models.SET_NULL)
     # edited_at = models.DateField(auto_now=True, null=True)
     # edited_by = models.ForeignKey(
-    #     User, null=True, blank=True, on_delete=models.SET_NULL)
+    #     User, blank=True, null=True, on_delete=models.SET_NULL)
     # deleted_at = models.DateTimeField(blank=True, null=True)
     # deleted_by = models.ForeignKey(to, on_delete, null=True)
     status = models.CharField(max_length=200, choices=STATUS, null=True)
@@ -90,22 +92,24 @@ class FacilityGroup(models.Model):
 
 
 class Facility(models.Model):
-    name = models.CharField(max_length=200, null=True)
+    name = models.CharField(max_length=200)
+    commcare_name = models.CharField(max_length=200, blank=True, null=True)
     district = models.ForeignKey(
         District, null=True, on_delete=models.SET_NULL)
-    facility_code = models.CharField(max_length=200, null=True, unique=True)
+    facility_code = models.CharField(
+        max_length=200, blank=True, null=True, unique=True)
     operator = models.CharField(
-        max_length=200, choices=FACILITY_OPERATOR, null=True)
+        max_length=200, choices=FACILITY_OPERATOR, blank=True, null=True)
     facility_group = models.ForeignKey(
-        FacilityGroup, on_delete=models.SET_NULL, null=True)
+        FacilityGroup, on_delete=models.SET_NULL, blank=True, null=True)
     facility_type = models.CharField(
-        max_length=200, choices=FACILITY_TYPE, null=True)
+        max_length=200, choices=FACILITY_TYPE, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     created_by = models.ForeignKey(
-        User, null=True, blank=True, on_delete=models.SET_NULL)
+        User, blank=True, null=True, on_delete=models.SET_NULL)
     # edited_at = models.DateField(auto_now=True, null=True)
     # edited_by = models.ForeignKey(
-    #     User, null=True, blank=True, on_delete=models.SET_NULL)
+    #     User, blank=True, null=True, on_delete=models.SET_NULL)
     # deleted_at = models.DateTimeField(blank=True, null=True)
     # deleted_by = models.ForeignKey(to, on_delete, null=True)
     status = models.CharField(max_length=200, choices=STATUS, null=True)
@@ -159,6 +163,20 @@ class Facility(models.Model):
         # for sample in samples:
         #     return sample.volume
 
+    def get_last_reported(self):
+        recent_sample = self.sample_volumes_set.all().order_by('-reported_date').first()
+        if recent_sample:
+            return recent_sample.reported_date.strftime("%a %d-%b")
+        else:
+            return "NA"
+
+    def get_last_visit(self):
+        recent_visit = self.visit_set.all().order_by('-visit_date').first()
+        if recent_visit:
+            return recent_visit.visit_date.strftime("%a %d-%b")
+        else:
+            return "NA"
+
 
 class SampleType(models.Model):
     sample_type = models.CharField(max_length=200, null=True)
@@ -166,10 +184,10 @@ class SampleType(models.Model):
     sample_code = models.IntegerField(unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
-        User, null=True, blank=True, on_delete=models.SET_NULL)
+        User, blank=True, null=True, on_delete=models.SET_NULL)
     edited_at = models.DateField(auto_now=True)
     # edited_by = models.ForeignKey(
-    #     User, null=True, blank=True, on_delete=models.SET_NULL)
+    #     User, blank=True, null=True, on_delete=models.SET_NULL)
     # deleted_at = models.DateTimeField(blank=True, null=True)
     # deleted_by = models.ForeignKey(to, on_delete)
     status = models.CharField(max_length=200, choices=STATUS, null=True)
@@ -185,13 +203,13 @@ class Sample_Volumes(models.Model):
         SampleType, null=True, on_delete=models.SET_NULL)
     volume = models.IntegerField(default=0)
     reported_date = models.DateTimeField(null=True)
-    reported_by = models.CharField(max_length=200, null=True)
+    reported_by = models.CharField(max_length=200, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
-        User, null=True, blank=True, on_delete=models.SET_NULL)
+        User, blank=True, null=True, on_delete=models.SET_NULL)
     edited_at = models.DateTimeField(auto_now=True)
     # edited_by = models.ForeignKey(
-    #     User, null=True, blank=True, on_delete=models.SET_NULL)
+    #     User, blank=True, null=True, on_delete=models.SET_NULL)
     # deleted_at = models.DateTimeField(blank=True, null=True)
     # deleted_by = models.ForeignKey(to, on_delete)
     status = models.CharField(max_length=200, choices=STATUS, null=True)
@@ -207,10 +225,10 @@ class Health_Worker(models.Model):
     facility = models.ForeignKey(Facility, models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
-        User, null=True, blank=True, on_delete=models.SET_NULL)
+        User, blank=True, null=True, on_delete=models.SET_NULL)
     edited_at = models.DateField(auto_now=True)
     # edited_by = models.ForeignKey(
-    #     User, null=True, blank=True, on_delete=models.SET_NULL)
+    #     User, blank=True, null=True, on_delete=models.SET_NULL)
     # deleted_at = models.DateTimeField(blank=True, null=True)
     # deleted_by = models.ForeignKey(to, on_delete)
     status = models.CharField(max_length=200, choices=STATUS, null=True)
@@ -223,13 +241,14 @@ class Courier(models.Model):
     name = models.CharField(max_length=200)
     phone_number = PhoneNumberField()
     district = models.ForeignKey(District, models.SET_NULL, null=True)
-    commcare_user_id = models.CharField(max_length=200)
+    commcare_user_name = models.CharField(max_length=200)
+    commcare_user_id = models.CharField(max_length=200, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
-        User, null=True, blank=True, on_delete=models.SET_NULL)
+        User, blank=True, null=True, on_delete=models.SET_NULL)
     edited_at = models.DateField(auto_now=True)
     # edited_by = models.ForeignKey(
-    #     User, null=True, blank=True, on_delete=models.SET_NULL)
+    #     User, blank=True, null=True, on_delete=models.SET_NULL)
     # deleted_at = models.DateTimeField(blank=True, null=True)
     # deleted_by = models.ForeignKey(to, on_delete)
     status = models.CharField(max_length=200, choices=STATUS, null=True)
@@ -277,10 +296,10 @@ class Route(models.Model):
     commcare_id = models.CharField(max_length=200, default=uuid.uuid4)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     created_by = models.ForeignKey(
-        User, null=True, blank=True, on_delete=models.SET_NULL)
+        User, blank=True, null=True, on_delete=models.SET_NULL)
     # edited_at = models.DateField(auto_now=True, null=True)
     # edited_by = models.ForeignKey(
-    #     User, null=True, blank=True, on_delete=models.SET_NULL)
+    #     User, blank=True, null=True, on_delete=models.SET_NULL)
     # deleted_at = models.DateTimeField(blank=True, null=True)
     # deleted_by = models.ForeignKey(to, on_delete, null=True)
     status = models.CharField(max_length=200, choices=STATUS, null=True)
@@ -309,6 +328,47 @@ class RouteFacility(models.Model):
 
     class Meta:
         ordering = ('created',)
+
+
+class Visit(models.Model):
+    visit_id = models.CharField(max_length=200, unique=True)
+    facility = models.ForeignKey(
+        Facility, on_delete=models.SET_NULL, null=True)
+    visit_date = models.DateField()
+    courier = models.ForeignKey(Courier, on_delete=models.SET_NULL, null=True)
+    district = models.ForeignKey(District, models.SET_NULL, null=True)
+    sample_volumes = models.JSONField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    created_by = models.ForeignKey(
+        User, blank=True, null=True, on_delete=models.SET_NULL)
+    # edited_at = models.DateField(auto_now=True, null=True)
+    # edited_by = models.ForeignKey(
+    #     User, blank=True, null=True, on_delete=models.SET_NULL)
+    # deleted_at = models.DateTimeField(blank=True, null=True)
+    # deleted_by = models.ForeignKey(to, on_delete, null=True)
+    status = models.CharField(max_length=200, choices=STATUS, null=True)
+
+
+class Trip(models.Model):
+    trip_id = models.CharField(max_length=200)
+    facility = models.ForeignKey(
+        Facility, on_delete=models.SET_NULL, null=True)
+    trip_date = models.DateTimeField()
+    start_time = models.TimeField(null=True)
+    end_time = models.TimeField(null=True)
+    start_km = models.IntegerField(null=True)
+    end_km = models.IntegerField(null=True)
+    courier = models.ForeignKey(Courier, on_delete=models.SET_NULL, null=True)
+    district = models.ForeignKey(District, models.SET_NULL, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    created_by = models.ForeignKey(
+        User, blank=True, null=True, on_delete=models.SET_NULL)
+    # edited_at = models.DateField(auto_now=True, null=True)
+    # edited_by = models.ForeignKey(
+    #     User, blank=True, null=True, on_delete=models.SET_NULL)
+    # deleted_at = models.DateTimeField(blank=True, null=True)
+    # deleted_by = models.ForeignKey(to, on_delete, null=True)
+    status = models.CharField(max_length=200, choices=STATUS, null=True)
 
 
 # class Visits(models.Model):

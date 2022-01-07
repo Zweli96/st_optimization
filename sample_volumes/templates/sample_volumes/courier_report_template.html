@@ -1,0 +1,323 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>USSD Report</title>
+    <style>
+      th {
+        padding-top: 3px;
+      }
+      tr {
+        padding-top: 1px;
+      }
+      .red {
+        color: red;
+      }
+      header {
+        display: flex;
+        align-items: center;
+
+        /* Remove the next line if you want the span to appear next to the h1 */
+        justify-content: space-between;
+      }
+      @media print {
+        #new_page {
+          page-break-before: always;
+        }
+      }
+    </style>
+  </head>
+  <body font-family="Didot">
+    <div class="container">
+      <img
+        src="{% static 'images/r4h_logo.png' %}"
+        alt="logo"
+        style="width: 100px; height: 32px"
+      />
+      <header>
+        <p>Courier report for <strong>Rameck Chavula</strong></p>
+        <span>District: {{district.name}}</span>
+      </header>
+      <p>Date: <strong>{{date|date:"Y-m-d"}}</strong></p>
+      <small>Report generated: {{generated_time|date:"Y-m-d, H\hi"}}</small>
+      <h3>Overview</h3>
+      <p>Scheduled route: Jalawe, Luwuchi, Chitimba</p>
+      <p>CommCare route confirmation: no</p>
+      <!-- <p style="text-align: left">
+        <h1>This text is left aligned</h1>
+        <span style="float: right"> This text is right aligned </span>
+      </p> -->
+
+      <table style="border-collapse: collapse" width="60%" class="container">
+        <thead>
+          <tr
+            style="
+              border-bottom: 1pt solid black;
+              border-bottom: 1pt solid black;
+            "
+          >
+            <th style="text-align: left; width: 40%">Facility</th>
+            <th>Scheduled</th>
+            <th>Trip logged</th>
+            <th>Visit logged</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for facility, info in data.items %}
+          <tr>
+            <td style="text-align: left">{{facility}}</td>
+            <td
+              style="text-align: center"
+              class="{% if info.VL == 'NA' %}red{% endif %}"
+            >
+              {{info.VL}}
+            </td>
+            <td
+              style="text-align: center"
+              class="{% if info.EID == 'NA' %}red{% endif %}"
+            >
+              {{info.EID}}
+            </td>
+            <td
+              style="text-align: center"
+              class="{% if info.TB == 'NA' %}red{% endif %}"
+            >
+              {{info.TB}}
+            </td>
+          </tr>
+          {% endfor %}
+          <tr style="border-top: 1pt solid black">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+      <br /><br />
+
+      <!---------------------------------------------------------->
+
+      <h3>Travel records</h3>
+      <!-- <p style="text-align: left">
+        <h1>This text is left aligned</h1>
+        <span style="float: right"> This text is right aligned </span>
+      </p> -->
+
+      <table style="border-collapse: collapse" width="80%" class="container">
+        <thead>
+          <tr
+            style="border-bottom: 1pt solid black; border-top: 1pt solid black"
+          >
+            <th>start location</th>
+            <th>end location</th>
+            <th>start time</th>
+            <th>end time</th>
+            <th>start km</th>
+            <th>end km</th>
+            <th>matches route</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for facility, info in data.items %}
+          <tr>
+            <td style="text-align: left">{{facility}}</td>
+            <td
+              style="text-align: center"
+              class="{% if info.VL == 'NA' %}red{% endif %}"
+            >
+              {{info.VL}}
+            </td>
+            <td
+              style="text-align: center"
+              class="{% if info.EID == 'NA' %}red{% endif %}"
+            >
+              {{info.EID}}
+            </td>
+            <td
+              style="text-align: center"
+              class="{% if info.TB == 'NA' %}red{% endif %}"
+            >
+              {{info.TB}}
+            </td>
+          </tr>
+          {% endfor %}
+          <tr style="border-top: 1pt solid black">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+      <br /><br />
+
+      <!---------------------------------------------------------->
+      <h3>Facility visits</h3>
+      <table style="border-collapse: collapse" width="60%" class="container">
+        <thead>
+          <tr style="border-top: 1pt solid black">
+            <th style="width: 80%">&nbsp;</th>
+            <th style="border-bottom: 1pt solid black" colspan="4">
+              Samples Collected
+            </th>
+            <th>&nbsp;</th>
+            <th style="border-bottom: 1pt solid black" colspan="4">
+              Results Visit/Checklist
+            </th>
+          </tr>
+          <tr style="border-bottom: 1pt solid black">
+            <th style="text-align: left">Facility</th>
+            <th>VL</th>
+            <th>EID</th>
+            <th>TB</th>
+            <th>Other</th>
+            <th></th>
+            <th>VL</th>
+            <th>EID</th>
+            <th>TB</th>
+            <th>Other</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for facility, info in data.items %}
+          <tr>
+            <td style="text-align: center">{{info.code}}</td>
+            <td style="text-align: left">{{facility}}</td>
+            <td
+              style="text-align: center"
+              class="{% if info.VL == 'NA' %}red{% endif %}"
+            >
+              {{info.VL}}
+            </td>
+            <td
+              style="text-align: center"
+              class="{% if info.EID == 'NA' %}red{% endif %}"
+            >
+              {{info.EID}}
+            </td>
+            <td
+              style="text-align: center"
+              class="{% if info.TB == 'NA' %}red{% endif %}"
+            >
+              {{info.TB}}
+            </td>
+            <td
+              style="text-align: center"
+              class="{% if info.Other == 'NA' %}red{% endif %}"
+            >
+              Space Here
+            </td>
+            <td
+              style="text-align: center"
+              class="{% if info.TB == 'NA' %}red{% endif %}"
+            >
+              {{info.TB}}
+            </td>
+            <td
+              style="text-align: center"
+              class="{% if info.Other == 'NA' %}red{% endif %}"
+            >
+              {{info.Other}}
+            </td>
+            <td
+              style="text-align: center"
+              class="{% if info.Other == 'NA' %}red{% endif %}"
+            >
+              {{info.Other}}
+            </td>
+          </tr>
+          {% endfor %}
+          <tr style="border-top: 1pt solid black">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        Values in brackets show the number of samples reported via USSD on the
+        previous day. (NA) indicates no USSD data was reported.
+      </p>
+
+      <img
+        src="D:/dev/st_optimization/static/images/r4h_logo.png"
+        alt="logo"
+        style="width: 100px; height: 32px"
+        id="new_page"
+      />
+      <h1>{{ district.name }} USSD Sample Reporting</h1>
+      <h2>Date: {{ date|date:"d-m-Y" }}</h2>
+      <table style="border-collapse: collapse" width="60%" class="container">
+        <thead>
+          <tr style="border-top: 1pt solid black">
+            <th style="width: 10%">&nbsp;</th>
+            <th style="width: 40%">&nbsp;</th>
+            <th style="border-bottom: 1pt solid black" colspan="4">
+              Sample Volumes
+            </th>
+          </tr>
+          <tr style="border-bottom: 1pt solid black">
+            <th style="width: 15%">Code</th>
+            <th style="text-align: left; width: 40%">Facility</th>
+            <th>VL</th>
+            <th>EID</th>
+            <th>TB</th>
+            <th>Other</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for facility, info in data.items %}
+          <tr>
+            <td style="text-align: center">{{info.code}}</td>
+            <td style="text-align: left">{{facility}}</td>
+            <td
+              style="text-align: center"
+              class="{% if info.VL == 'NA' %}red{% endif %}"
+            >
+              {{info.VL}}
+            </td>
+            <td
+              style="text-align: center"
+              class="{% if info.EID == 'NA' %}red{% endif %}"
+            >
+              {{info.EID}}
+            </td>
+            <td
+              style="text-align: center"
+              class="{% if info.TB == 'NA' %}red{% endif %}"
+            >
+              {{info.TB}}
+            </td>
+            <td
+              style="text-align: center"
+              class="{% if info.Other == 'NA' %}red{% endif %}"
+            >
+              {{info.Other}}
+            </td>
+          </tr>
+          {% endfor %}
+          <tr style="border-top: 1pt solid black">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+      <p><span style="color: red">NA</span> = not reported</p>
+    </div>
+  </body>
+</html>
