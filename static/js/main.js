@@ -188,7 +188,20 @@ $(document).ready(function () {
   });
 
   // Get todays date for the date picker
-  $("#datePicker").val(new Date().toJSON().slice(0, 10));
+  if (document.getElementById("selected_date")) {
+    if (JSON.parse(document.getElementById("selected_date").textContent)) {
+      $("#datePicker").val(
+        JSON.parse(document.getElementById("selected_date").textContent).slice(
+          0,
+          10
+        )
+      );
+    } else {
+      $("#datePicker").val(new Date().toJSON().slice(0, 10));
+    }
+  } else {
+    $("#datePicker").val(new Date().toJSON().slice(0, 10));
+  }
 
   // Make the facilities group a select 2
   $("#facility_group_facilities_select").select2();

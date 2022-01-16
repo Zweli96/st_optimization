@@ -1,0 +1,1 @@
+Total Visits Successfully Saved: 0#, id, messageTotal Visits With Errors: 1#, id, message1,80b2ce48-dc81-4aa9-a2c8-6ae40e9963e7,Start location doesn't exist,Atupere_Karonga

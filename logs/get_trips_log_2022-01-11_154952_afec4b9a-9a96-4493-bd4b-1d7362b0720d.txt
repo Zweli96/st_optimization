@@ -1,0 +1,65 @@
+Total Visits Successfully Saved: 0#, id, messageTotal Visits With Errors: 65#, id, message1,5a7c1a2f-bfb6-4353-8548-cdecef2db5fb,Start location doesn't exist,police_Mzimba_North
+2,dd28bfb5-4c2a-4735-b57d-b3c74e4ae63f,Start location doesn't exist,st johns_Mzimba_North
+3,7ddd9722-9bfc-4f48-8568-2e8aaa2eba6f,Start location doesn't exist,moyale_Mzimba_North
+4,109e17fb-e47f-4ef8-ba2e-b0817920dbe9,Start location doesn't exist,matuli_Mzimba_North
+5,54a7a6c6-210d-49db-a9f1-c501975ad027,Start location doesn't exist,Mzimba_North_DHO_Mzimba_North
+6,226a3b1d-8b50-406d-a3da-7602369230e0,Start location doesn't exist,Chifunga_Neno
+7,b5a52b4b-8d02-43eb-aea2-d82646e44bc4,Start location doesn't exist,Chifunga_Neno
+8,3bff2e92-83e3-4598-b609-e4901fb2a6e8,Start location doesn't exist,Tedzani_Neno
+9,e7ab6f22-fda3-43ad-87cc-f71010e8d80f,Start location doesn't exist,Nkula_Neno
+10,077331ad-e17d-4c6e-9c21-76f12b46d8ca,Start location doesn't exist,Lisungwi_Neno
+11,30809d90-c2d1-4549-9e14-0dd798805a60,Start location doesn't exist,Luwani HC_Neno
+12,9c40ebae-b78c-4aac-9bc5-4b1fc9e80f7c,Start location doesn't exist,Lisungwi_Neno
+13,f3db898f-bde7-4844-9070-1c4f90fa2623,Start location doesn't exist,Neno_DHO_Neno
+14,4aae2c16-a93b-40f0-98b5-10f32744815c,Start location doesn't exist,Lupembe_Karonga
+15,5d8a9d60-3da1-4839-9b85-01a9d66c412d,Start location doesn't exist,Mlare_Karonga
+16,3574004e-014f-4416-a6a3-2dc19af1743e,Start location doesn't exist,Nyungwe_Karonga
+17,688fea83-53ff-4185-bfef-658304d2a307,Start location doesn't exist,Barracks_Karonga
+18,c76d959d-d433-4f80-809b-758464bf1659,Start location doesn't exist,st Annes_Karonga
+19,d08f852d-6cdb-4b83-b9ec-4f0a7022b93f,Start location doesn't exist,Chilumba_Karonga
+20,b964fac1-524d-4211-adc0-79c512c8de9b,Start location doesn't exist,Karonga_DHO_Karonga
+21,334bb5f8-4b0b-4dfe-8a46-604f9aac6126,Start location doesn't exist,Nkholongo_Mzimba_North
+22,7067e341-c7e6-4a2b-aa04-1536b1a068dd,Start location doesn't exist,Choma_Mzimba_North
+23,4d7fdd20-bdf1-4567-834e-d0ba7d698078,Start location doesn't exist,Choma_Mzimba_North
+24,181d719a-2d6f-4942-8f99-6c28ba3f8640,Start location doesn't exist,Ekwendeni_Mzimba_North
+25,440ec69c-50fb-4339-a38d-f1090037f99b,Start location doesn't exist,Mzimba_North_DHO_Mzimba_North
+26,90683c63-f5a4-4785-93fe-06ba98763985,Start location doesn't exist,Milonde_Mulanje
+27,0d3b3d10-3b33-4a52-8164-15dc65650f4d,Start location doesn't exist,Mpala_Mulanje
+28,71c19779-9c99-4cfa-9d7d-a4c6b5f13c24,Start location doesn't exist,Mimosa_Mulanje
+29,56789faa-29c0-44e6-915b-226719f0f30a,Start location doesn't exist,Bondo_Mulanje
+30,3e449f99-9630-42e8-a76d-d805eef084ea,Start location doesn't exist,Mulanje_DHO_Mulanje
+31,3bcc078b-111c-4c18-93cd-4087eadcfeeb,Start location doesn't exist,Bondo_Mulanje
+32,dddbfa6f-ef2a-48ec-88f7-d23d8a2d3233,Start location doesn't exist,Chisitu_Mulanje
+33,999fde32-cfbf-444a-b63d-83e11ac2140e,Start location doesn't exist,Chonde_Mulanje
+34,d3c61c63-47e8-4f35-b8e6-613f4a9e938e,Start location doesn't exist,M'biza_Mulanje
+35,17ae8062-f523-47bd-813e-e21d08c1f6a4,Start location doesn't exist,Chinyama_Mulanje
+36,05e1ef57-5d61-4339-8e4b-a444068a39d0,Start location doesn't exist,Mulanje_DHO_Mulanje
+37,375c6ac3-c422-4421-b623-d5c57c79c140,Start location doesn't exist,khuyukuyu_Mzimba_North
+38,5c90f7ed-20b7-473b-be7b-0d087d3fe7b4,Start location doesn't exist,Enukweni_Mzimba_North
+39,2cc2dede-93fc-453e-985f-0a9437cd6b0a,Start location doesn't exist,Bwengu_Mzimba_North
+40,0711668e-7cf7-43e5-85b7-40c573785492,Start location doesn't exist,luzi_Mzimba_North
+41,15fdb01a-6a6a-46e4-98e7-fa08308037cf,Start location doesn't exist,Mzimba_North_DHO_Mzimba_North
+42,26567a19-891a-4ae1-9880-070e1d998ec0,Start location doesn't exist,Tengani_Nsanje
+43,04e12cb9-2fe1-4b77-839a-37d2f8de8925,Start location doesn't exist,Nyamithuthu_Nsanje
+44,5964bd5d-4bc2-415c-8a25-cf05a653e6a9,Start location doesn't exist,Chididi_Nsanje
+45,44cc3a18-7db3-414f-a1b2-e5af6a3ff508,Start location doesn't exist,Nsanje_DHO_Nsanje
+46,38a8129e-07a0-4c09-a01d-303eb05d3322,Start location doesn't exist,Chambe_Mulanje
+47,c8f97015-0192-4876-accc-2703aa225c1a,Start location doesn't exist,Kambenje_Mulanje
+48,17a97e11-139b-466e-b1c4-bf5ec22c46a4,Start location doesn't exist,Mulomba_Mulanje
+49,b4d5eb00-4e5e-41a0-9bd8-5ad57aa102ba,Start location doesn't exist,Mulanje_DHO_Mulanje
+50,007aea85-5298-469a-8db7-ffcc91f60cf7,Start location doesn't exist,Mulanje_Mission_Mulanje
+51,e53fc39d-6534-44db-9bea-2b687fa89074,Start location doesn't exist,Thembe_Mulanje
+52,309e1ab6-e6ad-4630-b878-ee90bd12be68,Start location doesn't exist,Dzenje_Mulanje
+53,358e5ace-d3a9-4a7a-8741-bc391f0695ff,Start location doesn't exist,Mulanje_DHO_Mulanje
+54,3958fd53-3ee8-4ff2-8e25-34c3eb3d343e,Start location doesn't exist,Blantyre Dream Laboratory_Mulanje
+55,beee260c-649f-4df3-9a3a-432c3b9e48c0,Start location doesn't exist,Mulanje_DHO_Mulanje
+56,95e78124-c466-4dd1-8b76-1bd8954d61f6,Start location doesn't exist,Chambe_Mulanje
+57,cea0c373-77ca-42be-82a6-8d7c9f783b87,Start location doesn't exist,Kambenje_Mulanje
+58,12b4b3b4-55cc-4e4c-9b48-8b5d51bbd7ba,Start location doesn't exist,Mulomba_Mulanje
+59,baf46b88-704e-4bd8-8765-045b6b07242f,Start location doesn't exist,Mulanje_DHO_Mulanje
+60,942fb3ec-aed8-4525-8bb4-607af89526bb,Start location doesn't exist,Blantyre Dream Laboratory_Mulanje
+61,58e6c81d-3ea9-4da3-a139-b05448c96d06,Start location doesn't exist,Mulanje_DHO_Mulanje
+62,23d1c34f-2210-4bc2-92e9-8931de40322e,Start location doesn't exist,Chambe_Mulanje
+63,f3936c06-b41f-4f1f-9f14-6011cc3b1089,Start location doesn't exist,Kambenje_Mulanje
+64,ea1b70c5-1c54-4beb-a8c8-c34388f19d95,Start location doesn't exist,Mulomba_Mulanje
+65,befe93fe-0012-4ce8-8009-4eaeb585d8c5,Start location doesn't exist,Mulanje_DHO_Mulanje

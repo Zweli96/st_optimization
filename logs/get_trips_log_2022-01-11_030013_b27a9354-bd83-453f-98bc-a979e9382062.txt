@@ -1,0 +1,7 @@
+Total Visits Successfully Saved: 0#, id, messageTotal Visits With Errors: 7#, id, message1,84f39269-61b9-404d-98c5-c14bb2f4f619,Start location doesn't exist,Nkhatabay_DHO_Nkhatabay
+2,c18fc5e6-1ca4-4137-8d5b-e07cc553d7e0,Start location doesn't exist,Chisala_Nkhatabay
+3,ce3b8498-87d2-468e-8d58-8080b3043539,Start location doesn't exist,Chisala_Nkhatabay
+4,62c4c705-6a56-4e91-9579-2bb6e4c6f1f6,Start location doesn't exist,Ehehlen HC_Mzimba_South
+5,a7b46640-6c4a-4bd0-9b7b-b5516d6c9d49,Start location doesn't exist,Hoho_Mzimba_South
+6,13250d6d-3fcb-45d6-9dac-12e406663aa6,Start location doesn't exist,Luwawa_Mzimba_South
+7,60a9035c-06cd-472c-b90f-a12130520ad5,Start location doesn't exist,Mzimba_South_DHO_Mzimba_South

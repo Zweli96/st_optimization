@@ -1,0 +1,29 @@
+Total Visits Successfully Saved: 0#, id, messageTotal Visits With Errors: 29#, id, message1,375c6ac3-c422-4421-b623-d5c57c79c140,Start location doesn't exist,khuyukuyu_Mzimba_North
+2,5c90f7ed-20b7-473b-be7b-0d087d3fe7b4,Start location doesn't exist,Enukweni_Mzimba_North
+3,2cc2dede-93fc-453e-985f-0a9437cd6b0a,Start location doesn't exist,Bwengu_Mzimba_North
+4,0711668e-7cf7-43e5-85b7-40c573785492,Start location doesn't exist,luzi_Mzimba_North
+5,15fdb01a-6a6a-46e4-98e7-fa08308037cf,Start location doesn't exist,Mzimba_North_DHO_Mzimba_North
+6,26567a19-891a-4ae1-9880-070e1d998ec0,Start location doesn't exist,Tengani_Nsanje
+7,04e12cb9-2fe1-4b77-839a-37d2f8de8925,Start location doesn't exist,Nyamithuthu_Nsanje
+8,5964bd5d-4bc2-415c-8a25-cf05a653e6a9,Start location doesn't exist,Chididi_Nsanje
+9,44cc3a18-7db3-414f-a1b2-e5af6a3ff508,Start location doesn't exist,Nsanje_DHO_Nsanje
+10,38a8129e-07a0-4c09-a01d-303eb05d3322,Start location doesn't exist,Chambe_Mulanje
+11,c8f97015-0192-4876-accc-2703aa225c1a,Start location doesn't exist,Kambenje_Mulanje
+12,17a97e11-139b-466e-b1c4-bf5ec22c46a4,Start location doesn't exist,Mulomba_Mulanje
+13,b4d5eb00-4e5e-41a0-9bd8-5ad57aa102ba,Start location doesn't exist,Mulanje_DHO_Mulanje
+14,007aea85-5298-469a-8db7-ffcc91f60cf7,Start location doesn't exist,Mulanje_Mission_Mulanje
+15,e53fc39d-6534-44db-9bea-2b687fa89074,Start location doesn't exist,Thembe_Mulanje
+16,309e1ab6-e6ad-4630-b878-ee90bd12be68,Start location doesn't exist,Dzenje_Mulanje
+17,358e5ace-d3a9-4a7a-8741-bc391f0695ff,Start location doesn't exist,Mulanje_DHO_Mulanje
+18,3958fd53-3ee8-4ff2-8e25-34c3eb3d343e,Start location doesn't exist,Blantyre Dream Laboratory_Mulanje
+19,beee260c-649f-4df3-9a3a-432c3b9e48c0,Start location doesn't exist,Mulanje_DHO_Mulanje
+20,95e78124-c466-4dd1-8b76-1bd8954d61f6,Start location doesn't exist,Chambe_Mulanje
+21,cea0c373-77ca-42be-82a6-8d7c9f783b87,Start location doesn't exist,Kambenje_Mulanje
+22,12b4b3b4-55cc-4e4c-9b48-8b5d51bbd7ba,Start location doesn't exist,Mulomba_Mulanje
+23,baf46b88-704e-4bd8-8765-045b6b07242f,Start location doesn't exist,Mulanje_DHO_Mulanje
+24,942fb3ec-aed8-4525-8bb4-607af89526bb,Start location doesn't exist,Blantyre Dream Laboratory_Mulanje
+25,58e6c81d-3ea9-4da3-a139-b05448c96d06,Start location doesn't exist,Mulanje_DHO_Mulanje
+26,23d1c34f-2210-4bc2-92e9-8931de40322e,Start location doesn't exist,Chambe_Mulanje
+27,f3936c06-b41f-4f1f-9f14-6011cc3b1089,Start location doesn't exist,Kambenje_Mulanje
+28,ea1b70c5-1c54-4beb-a8c8-c34388f19d95,Start location doesn't exist,Mulomba_Mulanje
+29,befe93fe-0012-4ce8-8009-4eaeb585d8c5,Start location doesn't exist,Mulanje_DHO_Mulanje

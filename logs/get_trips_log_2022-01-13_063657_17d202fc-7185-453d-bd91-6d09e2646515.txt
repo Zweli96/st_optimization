@@ -1,0 +1,2 @@
+Total Visits Successfully Saved: 1#, id, message1,d1f9b765-9aba-4df6-8f7f-ff51ca46f7ab,success
+Total Visits With Errors: 0#, id, message

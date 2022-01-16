@@ -1,0 +1,14 @@
+Total Visits Successfully Saved: 6#, id, message1,6276cbc6-0bd8-40d8-ac35-184f5bdc47cf,success
+2,9c605171-a02b-42c6-9259-4ba57a1c3011,success
+3,2488e335-302e-47b0-bc4b-1e4aaf660dc6,success
+4,5eedcdb4-261c-4db0-a924-a45e65765405,success
+5,f67635d8-d4fb-4d90-81f2-3aaa77fd9886,success
+6,051cf256-9cec-47ef-9fbb-0251f8c2f2f2,success
+Total Visits With Errors: 8#, id, message1,ec4b7560-5edf-47b2-af5d-8d75b54f42fd,Start location doesn't exist,Lengwe_Chikwawa
+2,2d75597c-0b16-4a9d-9421-17f6e48d57dc,Start location doesn't exist,Illovo_Mwanza_Chikwawa
+3,b3cd210b-7fad-4f24-a47a-6a48a515022b,Start location doesn't exist,Kalulu_Chikwawa
+4,6170c3ed-dda1-4dcd-9351-1ca0a55abe5a,Start location doesn't exist,Illovo_Factory_Chikwawa
+5,dd1f60fe-87a5-406b-90a0-0e82f433fc68,Start location doesn't exist,Hunger_Chikwawa
+6,5b63f2cd-ccd1-49ee-94b7-3f6688771fff,Start location doesn't exist,Illovo Alumeda_Chikwawa
+7,c927aca4-11e4-451a-976a-2748effa443b,Start location doesn't exist,Chikwawa_DHO_Chikwawa
+8,80b2ce48-dc81-4aa9-a2c8-6ae40e9963e7,Start location doesn't exist,Atupere_Karonga

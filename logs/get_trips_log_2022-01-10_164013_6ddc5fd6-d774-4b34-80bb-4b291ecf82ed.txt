@@ -1,0 +1,11 @@
+Total Visits Successfully Saved: 0#, id, messageTotal Visits With Errors: 11#, id, message1,d077bc5c-0817-404c-9eb5-f6529f36f92f,Start location doesn't exist,BLM_Karonga
+2,878109b1-a234-49a6-8432-50731d2a9923,Start location doesn't exist,Mpata_Karonga
+3,20d6db5d-c16e-47c1-96a2-13d85aaa245c,Start location doesn't exist,Wiliro_Karonga
+4,2f038645-3b1b-4dd1-836a-9b06b8266b58,Start location doesn't exist,Karonga_DHO_Karonga
+5,bb8bd8b6-69b0-4028-b5cc-4f7046f52b5e,Start location doesn't exist,Kasoba_Karonga
+6,2dfa9494-7808-4680-8c92-d7cb7a076155,Start location doesn't exist,Kaporo_Karonga
+7,80b2ce48-dc81-4aa9-a2c8-6ae40e9963e7,Start location doesn't exist,Atupere_Karonga
+8,720218f8-fed7-47b3-a976-07aad197fd80,Start location doesn't exist,Neno_DHO_Neno
+9,bd19a8c7-849d-4d58-b76f-03fb3f5fbb0b,Start location doesn't exist,Matandani_Neno
+10,48e1801b-7890-409e-8b99-9bd3c74db27a,Start location doesn't exist,Nsambe_Neno
+11,85d2cb43-874b-4f91-be72-64f37ab0c36f,Start location doesn't exist,Neno_DHO_Neno

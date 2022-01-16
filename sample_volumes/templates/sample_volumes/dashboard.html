@@ -1,11 +1,25 @@
-{% extends 'sample_volumes/main.html' %} {% block content %}
+{% extends 'sample_volumes/main.html' %} {% load custom_tags %} {% block content %}
 
 <div class="row">
   <div class="col-md-3">
-    <form class="form-inline" action="" method="post">
+    <form class="form" action="" method="post">
       {% csrf_token %}
       <div class="form-group mb-2">
-        <label for="district" class="col-form-label">District</label>
+        {% if selected_date %} {{ selected_date|json_script:"selected_date" }}
+        {% endif %}
+
+        <label for="date" class="col-form-label"><strong>Date</strong></label>
+        <br />
+        <input
+          type="date"
+          name="date"
+          class="form-control"
+          id="datePicker"
+          placeholder="Select Date"
+        />
+        <label for="district" class="col-form-label"
+          ><strong>District</strong></label
+        >
         <select
           class="custom-select mr-sm-2"
           name="district"
@@ -25,6 +39,8 @@
               selected_district;
           });
         </script>
+        <br />
+        <br />
         <button type="submit" class="btn btn-primary btn-sm mb-2">
           Search
         </button>
@@ -33,27 +49,23 @@
     <div class="row d-flex justify-content-center"></div>
     <br />
     <div class="card">
-      <div class="card-header">
-        <p>
-          Date:
-          <script>
-            document.write(new Date().toLocaleDateString());
-          </script>
-        </p>
-      </div>
+      <div class="card-header"><strong>Summary</strong></div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
           Facilities
           <span class="badge badge-primary">{{facility_count}}</span>
         </li>
         <li class="list-group-item">
-          Reported <span class="badge badge-primary"></span>
+          Reported
+          <span class="badge badge-primary">{{reported_facilities_count}}</span>
         </li>
         <li class="list-group-item">
-          Not Reported <span class="badge badge-danger"></span>
+          Not Reported
+          <span class="badge badge-danger">{{non_reporting_count}}</span>
         </li>
         <li class="list-group-item">
-          Reporting Rate <span class="badge badge-warning"></span>
+          Reporting Rate
+          <span class="badge badge-warning">{{reporting_percentage}}%</span>
         </li>
       </ul>
     </div>
@@ -84,7 +96,7 @@
             <td>{{facility.district}}</td>
             <td>{{facility.get_last_reported}}</td>
             <td>{{facility.get_last_visit}}</td>
-            <td>{{facility.get_daily_sample_volumes}}</td>
+            <td>{% get_daily_volumes_from_facility facility 'string' selected_date %}</td>
             <td>
               <a href=""><i class="fas fa-edit"></i></a>
             </td>
@@ -95,4 +107,4 @@
     </div>
   </div>
 </div>
-{% endblock content%}
+{% endblock content %}

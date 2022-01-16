@@ -1,0 +1,4 @@
+Total Visits Successfully Saved: 3#, id, message1,04215e5b-6736-4d1b-b383-fce90212a7ab,success
+2,47e28825-26b6-4049-a79d-9a3959c4c1ea,success
+3,b6bd1edb-efa9-4a4a-b3ab-fe1e5f800fd0,success
+Total Visits With Errors: 0#, id, message

@@ -1,0 +1,98 @@
+Total Visits Successfully Saved: 2#, id, message1,538fe457-d1b1-401a-aa51-2118eb017566,success
+2,f62e16c3-b960-49eb-8f68-e80477c7fe1a,success
+Total Visits With Errors: 96#, id, message1,45cad9e2-2dc4-469a-80f6-6b9d3a122be5,Start location doesn't exist,FPAM_Kasungu
+2,8d029eff-0e3d-4f6b-a135-c95909273150,Start location doesn't exist,Kasalika_Kasungu
+3,731a4bc6-cdc0-4c74-bcbd-cf93df1ad46e,Start location doesn't exist,st Andrews_Kasungu
+4,1f5e2c8d-f1d1-4f9a-ab25-61091d0a474a,Start location doesn't exist,Mtunthama_Kasungu
+5,6e19bd97-7d0c-4b8a-8a52-df528333d790,Start location doesn't exist,Chamwavi_Kasungu
+6,14adc533-dfe3-4f38-ae3d-2f7544d58df2,Start location doesn't exist,Chambwe_Kasungu
+7,919cf192-be92-42af-ad44-50154191313f,Start location doesn't exist,Kasungu_DHO_Kasungu
+8,773ec40a-35e6-498b-8df3-744944c68249,Start location doesn't exist,Khola_Kasungu
+9,238269db-64db-43cf-bfba-bddfb01e93aa,Start location doesn't exist,Kawamba_Kasungu
+10,b54bc0d1-5bd4-4b4d-bce1-89c4feb36ed0,Start location doesn't exist,Kamboni_Kasungu
+11,75de9c8c-eb50-4fb8-bd58-7f425eec34d3,Start location doesn't exist,Kasungu_DHO_Kasungu
+12,bf9f54a0-9a34-404a-b2b9-6ee09c0d0880,Start location doesn't exist,Wimbe_Kasungu
+13,db003895-da1b-4a6b-8d8e-17283a7c0cb0,Start location doesn't exist,Livwezi_Kasungu
+14,14b83c21-4427-4794-8da7-a8beb4b9b7cc,Start location doesn't exist,St Augustine_Kasungu
+15,735ebabf-d21c-435e-8355-a0d57b6d903f,Start location doesn't exist,Chamama_Kasungu
+16,c46f16d4-bac0-4a15-956a-199cc97383a5,Start location doesn't exist,St Faith_Kasungu
+17,b2ef1fdf-d723-422e-9189-5012aece6911,Start location doesn't exist,Mdunga_Kasungu
+18,ea35f32e-5ba4-46d9-a9ec-ff34250720f1,Start location doesn't exist,Kapelura_Kasungu
+19,8f273a97-7c20-4b31-924e-11d9c7e14638,Start location doesn't exist,Kasungu_DHO_Kasungu
+20,0d42825c-f0a7-4247-a7c0-c445f09fe131,Start location doesn't exist,FPAM_Kasungu
+21,c1456528-a0de-4bff-8aa4-d8b1148898c0,Start location doesn't exist,Kasalika_Kasungu
+22,0ec0df8e-bde2-4e87-af55-257d3d6f6581,Start location doesn't exist,st Andrews_Kasungu
+23,c44ce61f-c4f2-435e-926d-bda6de6a0eea,Start location doesn't exist,Mtunthama_Kasungu
+24,9b124a02-8b7f-404c-97b0-fc5f786721bc,Start location doesn't exist,Chamwavi_Kasungu
+25,b866f246-5f02-4ade-89d0-4d2060e9b4ea,Start location doesn't exist,Chambwe_Kasungu
+26,c9c38946-3caa-4c8c-8c5a-baff16034f85,Start location doesn't exist,Kasungu_DHO_Kasungu
+27,94462dc4-a96e-4df2-85ff-bb58c6f947c6,Start location doesn't exist,Wimbe_Kasungu
+28,c062a3e7-3a7a-4ec8-ab46-36057be41294,Start location doesn't exist,Livwezi_Kasungu
+29,1857bd47-5493-4065-9674-377979035ef7,Start location doesn't exist,St Augustine_Kasungu
+30,689bcdc2-7b2b-4673-a1b1-e48f83ed3faf,Start location doesn't exist,Chamama_Kasungu
+31,d0cfddd7-bc21-4472-92e0-e19ba98550ee,Start location doesn't exist,St Faith_Kasungu
+32,9728ecbd-ccab-4027-83d8-2d502b161889,Start location doesn't exist,Mdunga_Kasungu
+33,dac0371b-4e8f-4da0-bb97-f36e1f43d58f,Start location doesn't exist,Kapelura_Kasungu
+34,3100ab33-da26-453c-ae8c-1e1ee4e63d1b,Start location doesn't exist,Kasungu_DHO_Kasungu
+35,4f08dc1f-d75c-45db-b738-16f0a4f8059e,Start location doesn't exist,Khola_Kasungu
+36,b44ef5ea-a79c-4b12-838f-283df8d43ae3,Start location doesn't exist,Kawamba_Kasungu
+37,1cda44a5-1f55-48a5-bfbe-5a9495471393,Start location doesn't exist,Kamboni_Kasungu
+38,75b5edb5-4a05-48d3-90f3-d442df24e396,Start location doesn't exist,Kasungu_DHO_Kasungu
+39,f6d0deb9-33f5-4470-8f2c-fde0a0c1f0fa,Start location doesn't exist,FPAM_Kasungu
+40,1324877a-52fd-4526-be20-3a9f05f119bb,Start location doesn't exist,Kasalika_Kasungu
+41,42b96308-a92f-46a0-8ed9-b05c5f38b224,Start location doesn't exist,st Andrews_Kasungu
+42,79ab2874-0de0-4f07-bf3f-054880d493c9,Start location doesn't exist,Mtunthama_Kasungu
+43,f28f0c51-f426-4527-9a6c-66469a211a8a,Start location doesn't exist,Chamwavi_Kasungu
+44,eac4fe33-0a32-4c85-96c7-53471ec92791,Start location doesn't exist,Chambwe_Kasungu
+45,d247eb8d-f78f-4df2-a447-811d2943d203,Start location doesn't exist,Kasungu_DHO_Kasungu
+46,5e402d40-1404-46a9-9afa-82e283c521ec,Start location doesn't exist,Wimbe_Kasungu
+47,87decd8b-f17e-4649-87c8-88f517e0fa35,Start location doesn't exist,Livwezi_Kasungu
+48,a8a31f92-e8a0-4a3c-b988-a255f3008ea3,Start location doesn't exist,St Augustine_Kasungu
+49,6bd5560d-9bec-4c89-a5ab-23230982d874,Start location doesn't exist,Chamama_Kasungu
+50,b359706e-2d9d-462a-af9f-1247b499d3e3,Start location doesn't exist,St Faith_Kasungu
+51,d385af85-9d24-4a89-9749-ce779dbd6768,Start location doesn't exist,Mdunga_Kasungu
+52,2325fdab-000c-4ae1-96db-9f9c3853945f,Start location doesn't exist,Kapelura_Kasungu
+53,684d9963-8e00-42fe-95e1-dfc04c5dc509,Start location doesn't exist,Ngabu_SDA_Chikwawa
+54,e62b1a30-9a77-4b02-bde9-7c549107387d,Start location doesn't exist,Ngabu_RH_Chikwawa
+55,bbdbb38b-416e-49b9-b508-01ab6f345533,Start location doesn't exist,Nkumaniza_Chikwawa
+56,052f2441-e705-4848-a1ce-128ae2c1876e,Start location doesn't exist,Kasungu_DHO_Kasungu
+57,20ca2bfd-02d7-4fa5-b674-2a7a1f4721d5,Start location doesn't exist,Dolo_Chikwawa
+58,3d687123-57a7-4a07-b12f-4db0bf954d95,Start location doesn't exist,Khola_Kasungu
+59,f6e4cc97-9390-4d7b-acb2-d350f3eb83c5,Start location doesn't exist,Chikwawa_DHO_Chikwawa
+60,a49489c5-e30f-47ec-81ed-e1ace5a04e90,Start location doesn't exist,Kawamba_Kasungu
+61,c4897716-812d-4668-b57f-5dbc0073d40a,Start location doesn't exist,Kamboni_Kasungu
+62,d69beb04-f3e0-4906-9174-06262a1585b5,Start location doesn't exist,Kasungu_DHO_Kasungu
+63,daf00986-ff20-4527-9fff-34430a6a5772,Start location doesn't exist,Kasoba_Karonga
+64,dd3c5054-48de-47a2-a0e5-4ff7ec4d1912,Start location doesn't exist,Kaporo_Karonga
+65,cc0d86ef-8e70-4759-b74e-0fdfb28fea25,Start location doesn't exist,Atupere_Karonga
+66,2f7e738c-070d-4c43-b053-af41d30112ab,Start location doesn't exist,Iponga_Karonga
+67,66f98afa-3785-408a-a110-3701466ae74e,Start location doesn't exist,Ngana_Karonga
+68,70214a82-1467-47f1-8ecf-800e036a3cd5,Start location doesn't exist,Karonga_DHO_Karonga
+69,972b73dc-c96d-423f-a73f-3cecd46496bb,Start location doesn't exist,Chitheka_Nkhatabay
+70,6cadeddf-c816-4b53-abd2-98c86af3e948,Start location doesn't exist,Mzenga_Nkhatabay
+71,a644521d-823a-4b18-8110-6321e538c31d,Start location doesn't exist,Kavuzi_Nkhatabay
+72,7fbcca20-1d00-44b6-b28c-bf02d10fc68a,Start location doesn't exist,Chisala_Nkhatabay
+73,c82bcdf3-d873-4853-9ca4-51f9000a1674,Start location doesn't exist,Nkhatabay_DHO_Nkhatabay
+74,2eda4a96-0cbc-4b8c-bdc1-a529a3390b5c,Start location doesn't exist,Liuzi_Nkhatabay
+75,b4154d1f-d04b-4bdb-9c4a-533d1758c5e9,Start location doesn't exist,Kachere_Nkhatabay
+76,e869b76a-32dc-4ef4-8159-31c67b8a4d49,Start location doesn't exist,Kande_Nkhatabay
+77,ee63b940-0c13-460f-8cde-ba16b1ed8a6b,Start location doesn't exist,Chintheche_Nkhatabay
+78,a3f4944d-9268-4d06-b0d7-0d9e434e7d37,Start location doesn't exist,Nkhatabay_DHO_Nkhatabay
+79,32884794-8d30-499d-9d25-9cf22ef636a1,Start location doesn't exist,Chitheka_Nkhatabay
+80,1d1a25e2-9920-42b7-a5fa-fbe7240ad2d7,Start location doesn't exist,Mzenga_Nkhatabay
+81,1230b6d7-c41f-4193-b97b-05a0a43a8e37,Start location doesn't exist,Kavuzi_Nkhatabay
+82,9166cca4-bae9-4dd6-b031-76bd3539ed9e,Start location doesn't exist,Chisala_Nkhatabay
+83,486d5463-6cb9-4938-bc59-41ea6c2b2682,Start location doesn't exist,Nkhatabay_DHO_Nkhatabay
+84,5c9db6bf-9665-47ae-a050-df7e553273a3,Start location doesn't exist,Liuzi_Nkhatabay
+85,d99938de-ce30-4b45-be25-e2d11f6fe591,Start location doesn't exist,Kachere_Nkhatabay
+86,a14f1ac3-bb93-4ce7-b27a-93503da644f1,Start location doesn't exist,Kande_Nkhatabay
+87,2a735979-75dc-47c3-b420-04c3a8e80316,Start location doesn't exist,Chintheche_Nkhatabay
+88,80b6aff7-aca1-4ce4-8172-5db7f9127603,Start location doesn't exist,Nkhatabay_DHO_Nkhatabay
+89,737e4d3e-08bd-4477-9445-fc33d813e750,Start location doesn't exist,Mulanje_Mission_Mulanje
+90,c67008c1-2833-4890-86f3-f18bd046d3d6,Start location doesn't exist,Thembe_Mulanje
+91,1694ab2a-d030-4560-af79-6af4b4c85a7d,Start location doesn't exist,Dzenje_Mulanje
+92,de580e54-0d1e-4e72-adde-2e9fc9a7e166,Start location doesn't exist,Mulanje_DHO_Mulanje
+93,9c52a651-acb6-4e83-9e73-c719bed40935,Start location doesn't exist,Ehehlen HC_Mzimba_South
+94,dc983392-4d48-4480-bcbe-04bc44d08356,Start location doesn't exist,Hoho_Mzimba_South
+95,7491e571-185f-4f8c-b8e1-087897ca2f79,Start location doesn't exist,Luwawa_Mzimba_South
+96,9d1eb1bc-ea0d-425f-8f9e-35fcb247d48a,Start location doesn't exist,Mzimba_South_DHO_Mzimba_South

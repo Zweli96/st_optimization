@@ -1,0 +1,7 @@
+Total Visits Successfully Saved: 2#, id, message1,e5d74578-c720-4651-98da-e6c1eabdbbcf,success
+2,7a08ef34-0e7c-4100-9949-c764f5a3d5d9,success
+Total Visits With Errors: 5#, id, message1,147d8129-5a4e-4ddb-a31e-faf203c7f237,Start location doesn't exist,Chisitu_Mulanje
+2,92f6ac1a-12e9-48c4-a5b7-ad9152efea0b,Start location doesn't exist,Chonde_Mulanje
+3,1d6d7d1e-2aa4-4a57-9df2-0679c9ba585c,Start location doesn't exist,M'biza_Mulanje
+4,daa19fbc-d55f-4048-ae1a-2809c2c027cb,Start location doesn't exist,Chinyama_Mulanje
+5,82970e21-dc3f-4c73-ae42-8e63752b5383,Start location doesn't exist,Mulanje_DHO_Mulanje

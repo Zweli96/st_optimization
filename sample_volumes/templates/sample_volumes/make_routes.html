@@ -104,13 +104,13 @@
                 <td>{{facility.name}}</td>
                 <td>{{facility.facility_group}}</td>
                 <td>NA</td>
-                <td>NA</td>
+                <td>{{facility.get_last_visit|date:"D j-M"}}</td>
                 {% comment %} {% for date in date_list %}
                 <td>{% get_daily_volumes_from_faciliy facility 'types' date.date %}</td>
                 {% endfor %} {% endcomment %}
-                <td>1</td>
+                <td>{{facility.days_since_last_visit}}</td>
                 {% for date in date_list %}
-                <td>{% get_daily_volumes_from_faciliy facility 'string' date.date %}</td>
+                <td>{% get_daily_volumes_from_facility facility 'string' date.date %}</td>
                 {% endfor %}
               </tr>
               {% endfor %}

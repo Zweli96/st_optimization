@@ -10,6 +10,7 @@ import tempfile
 
 
 from .models import (
+    Sample_Volumes,
     Facility,
     District,
     Health_Worker,
@@ -84,20 +85,34 @@ def dashboard(request, pk=""):
 
     context = {}
     districts = District.objects.order_by("name")
+    selected_date = datetime.today()
 
     selected_district = ""
 
     if request.method == "POST":
         selected_district = request.POST["district"]
+        if request.POST["date"]:
+            selected_date = datetime.strptime(request.POST["date"], "%Y-%m-%d")
+            context.update({"selected_date": selected_date})
+            #context.update({"selected_date": request.POST["date"]})
 
     if selected_district:
         context.update({"selected_district": selected_district})
         facilities = Facility.objects.filter(district=selected_district)
         facility_count = facilities.count()
+        reported_facilities_count = len(Sample_Volumes.objects.filter(facility__district=selected_district,
+                                                                      reported_date__year=selected_date.year, reported_date__month=selected_date.month, reported_date__day=selected_date.day).values_list('facility', flat=True).distinct())
+        non_reporting_count = facility_count - reported_facilities_count
+        reporting_percentage = int(
+            reported_facilities_count/facility_count * 100.0)
     else:
-        print("no selected_district")
         facilities = Facility.objects.all()
         facility_count = facilities.count()
+        reported_facilities_count = len(Sample_Volumes.objects.filter(
+            reported_date__year=selected_date.year, reported_date__month=selected_date.month, reported_date__day=selected_date.day).values_list('facility', flat=True).distinct())
+        non_reporting_count = facility_count - reported_facilities_count
+        reporting_percentage = int(
+            reported_facilities_count/facility_count * 100.0)
 
     context.update(
         {
@@ -105,6 +120,10 @@ def dashboard(request, pk=""):
             "facility_count": facility_count,
             "districts": districts,
             "selected_district": selected_district,
+            "selected_date": selected_date,
+            "reported_facilities_count": reported_facilities_count,
+            "non_reporting_count": non_reporting_count,
+            "reporting_percentage": reporting_percentage
         }
     )
 
@@ -310,7 +329,8 @@ def makeRoutes(request, pk=""):
                 tr = tomorrows_routes.first()
                 route_created_by = tr.created_by
                 route_created_at = localtime(tr.created_at)
-                route_created_at = route_created_at.strftime("%a, %d %b %I:%M %p")
+                route_created_at = route_created_at.strftime(
+                    "%a, %d %b %I:%M %p")
                 route_status["status"] = "published"
                 route_status["badge_color"] = "success"
                 route_status[
@@ -370,7 +390,8 @@ def makeRoutes(request, pk=""):
     if selected_district:
         context.update({"selected_district": selected_district})
         facilities = Facility.objects.filter(district=selected_district.id)
-        courier_count = Courier.objects.filter(district=selected_district.id).count()
+        courier_count = Courier.objects.filter(
+            district=selected_district.id).count()
 
     context.update(
         {
@@ -396,7 +417,8 @@ def viewRoutes(request):
             route_date = datetime.strptime(route_date, "%Y-%m-%d")
 
     for district in districts:
-        num_of_couriers = District.objects.get(id=district.id).courier_set.count()
+        num_of_couriers = District.objects.get(
+            id=district.id).courier_set.count()
         district_routes = Route.objects.filter(
             district=district.id, route_date=route_date
         ).order_by("-created_at")[:num_of_couriers]
@@ -528,6 +550,7 @@ def daily_courier_report(request):
     data = {}
     context = {}
     districts = District.objects.order_by("name")
+    assignments = []
 
     if request.method == "POST":
         date = request.POST["date"]
@@ -538,6 +561,10 @@ def daily_courier_report(request):
             district = District.objects.get(id=district)
             routes = Route.objects.filter(route_date=date, district=district)
             couriers = Route.objects.filter(route_date=date, district=district)
+            route_assignments = Courier.get_route_assignments(date, district)
+
+            # get the list of facilities in the routes and compare with trips
+            # for each courier check if one of his visited facilities for the day has a facility in the routes for the day
 
             facilities = Facility.objects.filter(district=district)
             facility_count = facilities.count()

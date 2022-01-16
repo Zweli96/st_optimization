@@ -1,0 +1,23 @@
+Total Visits Successfully Saved: 4#, id, message1,c7ec9d3a-85fc-4289-94ea-07f4eb80674d,success
+2,00e3f531-2e00-4d5d-9462-b791f58a4fd8,success
+3,0609968e-b429-4ae5-b520-c0d2f3ce0b53,success
+4,d815881a-a345-4000-b440-f709edbb582a,success
+Total Visits With Errors: 19#, id, message1,38d5fc06-0a4e-46ae-9ad3-17d132983b26,Start location doesn't exist,kankao_Balaka
+2,4f83482a-7b3f-4946-bdba-e22c4394bef8,Start location doesn't exist,dream_Balaka
+3,07874956-1d74-4247-b726-ce0713e28794,Start location doesn't exist,phimbi_Balaka
+4,c78b6d34-4d1c-41f2-acc5-a18229b91d1c,Start location doesn't exist,phalula_Balaka
+5,4b3e079c-23d1-463f-ad27-16ffa255ba56,Start location doesn't exist,Balaka_dho_Balaka
+6,f53f9510-a25c-4706-8abf-0f46f93f928a,End location doesn't exist,Ntchisi_DHO_Ntchisi
+7,f0a018ea-23ef-4fcd-8c05-427f62865fed,Start location doesn't exist,Malomo_Ntchisi
+8,c199fa89-aa39-4a1f-932f-8672c77d800f,Start location doesn't exist,Nthondo_Ntchisi
+9,e09f8c11-0d28-4966-97ee-1ee2655f6c4a,Start location doesn't exist,Mndinda_Ntchisi
+10,5642c0a1-129e-4e52-a891-935042382074,Start location doesn't exist,Ntchisi_DHO_Ntchisi
+11,c420e450-a2b5-4dc9-8034-825fa9297984,Start location doesn't exist,police_Mzimba_North
+12,24a30600-5eed-4b05-a6e4-bccafb91f325,Start location doesn't exist,st johns_Mzimba_North
+13,49c4ac01-b5a4-4818-805b-d90fc3913f8e,Start location doesn't exist,moyale_Mzimba_North
+14,7b2948a7-c2ff-4d26-88a0-1aef78be8770,Start location doesn't exist,matuli_Mzimba_North
+15,ba3440e3-3720-4e6d-aace-6966ea2752c4,Start location doesn't exist,Mzimba_North_DHO_Mzimba_North
+16,f37d9706-1616-4d6e-abbb-144e26c999f1,Start location doesn't exist,Nkholongo_Mzimba_North
+17,3fb7ce06-8906-40bf-99a1-8d37ae2363cd,Start location doesn't exist,Choma_Mzimba_North
+18,1b36062b-a291-4f9b-9123-8920199854ae,Start location doesn't exist,Ekwendeni_Mzimba_North
+19,9adbce60-e6d5-4918-8669-67b5972a6876,Start location doesn't exist,Mzimba_North_DHO_Mzimba_North

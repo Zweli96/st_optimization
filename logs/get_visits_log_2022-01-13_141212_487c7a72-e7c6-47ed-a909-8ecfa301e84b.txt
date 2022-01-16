@@ -1,0 +1,1 @@
+Total Visits Successfully Saved: 0#, id, messageTotal Visits With Errors: 1#, id, message1,1f2c0bdb-e393-4f72-b603-21c3d8dacb0e,Facility doesn't exist

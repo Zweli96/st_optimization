@@ -1,0 +1,74 @@
+Total Visits Successfully Saved: 13#, id, message1,0211a646-6ce7-4944-8807-e6bfee25460d,success
+2,3e4de287-10b8-4cfc-9dfa-be74d73286e9,success
+3,e7cfc4d8-2e4c-458a-add0-4a771a264932,success
+4,5dc4e2bf-da3b-4d33-a109-a07ad6bb0cae,success
+5,11133de3-961e-4fd2-9672-028483d60750,success
+6,b4ce3e39-92e3-421c-9d49-5fff5ce6b29b,success
+7,097a423e-db94-48d8-9a28-84f8864a8293,success
+8,4e13d6d8-d6d2-46b7-b497-6120d8a4b26d,success
+9,1ac271e6-c3e2-4a69-a2b7-dc9fa1a662b7,success
+10,777c74c8-03d0-48bc-9d00-443528aec412,success
+11,d90fd814-51d8-4ece-b9fa-cc42c3b2569f,success
+12,8500e8a6-9b4c-46cf-b2f1-fd6baac9076c,success
+13,0bd57bba-362a-4740-9daa-daef96ec8fcc,success
+Total Visits With Errors: 61#, id, message1,b6097525-71bb-4991-9013-1451b7852ad8,Start location doesn't exist,opd_Balaka
+2,7febd960-2ce4-4b14-b6d7-32bc53e73976,Start location doesn't exist,namanolo_Balaka
+3,5808599d-50c0-4679-a117-ed3cc092e10a,Start location doesn't exist,ulongwe_Balaka
+4,ce22c216-9d5b-4a8c-a57d-d252cd01c56d,Start location doesn't exist,kalembo_Balaka
+5,29647b52-87cb-4013-b188-1ab096e9497b,Start location doesn't exist,nandumbo_Balaka
+6,85a82bb5-e177-4071-b77b-2106dcf09b16,Start location doesn't exist,Balaka_dho_Balaka
+7,df55c01d-7ebb-4f98-8b32-2f3a720266fd,Start location doesn't exist,Chimwankango_Mchinji
+8,1255c13b-4314-484b-b419-fc807a19a1f5,Start location doesn't exist,Gumba_Mchinji
+9,43ee34d5-f82e-475a-bee7-363f8b087440,Start location doesn't exist,Nkanda_Mchinji
+10,9aa652b7-d2bb-4798-a5c6-2ee4155f47f5,Start location doesn't exist,Kaigwazanga_Mchinji
+11,4570da74-ec01-4df9-948c-3d5d67cc72aa,Start location doesn't exist,Mchinji_DHO_Mchinji
+12,6b6040ea-7170-47a1-9d5e-666822ce8537,Start location doesn't exist,mpherembe_Mzimba_North
+13,5a179003-45e7-4406-8b41-123278843003,Start location doesn't exist,Thunduwike_Mzimba_North
+14,3aa71bfc-2cd3-45b1-a716-98bd7cabd8e1,Start location doesn't exist,Mzimba_North_DHO_Mzimba_North
+15,30115c2c-139e-43f7-abb0-943805f574d4,Start location doesn't exist,prison_Mzimba_North
+16,f826ae81-3b87-4749-a610-d13ff37ca8e9,Start location doesn't exist,Macro_Mzimba_North
+17,a7165e86-9980-4134-9344-83f0798182a3,Start location doesn't exist,Emsizine_Mzimba_North
+18,3ebc0d7d-8a76-41a8-ac00-cb72e4fa64ce,Start location doesn't exist,mtwalo_Mzimba_North
+19,0f22a4d9-fa1a-44e3-9150-cae8232bd8fa,Start location doesn't exist,Mzimba_North_DHO_Mzimba_North
+20,8e028338-8ee4-4282-9af4-4e16f7a9b4d5,Start location doesn't exist,Blantyre DHO_Blantyre
+21,ff6874ce-4c80-417e-a303-e6fda8949f92,Start location doesn't exist,Ndirance_Blantyre
+22,762c15a6-3012-4383-ba0a-bb53275b413c,Start location doesn't exist,Ndirance_Blantyre
+23,42d697c0-654f-4bb2-9455-81c74d5ae1ba,Start location doesn't exist,Malabada_Blantyre
+24,65854bf2-17e6-44a5-b5f6-d3aa96fd76fa,Start location doesn't exist,Malabada_Blantyre
+25,cac1c06c-0b4b-44c4-98d9-01b32db01780,Start location doesn't exist,Mtengoumodzi_Blantyre
+26,50f312f0-2e84-465b-baa6-ab2961d51371,Start location doesn't exist,Chileka_SDA_Blantyre
+27,bb58cb9e-2ea1-40e4-bfd5-17c1c2e3b144,Start location doesn't exist,Chileka_SDA_Blantyre
+28,55ac0e36-282e-46a7-a5c0-62b2a99ad28e,Start location doesn't exist,Dziwe_Blantyre
+29,fa02e893-7d2d-4b06-9fe1-884375e32cee,Start location doesn't exist,Blantyre DHO_Blantyre
+30,2524907d-36d3-43f4-8d1e-007ba87753c7,Start location doesn't exist,South_Lunzu_Blantyre
+31,cb148399-77a1-4c88-9087-663c2018ea58,Start location doesn't exist,Makhetha_Blantyre
+32,7981c6fa-8e7a-4d3c-9a0b-f8932255b906,Start location doesn't exist,Macro_Blantyre
+33,2812a462-8347-4ad5-9afa-e007ebb55507,Start location doesn't exist,Makhetha_Blantyre
+34,d6ab459c-a608-4dc3-97ad-9c5e752281a2,Start location doesn't exist,other_Blantyre
+35,689997d1-16b0-4e39-bd10-c8ee626a7cdb,Start location doesn't exist,Malamulo_Blantyre
+36,cebc0932-ee44-4495-a81e-61ae52a30ea4,Start location doesn't exist,other_Blantyre
+37,e3214355-4a8e-4fc7-9d65-6b202209ddbd,Start location doesn't exist,Limbe_Blantyre
+38,72023831-22ca-4765-b3bb-d1526180c8f4,Start location doesn't exist,Blantyre DHO_Blantyre
+39,154919be-129e-40f4-861f-a61c40265fbe,End location doesn't exist,Jhpiego_Salima
+40,feef0d4c-7000-41d3-8771-f766973ba25f,Start location doesn't exist,Jhpiego_Salima
+41,25f0813b-9a6f-46c0-b378-3fc91040d061,Start location doesn't exist,other_Blantyre
+42,c6d9b4a3-c937-4bae-b1d3-85434aeaf30b,Start location doesn't exist,Blantyre DHO_Blantyre
+43,8d25a6ba-889f-4e19-86bb-1f9d6dce10ee,Start location doesn't exist,other_Blantyre
+44,6db9adb7-1c8d-4a79-8291-c7d11c0e4afd,Start location doesn't exist,Mlambe_Blantyre
+45,79fc40c4-143d-4fcf-8873-ca4c2f5a9065,Start location doesn't exist,Lirangwe_Blantyre
+46,0aae338f-8054-47ec-9e7b-4af7d4d5cd0e,Start location doesn't exist,Mdeka_Blantyre
+47,288150a0-505b-498d-9d4a-8e0bb901047e,Start location doesn't exist,Mlambe_Blantyre
+48,d7ddc801-22a2-43e0-a3ba-606b967a09e7,Start location doesn't exist,Moyo_Clinic_Blantyre
+49,348072fb-927e-4216-af6b-e6b84bbe0e6f,Start location doesn't exist,Ameca_Blantyre
+50,556d47a2-62a6-4493-9381-99e75a09123b,Start location doesn't exist,other_Blantyre
+51,fa7401a6-1c48-483c-a009-4ae9f94986fe,Start location doesn't exist,Blantyre DHO_Blantyre
+52,fe1aee60-992d-4a45-acef-7dc57af80fbf,Start location doesn't exist,Blantyre DHO_Blantyre
+53,630d6c13-8251-4205-bbd0-027753ca03fb,Start location doesn't exist,other_Blantyre
+54,f080157b-9a00-49a3-90eb-fe7765ae75d3,Start location doesn't exist,Blantyre DHO_Blantyre
+55,17daf04f-e6fd-41da-96ae-c7cfa65202c9,Start location doesn't exist,Zingwangwa_Blantyre
+56,5ad3e318-4cdb-41c2-9c21-90fb9ba88e24,Start location doesn't exist,Pensulo_Blantyre
+57,6e88d9f6-65c4-453f-8980-5adfe613968c,Start location doesn't exist,Mpemba_Blantyre
+58,980180d9-7985-4523-ba2c-1025d62c5c16,Start location doesn't exist,Mpingo_Blantyre
+59,8f4cdacb-0c31-4f75-bb11-38aa6a07192a,Start location doesn't exist,Blantyre DHO_Blantyre
+60,4193654f-ed28-4ca3-aea8-42d1b57ff615,Start location doesn't exist,Chipwaila_Chikwawa
+61,22cdecb2-45b4-4bd2-aecd-7352512d071d,Start location doesn't exist,Chikwawa_DHO_Chikwawa

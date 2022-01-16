@@ -1,0 +1,31 @@
+Total Visits Successfully Saved: 1#, id, message1,6c3b0453-a3e2-4302-93b4-a91898795274,success
+Total Visits With Errors: 30#, id, message1,3c8760e2-cf5b-4e72-9cc1-21ee3e8fede5,Facility doesn't exist
+2,66aa7609-8cd0-4072-933a-be5ab8cf3ba8,Facility doesn't exist
+3,dbfda530-9f55-4be3-a262-11ba0c595733,Facility doesn't exist
+4,4668375c-0c46-40dd-b55b-772c2a06152b,Facility doesn't exist
+5,1a370b82-cf98-4215-9a13-e636430c045c,Facility doesn't exist
+6,e42925e9-0956-4a64-9d9e-da519510fed4,Facility doesn't exist
+7,8e7e0d21-9a5f-44ff-845f-9a2e762eed84,Facility doesn't exist
+8,90af21aa-5258-4fba-bf16-6c2d6975f224,Facility doesn't exist
+9,d0879114-29be-41b3-a77c-ad866e8e00a9,Facility doesn't exist
+10,e2be25f9-b0b6-4173-bd79-6ebd49f24b7e,Facility doesn't exist
+11,a1a7098c-6746-42c2-a4c6-ba65559f3c91,Facility doesn't exist
+12,d640266d-f78f-4cf7-8961-b504e4258863,Facility doesn't exist
+13,e66901f7-4d11-4e9a-860b-0da87fc71538,Facility doesn't exist
+14,4e5e1ccf-8b29-4b21-a59b-f772a74da69d,Facility doesn't exist
+15,f4fb6681-7b23-4d8c-8d89-dbc28c1cebcf,Facility doesn't exist
+16,26942a5f-9a9d-451c-9830-2aa83d9b1596,Facility doesn't exist
+17,dce6acad-95ac-4158-b5d3-2a921451d731,Facility doesn't exist
+18,4d9ed40e-ed7d-4af1-bf5b-56e718fb95df,Facility doesn't exist
+19,6d2bdc0a-65ff-457e-b406-ab67773c7383,Facility doesn't exist
+20,c0324f04-7702-4452-ad42-e4cab14b1ab8,Facility doesn't exist
+21,f6881dca-76b7-4b17-aecf-9e7a652dab96,Facility doesn't exist
+22,a1b214b7-ae67-44f5-aa11-a11a7ba24703,Facility doesn't exist
+23,92fb7167-720c-4314-9e9c-722ac3c16e14,Facility doesn't exist
+24,96aa62c7-036e-485a-aa90-939f896ef899,Facility doesn't exist
+25,400cb8fe-c477-442d-b177-6fea7ed1f1b5,Facility doesn't exist
+26,d77f8d40-6854-454e-b5e7-9a8560f05f26,Facility doesn't exist
+27,e5ff95ce-7131-4cbc-bd20-a189226796dd,Facility doesn't exist
+28,679c388d-6fd1-4664-9514-21032aa061d3,Facility doesn't exist
+29,a7baf2f4-f390-4020-87c6-dc3342acee45,Facility doesn't exist
+30,663fed72-fc22-457e-a308-f7f40d914f28,Facility doesn't exist

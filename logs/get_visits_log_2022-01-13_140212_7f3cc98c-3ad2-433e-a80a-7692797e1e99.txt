@@ -1,0 +1,8 @@
+Total Visits Successfully Saved: 7#, id, message1,14bc6525-b973-485c-a4b9-ed1e624b24db,success
+2,589b33ec-f4aa-4ec5-8c63-2a5262256da8,success
+3,637a72e0-ceac-4ed8-b61b-00b7030b9313,success
+4,48e493c2-9396-4efc-8906-a2a1bd78499e,success
+5,e92459f2-c7e2-4c23-83d6-e9b1f23fa5d6,success
+6,c592cfda-6efc-4431-a708-a0f9441a6555,success
+7,f9e8216f-ac81-49dd-8db6-606c3b5159dc,success
+Total Visits With Errors: 1#, id, message1,1f2c0bdb-e393-4f72-b603-21c3d8dacb0e,Facility doesn't exist
