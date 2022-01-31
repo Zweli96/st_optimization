@@ -40,5 +40,7 @@ urlpatterns = [
     path('daily_sample_report/', views.daily_sample_report,
          name='daily_sample_report'),
     path('daily_courier_report/', views.daily_courier_report,
-         name='daily_courier_report')
+         name='daily_courier_report'),
+    path('report_design/', views.report_design,
+         name='report_design')
 ]

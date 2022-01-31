@@ -43,7 +43,8 @@ DISTRICT_REGIONS = (
 class District(models.Model):
     name = models.CharField(max_length=200)
     region = models.CharField(choices=DISTRICT_REGIONS, max_length=200)
-    commcare_district_group_id = models.CharField(max_length=200, blank=True, null=True)
+    commcare_district_group_id = models.CharField(
+        max_length=200, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
         User, blank=True, null=True, on_delete=models.SET_NULL
@@ -95,8 +96,10 @@ class FacilityGroup(models.Model):
 class Facility(models.Model):
     name = models.CharField(max_length=200)
     commcare_name = models.CharField(max_length=200, blank=True, null=True)
-    district = models.ForeignKey(District, null=True, on_delete=models.SET_NULL)
-    facility_code = models.CharField(max_length=200, blank=True, null=True, unique=True)
+    district = models.ForeignKey(
+        District, null=True, on_delete=models.SET_NULL)
+    facility_code = models.CharField(
+        max_length=200, blank=True, null=True, unique=True)
     operator = models.CharField(
         max_length=200, choices=FACILITY_OPERATOR, blank=True, null=True
     )
@@ -144,7 +147,8 @@ class Facility(models.Model):
 
         for s in SAMPLE_TYPE:
             # Get the most recently reported sample on that day
-            sample = samples.filter(sample_type=s[0]).order_by("-reported_date").first()
+            sample = samples.filter(sample_type=s[0]).order_by(
+                "-reported_date").first()
 
             if sample:
                 # VL = the volume in the volumes dictionary
@@ -195,9 +199,10 @@ class Facility(models.Model):
             return "yes"
         else:
             return "no"
-    
+
     def check_trip_logged(self, courier, trip_date):
-        trip_facilites = Trip.objects.filter(courier=courier, trip_date__year = trip_date.year,trip_date__month = trip_date.month, trip_date__day = trip_date.day).values_list('end_location', flat=True)
+        trip_facilites = Trip.objects.filter(courier=courier, trip_date__year=trip_date.year,
+                                             trip_date__month=trip_date.month, trip_date__day=trip_date.day).values_list('end_location', flat=True)
 
         if self.id in trip_facilites:
             return "yes"
@@ -205,12 +210,40 @@ class Facility(models.Model):
             return "no"
 
     def check_visit_logged(self, courier, visit_date):
-        visit_facilites = Visit.objects.filter(courier=courier, visit_date__year = visit_date.year,visit_date__month = visit_date.month, visit_date__day = visit_date.day).values_list('facility', flat=True)
+        visit_facilites = Visit.objects.filter(courier=courier, visit_date__year=visit_date.year,
+                                               visit_date__month=visit_date.month, visit_date__day=visit_date.day).values_list('facility', flat=True)
 
         if self.id in visit_facilites:
             return "yes"
         else:
-            return "no"        
+            return "no"
+
+
+    def get_previously_reported_volumes(facility, reported_date, sample_type):
+        # Yesterdays date
+        # facility = Facility.objects.get(id=facility)
+        reported_date = reported_date - timedelta(days=1)
+        sample_type = int(sample_type)
+        samples = facility.sample_volumes_set.filter(
+            reported_date__year=reported_date.year,
+            reported_date__month=reported_date.month,
+            reported_date__day=reported_date.day,
+        )
+
+        sample = samples.filter(sample_type=sample_type).order_by(
+                "-reported_date").first()
+
+        if sample:
+            return sample.volume
+        else:
+            return 'NA'
+
+        
+
+
+
+        
+
 
 
 class SampleType(models.Model):
@@ -233,8 +266,10 @@ class SampleType(models.Model):
 
 
 class Sample_Volumes(models.Model):
-    facility = models.ForeignKey(Facility, null=True, on_delete=models.SET_NULL)
-    sample_type = models.ForeignKey(SampleType, null=True, on_delete=models.SET_NULL)
+    facility = models.ForeignKey(
+        Facility, null=True, on_delete=models.SET_NULL)
+    sample_type = models.ForeignKey(
+        SampleType, null=True, on_delete=models.SET_NULL)
     volume = models.IntegerField(default=0)
     reported_date = models.DateTimeField(null=True)
     reported_by = models.CharField(max_length=200, blank=True, null=True)
@@ -293,37 +328,40 @@ class Courier(models.Model):
     def __str__(self):
         return self.name
 
+    # Based on the courier trips assign them to the route that matches their trip
     def get_route_assignments(route_date, district):
+        assignments = {}
+
         routes = Route.objects.filter(
             route_date=route_date, district=district
         ).prefetch_related("facilities")
-        couriers = Route.objects.filter(route_date=route_date, district=district)
-        assignments = []
+
+        couriers = Courier.objects.filter(district=district)
 
         if routes:
             for courier in couriers:
-                visited_facilities = Trip.objects.filter(
+                trip_logged_facilities = Trip.objects.filter(
                     courier=courier, trip_date=route_date
                 ).values_list("end_location", flat=True)
-                if visited_facilities:
+                visit_logged_facilities = Visit.objects.filter(
+                    courier=courier, visit_date=route_date
+                ).values_list("facility", flat=True)
+                if trip_logged_facilities or visit_logged_facilities:
                     for route in routes:
                         matched_facilities = list(
-                            set(route.facilities) & set(visited_facilities)
+                            set(route.facilities.all().values_list('id', flat=True)) & (set(trip_logged_facilities) | set(visit_logged_facilities))
                         )
                         if matched_facilities:
-                            assignments.append((courier, route))
+                            # assignments.append((courier, route))
+                            assignments.update({courier.id: route})
                             routes = routes.exclude(id=route.id)
                             couriers = couriers.exclude(id=courier.id)
                             break
-                        else:
-                            assignments.append((courier, None))
-                else:
-                    assignments.append((courier, None))
-            assignments.extend(
-                list(map(lambda courier, route: (courier, route)), couriers, routes)
-            )
+            for courier, route in zip(couriers, routes):
+                assignments.update({courier.id: route})
         else:
-            assignments.extend(list(map(lambda courier: (courier, None)), couriers))
+            for courier in couriers:
+                assignments.update({courier.id: None})
         return assignments
 
 
@@ -371,57 +409,54 @@ class Route(models.Model):
     # Returns list of facilities with information on whether they were scheduled for that day or logged
     # Used in the courier report
     def get_courier_overview(courier, route, route_date):
-        facilities = [] # final list
-        route_facilities = [] # list with scheduled facilities for that route
-        consolidated_facilities = [] # list with scheduled facilities and not scheduled facilities
-        
-        scheduled = "" # is the facility part of the route
-        trip_logged = "" # was the trip logged in commcare
-        visit_logged = "" # was the visit logged in commcare
+        facilities = []  # final list
+        route_facilities = []  # list with scheduled facilities for that route
+        # list with scheduled facilities and not scheduled facilities
+        consolidated_facilities = []
 
-    
+        scheduled = ""  # is the facility part of the route
+        trip_logged = ""  # was the trip logged in commcare
+        visit_logged = ""  # was the visit logged in commcare
+
         if route:
-            route_facilities = list(route.facilities.all().values_list('id',flat=True))
-        trip_facilities = list(Trip.objects.filter(courier=courier,trip_date__year = route_date.year,trip_date__month = route_date.month, trip_date__day = route_date.day).values_list('end_location', flat=True))
-        trip_only_facilities = [x for x in trip_facilities if x not in route_facilities]
+            route_facilities = list(
+                route.facilities.all().values_list('id', flat=True))
+        trip_facilities = list(Trip.objects.filter(courier=courier, trip_date__year=route_date.year,
+                                                   trip_date__month=route_date.month, trip_date__day=route_date.day).values_list('end_location', flat=True))
+
+        visit_facilities = list(Visit.objects.filter(courier=courier, visit_date__year=route_date.year,
+                                                     visit_date__month=route_date.month, visit_date__day=route_date.day).values_list('facility', flat=True))
+
+        trip_only_facilities = [
+            x for x in trip_facilities if x not in route_facilities and x not in visit_facilities]
+
+        visit_only_facilities = [
+            x for x in visit_facilities if x not in route_facilities and x not in trip_facilities]
+
         consolidated_facilities.extend(route_facilities)
         consolidated_facilities.extend(trip_only_facilities)
+        consolidated_facilities.extend(visit_only_facilities)
 
         for facility in consolidated_facilities:
             scheduled = "no"
             trip_logged = "no"
             visit_logged = "no"
-            
+
             facility = Facility.objects.get(id=facility)
             if route:
-                scheduled = facility.check_scheduled(facility, route)   
-            trip_logged = facility.check_trip_logged(facility, courier, route_date)
-            visit_logged = facility.check_visit_logged(facility, courier, route_date)
+                scheduled = facility.check_scheduled(route)
+            trip_logged = facility.check_trip_logged(courier, route_date)
+            visit_logged = facility.check_visit_logged(courier, route_date)
 
+            facilities.append({"facility": facility, "scheduled": scheduled,
+                              "trip_logged": trip_logged, "visit_logged": visit_logged})
 
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
-        
-            
-
+        return facilities
 
 
 class RouteFacility(models.Model):
-    facility = models.ForeignKey(Facility, on_delete=models.SET_NULL, null=True)
+    facility = models.ForeignKey(
+        Facility, on_delete=models.SET_NULL, null=True)
     route = models.ForeignKey(Route, on_delete=models.SET_NULL, null=True)
     created = models.DateTimeField(auto_now_add=True, null=True)
 
@@ -431,7 +466,8 @@ class RouteFacility(models.Model):
 
 class Visit(models.Model):
     visit_id = models.CharField(max_length=200, unique=True)
-    facility = models.ForeignKey(Facility, on_delete=models.SET_NULL, null=True)
+    facility = models.ForeignKey(
+        Facility, on_delete=models.SET_NULL, null=True)
     visit_date = models.DateField()
     courier = models.ForeignKey(Courier, on_delete=models.SET_NULL, null=True)
     district = models.ForeignKey(District, models.SET_NULL, null=True)

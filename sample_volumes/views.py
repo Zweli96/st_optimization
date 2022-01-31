@@ -559,15 +559,10 @@ def daily_courier_report(request):
         if date and district:
             date = datetime.strptime(date, "%Y-%m-%d")
             district = District.objects.get(id=district)
-            routes = Route.objects.filter(route_date=date, district=district)
-            couriers = Route.objects.filter(route_date=date, district=district)
             route_assignments = Courier.get_route_assignments(date, district)
 
             # get the list of facilities in the routes and compare with trips
             # for each courier check if one of his visited facilities for the day has a facility in the routes for the day
-
-            facilities = Facility.objects.filter(district=district)
-            facility_count = facilities.count()
 
             for facility in facilities:
                 data[facility.name] = facility.get_daily_sample_volumes(
@@ -595,7 +590,32 @@ def daily_courier_report(request):
         response["Content-Disposition"] = 'filename="home_page.pdf"'
         return response
 
-        return response
-
     context.update({"districts": districts})
     return render(request, "sample_volumes/daily_courier_report.html", context)
+
+
+def report_design(request):
+    context = {}
+    date = ""
+    district = ""
+    couriers = ""
+
+    generated_time = datetime.now()
+    if request.method == "POST":
+        date = request.POST["date"]
+        district = request.POST["district"]
+
+        date = datetime.strptime(date, "%Y-%m-%d")
+        district = District.objects.get(id=district)
+        couriers = Courier.objects.filter(district=district).order_by('name')
+        route_assignments = Courier.get_route_assignments(date, district)
+
+    context.update({
+        "date": date,
+        "district": district,
+        "generated_time": generated_time,
+        "couriers": couriers,
+        "route_assignments": route_assignments
+    })
+
+    return render(request, "sample_volumes/report_design.html", context)

@@ -1,0 +1,212 @@
+{% load static %} {% load custom_tags %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daily Courier Report</title>
+  </head>
+  <style>
+    body {
+      font-family: Didot;
+    }
+    .container {
+      margin: 30px;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    th {
+      padding: 3px;
+    }
+    tr {
+      padding-top: 1px;
+    }
+    .red {
+      color: red;
+    }
+  </style>
+  <body>
+    <div class="container">
+      {% for courier in couriers %}
+      <div class="courier_report">
+        <img
+          src="{% static 'images/r4h_logo.png' %}"
+          alt="logo"
+          style="width: 100px; height: 32px"
+        />
+        <header>
+          <p>Courier report for <strong>{{courier.name}}</strong></p>
+          <span>District: {{district.name}}</span>
+        </header>
+        <p>Date: <strong>{{date|date:"Y-m-d"}}</strong></p>
+        <small>Report generated: {{generated_time|date:"Y-m-d, H\hi"}}</small>
+        <h3>Overview</h3>
+        <p>
+          Scheduled route: {%  get_route_facilities route_assignments|get_item:courier.id %}
+        </p>
+        <p>CommCare route confirmation: no</p>
+        <table style="border-collapse: collapse" width="60%">
+          <thead>
+            <tr
+              style="
+                border-top: 1pt solid black;
+                border-bottom: 1pt solid black;
+              "
+            >
+              <th style="text-align: left; width: 40%">Facility</th>
+              <th>Scheduled</th>
+              <th>Trip logged</th>
+              <th>Visit logged</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% get_courier_overview courier route_assignments|get_item:courier.id date as overview %}
+            {% for facility in overview %}
+            <tr>
+              <td style="text-align: left">{{facility.facility}}</td>
+              <td
+                style="text-align: center"
+                class="{% if facility.scheduled == 'no' %}red{% endif %}"
+              >
+                {{facility.scheduled}}
+              </td>
+              <td
+                style="text-align: center"
+                class="{% if facility.trip_logged == 'no' %}red{% endif %}"
+              >
+                {{facility.trip_logged}}
+              </td>
+              <td
+                style="text-align: center"
+                class="{% if facility.visit_logged == 'no' %}red{% endif %}"
+              >
+                {{facility.visit_logged}}
+              </td>
+            </tr>
+            {% endfor %}
+            <tr style="border-top: 1pt solid black">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Travel records</h3>
+        <table style="border-collapse: collapse" width="80%">
+          <thead>
+            <tr
+              style="
+                border-top: 1pt solid black;
+                border-bottom: 1pt solid black;
+              "
+            >
+              <th style="text-align: left">start location</th>
+              <th style="text-align: left">end location</th>
+              <th style="text-align: left">start time</th>
+              <th style="text-align: left">end  time</th>
+              <th style="text-align: left">start km</th>
+              <th style="text-align: left">end km</th>
+              <th style="text-align: left">matches_route</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% get_trips courier date as trip_facilities %}
+            {% for facility in trip_facilities %}
+            <tr>
+              <td style="text-align: left">{{facility.start_location.name }}</td>
+              <td style="text-align: left">{{facility.end_location.name }}</td>
+              <td style="text-align: left">{{facility.start_time|time:"Hi" }}</td>
+              <td style="text-align: left">{{facility.end_time|time:"Hi"}}</td>
+              <td style="text-align: left">{{facility.start_km }}</td>
+              <td style="text-align: left">{{facility.end_km }}</td>
+              <td style="text-align: left"></td>
+            </tr>
+            {% endfor %}
+            <tr style="border-top: 1pt solid black">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Facility visits</h3>
+        <table style="border-collapse: collapse" width="70%">
+          <thead>
+            <tr style="border-top: 1pt solid black">
+              <th style="width: 10%">&nbsp;</th>
+              <th style="border-bottom: 1pt solid black" colspan="4">
+                <small>Samples collected</small>
+              </th>
+              <th style="width: 10%">&nbsp;</th>
+              <th style="border-bottom: 1pt solid black" colspan="4">
+                <small>Results closed/delivered</small>
+              </th>
+            </tr>
+            <tr
+              style="
+                border-bottom: 1pt solid black;
+              "
+            >
+              <th style="text-align: left; width: 40%">facility name</th>
+              <th>VL</th>
+              <th>EID</th>
+              <th>TB</th>
+              <th>Other</th>
+              <th></th>
+              <th>VL</th>
+              <th>EID</th>
+              <th>TB</th>
+              <th>Other</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% get_visits courier date as visit_facilities %}
+            {% for facility in visit_facilities %}
+            <tr>
+              <td>{{facility.facility.name}}</td>
+              {% with facility.sample_volumes|jsonify as volumes %}
+              <td>{{volumes.VL}} ({%get_previously_reported_volume facility.facility date 1 %})</td>
+              <td>{{volumes.EID}}  ({%get_previously_reported_volume facility.facility date 2 %})</td>
+              <td>{{volumes.TB}}  ({%get_previously_reported_volume facility.facility date 3 %})</td>
+              <td>{{volumes.Other}}  ({%get_previously_reported_volume facility.facility date 4 %})</td>
+              {% endwith %}
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            {% endfor %}
+            <tr style="border-top: 1pt solid black">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br>
+      {% endfor %}
+    </div>
+  </body>
+</html>

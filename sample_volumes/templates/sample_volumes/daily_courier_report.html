@@ -4,7 +4,7 @@
     <h2>Daily Courier Report</h2>
   </div>
   <br />
-  <form action="" method="post">
+  <form action="{% url 'report_design' %}" method="post">
     {% csrf_token %}
     <div class="form-group">
       <label for="date"><strong>Date</strong></label>
