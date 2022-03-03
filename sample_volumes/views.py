@@ -610,12 +610,21 @@ def report_design(request):
         couriers = Courier.objects.filter(district=district).order_by('name')
         route_assignments = Courier.get_route_assignments(date, district)
 
-    context.update({
-        "date": date,
-        "district": district,
-        "generated_time": generated_time,
-        "couriers": couriers,
-        "route_assignments": route_assignments
-    })
+        context.update({
+            "date": date,
+            "district": district,
+            "generated_time": generated_time,
+            "couriers": couriers,
+            "route_assignments": route_assignments
+        })
 
-    return render(request, "sample_volumes/report_design.html", context)
+        # Rendered
+        html_string = render_to_string('sample_volumes/report_design.html', context)
+        html = HTML(string=html_string, base_url=request.build_absolute_uri())
+        result = html.write_pdf()
+
+        response = HttpResponse(result, content_type="application/pdf")
+        response["Content-Disposition"] = 'filename="home_page.pdf"'
+        return response
+
+    # return render(request, "sample_volumes/report_design.html", context)

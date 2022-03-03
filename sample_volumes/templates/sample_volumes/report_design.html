@@ -9,10 +9,10 @@
   </head>
   <style>
     body {
-      font-family: Didot;
+      font-family: TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;;
     }
     .container {
-      margin: 30px;
+      margin: 5px;
     }
     header {
       display: flex;
@@ -27,6 +27,17 @@
     }
     .red {
       color: red;
+    }
+    .grey {
+      color: grey;
+    }
+    td, th {
+      font-size: 13px;
+    }
+    @media print {
+      .courier_report:not(:first-of-type) {
+        page-break-before: always;
+      }
     }
   </style>
   <body>
@@ -49,6 +60,9 @@
           Scheduled route: {%  get_route_facilities route_assignments|get_item:courier.id %}
         </p>
         <p>CommCare route confirmation: no</p>
+        {% get_courier_overview courier route_assignments|get_item:courier.id date as overview %}
+        
+        {% if overview %}
         <table style="border-collapse: collapse" width="60%">
           <thead>
             <tr
@@ -64,7 +78,6 @@
             </tr>
           </thead>
           <tbody>
-            {% get_courier_overview courier route_assignments|get_item:courier.id date as overview %}
             {% for facility in overview %}
             <tr>
               <td style="text-align: left">{{facility.facility}}</td>
@@ -98,8 +111,13 @@
             </tr>
           </tbody>
         </table>
+        {% else %}
+        <p>Courier has not submitted data today</p>
+        {% endif %}
         <h3>Travel records</h3>
-        <table style="border-collapse: collapse" width="80%">
+        {% get_trips courier date as trip_facilities %}
+        {% if trip_facilities %}          
+        <table style="border-collapse: collapse">
           <thead>
             <tr
               style="
@@ -117,13 +135,12 @@
             </tr>
           </thead>
           <tbody>
-            {% get_trips courier date as trip_facilities %}
             {% for facility in trip_facilities %}
             <tr>
               <td style="text-align: left">{{facility.start_location.name }}</td>
               <td style="text-align: left">{{facility.end_location.name }}</td>
-              <td style="text-align: left">{{facility.start_time|time:"Hi" }}</td>
-              <td style="text-align: left">{{facility.end_time|time:"Hi"}}</td>
+              <td style="text-align: left">{{facility.start_time|time:"H:i" }}</td>
+              <td style="text-align: left">{{facility.end_time|time:"H:i"}}</td>
               <td style="text-align: left">{{facility.start_km }}</td>
               <td style="text-align: left">{{facility.end_km }}</td>
               <td style="text-align: left"></td>
@@ -140,8 +157,15 @@
             </tr>
           </tbody>
         </table>
+        {% else %}
+        <p>No trip data submitted</p> 
+        {% endif %}
+
         <h3>Facility visits</h3>
-        <table style="border-collapse: collapse" width="70%">
+        {% get_visits courier date as visit_facilities %}
+        
+        {% if visit_facilities %}
+        <table style="border-collapse: collapse">
           <thead>
             <tr style="border-top: 1pt solid black">
               <th style="width: 10%">&nbsp;</th>
@@ -158,7 +182,7 @@
                 border-bottom: 1pt solid black;
               "
             >
-              <th style="text-align: left; width: 40%">facility name</th>
+              <th style="text-align: left; width: 20%">facility name</th>
               <th>VL</th>
               <th>EID</th>
               <th>TB</th>
@@ -171,22 +195,22 @@
             </tr>
           </thead>
           <tbody>
-            {% get_visits courier date as visit_facilities %}
             {% for facility in visit_facilities %}
             <tr>
               <td>{{facility.facility.name}}</td>
               {% with facility.sample_volumes|jsonify as volumes %}
-              <td>{{volumes.VL}} ({%get_previously_reported_volume facility.facility date 1 %})</td>
-              <td>{{volumes.EID}}  ({%get_previously_reported_volume facility.facility date 2 %})</td>
-              <td>{{volumes.TB}}  ({%get_previously_reported_volume facility.facility date 3 %})</td>
-              <td>{{volumes.Other}}  ({%get_previously_reported_volume facility.facility date 4 %})</td>
+              <td style="text-align: center">{{volumes.VL}} (<span>{%get_previously_reported_volume facility.facility date 1 %}</span>)</td>
+              <td style="text-align: center">{{volumes.EID}}  (<span>{%get_previously_reported_volume facility.facility date 2 %}</span>)</td>
+              <td style="text-align: center">{{volumes.TB}}  (<span>{%get_previously_reported_volume facility.facility date 3 %}</span>)</td>
+              <td style="text-align: center">{{volumes.Other}}  (<span>{%get_previously_reported_volume facility.facility date 4 %}</span>)</td>
               {% endwith %}
               <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              {% with facility.results|jsonify as results %}
+              <td style="text-align: center">{{results.VL}}</td>
+              <td style="text-align: center">{{results.EID}}</td>
+              <td style="text-align: center">{{results.TB}}</td>
+              <td style="text-align: center">{{results.Other}}</td>
+              {% endwith %}
             </tr>
             {% endfor %}
             <tr style="border-top: 1pt solid black">
@@ -203,7 +227,13 @@
               <td></td>
             </tr>
           </tbody>
-        </table>
+        </table> 
+        <p>Values in brackets show the number of samples reported via USSD on the previous day.</p>
+        <p>(NA) indicates no USSD data was reported.</p>     
+        {% else %}
+        <p>No visit data submitted</p> 
+        {% endif %}
+          
       </div>
       <br>
       {% endfor %}

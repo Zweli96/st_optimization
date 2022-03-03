@@ -35,6 +35,19 @@ $(document).ready(function () {
   // Turn tables into data tables
   $("#data_table").DataTable();
 
+  
+  // Modal on the dashboard to put in the samples
+  $(document).on('show.bs.modal','#editModal', function (e) {
+    console.log('Activated')
+    var reportedBy = $(e.relatedTarget).attr("data-name");
+    var sample_volumes = $(e.relatedTarget).attr("data-volumes");
+    var sample_volumes = sample_volumes.split("_"); 
+    $(e.currentTarget).find('input[id="vl-samples"]').val(sample_volumes[0]);
+    $(e.currentTarget).find('input[id="eid-samples"]').val(sample_volumes[1]);
+    $(e.currentTarget).find('input[id="tb-samples"]').val(sample_volumes[2]);
+    $(e.currentTarget).find('input[id="other-samples"]').val(sample_volumes[3]);
+  });
+
   var groupColumn = 2;
   // Turn the routes table into a data table with defined settings
   $("#data_table_routes").DataTable({
@@ -212,4 +225,5 @@ $(document).ready(function () {
     );
     $("#facility_group_facilities_select").trigger("change");
   }
+
 });

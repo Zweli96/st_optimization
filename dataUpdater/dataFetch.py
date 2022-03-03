@@ -101,7 +101,7 @@ def updateData():
                 continue
 
             new_sample_volume.reported_date = row['date']
-            new_sample_volume.reported_by = row['msisdn']
+            new_sample_volume.reported_by = "+" + str(int(row['msisdn']))
 
             new_sample_volume.save()
             sample_volumes_added['total_added'] += 1

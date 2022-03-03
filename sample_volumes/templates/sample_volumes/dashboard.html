@@ -1,4 +1,4 @@
-{% extends 'sample_volumes/main.html' %} {% load custom_tags %} {% block content %}
+{% extends 'sample_volumes/main.html' %} {% load custom_tags %} {% block content%}
 
 <div class="row">
   <div class="col-md-3">
@@ -25,8 +25,7 @@
           name="district"
           id="select_district"
         >
-          {% comment %} Fix this {% if %} {% endif %} {% endcomment %}
-
+        
           <option value="" selected>Malawi</option>
           {% for district in districts %}
           <option value="{{district.id}}">{{district.name}}</option>
@@ -82,10 +81,10 @@
           <tr>
             <th>Facility</th>
             <th>District</th>
-            <th>Last Reported</th>
-            <th>Last Visit</th>
-            <th>Volumes (VL_EID_TB_Other)</th>
-            <th>Action</th>
+             <th style="text-align:center">Last Reported</th>
+             <th style="text-align:center">Last Visit</th>
+            <th style="text-align:center">Volumes <small></small></th>
+            <th style="text-align:center">Action</th>
           </tr>
         </thead>
 
@@ -94,16 +93,132 @@
           <tr>
             <td>{{facility.name}}</td>
             <td>{{facility.district}}</td>
-            <td>{{facility.get_last_reported}}</td>
-            <td>{{facility.get_last_visit}}</td>
-            <td>{% get_daily_volumes_from_facility facility 'string' selected_date %}</td>
-            <td>
-              <a href=""><i class="fas fa-edit"></i></a>
+            <td>{{facility.get_last_reported|date:'D d-M'}}</td>
+            <td>{{facility.get_last_visit|date:'D d-M'}}</td>
+            <td style="text-align:center">
+              {% get_daily_volumes_from_facility facility 'string' selected_date as sample_volumes%}
+              {{sample_volumes}}
+            </td>
+            <td style="text-align:center">
+              <a
+                href="#"
+                class="btn btn-primary btn-sm"
+                data-toggle="modal"
+                data-target="#editModal"
+                data-id="{{facility.id}}"
+                data-reported-date="{{facility.get_last_reported|date:'D d-M'}}"
+                data-reporter="{{facility.get_last_reporter}}"
+                data-volumes="{{sample_volumes}}"
+                title="edit/view"
+                >View</a>
             </td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
+    </div>
+  </div>
+</div>
+<!-- Edit Modal-->
+<div
+  class="modal fade"
+  id="editModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="renameModal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="renameModal">
+          Reported volumes for <span id="facility-name"></span>
+        </h5>
+        <button
+          class="close"
+          type="button"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <span class="badge badge-success">Reported today</span>
+        <p>
+          Last reported by
+          <span id="reporter"></span>
+          on <span id="reported-date-time"></span>
+        </p>
+        <div style="margin: 30px">
+          <div class="form-group row">
+            <label for="vl-samples" class="col-sm-9 col-form-label"
+              >VL Samples</label
+            >
+            <div class="col-sm-3">
+              <input
+                type="number"
+                class="form-control"
+                id="vl-samples"
+                placeholder="vl"
+                min="0"
+                max="500"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="eid-samples" class="col-sm-9 col-form-label"
+              >EID samples</label
+            >
+            <div class="col-sm-3">
+              <input
+                type="number"
+                class="form-control"
+                id="eid-samples"
+                placeholder="eid"
+                min="0"
+                max="500"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="tb-samples" class="col-sm-9 col-form-label"
+              >TB samples</label
+            >
+            <div class="col-sm-3">
+              <input
+                type="number"
+                class="form-control"
+                id="tb-samples"
+                placeholder="tb"
+                min="0"
+                max="500"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="other-samples" class="col-sm-9 col-form-label"
+              >Other samples</label
+            >
+            <div class="col-sm-3">
+              <input
+                type="number"
+                class="form-control"
+                id="other-samples"
+                placeholder="other-samples"
+                min="0"
+                max="500"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">
+            Cancel
+          </button>
+          <a class="btn btn-primary" href="#">Update</a>
+        </div>
+      </div>
     </div>
   </div>
 </div>

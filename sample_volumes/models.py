@@ -175,7 +175,7 @@ class Facility(models.Model):
     def get_last_reported(self):
         recent_sample = self.sample_volumes_set.all().order_by("-reported_date").first()
         if recent_sample:
-            return recent_sample.reported_date.strftime("%a %d-%b")
+            return recent_sample.reported_date
         else:
             return "NA"
 
@@ -185,6 +185,18 @@ class Facility(models.Model):
             return recent_visit.visit_date
         else:
             return "NA"
+
+    def get_last_reporter(self, selected_date):
+        todays_sample = self.sample_volumes_set.all().filter(reported_date__year=selected_date.year,
+                                                             reported_date__month=selected_date.month,
+                                                             reported_date__day=selected_date.day).first()
+
+        if todays_sammple:
+            pass
+        else:
+            recent_sample = self.sample_volumes_set.all().order_by("-reported_date").first()
+
+        return {}
 
     def days_since_last_visit(self):
         recent_visit = self.get_last_visit()
@@ -218,7 +230,6 @@ class Facility(models.Model):
         else:
             return "no"
 
-
     def get_previously_reported_volumes(facility, reported_date, sample_type):
         # Yesterdays date
         # facility = Facility.objects.get(id=facility)
@@ -231,19 +242,12 @@ class Facility(models.Model):
         )
 
         sample = samples.filter(sample_type=sample_type).order_by(
-                "-reported_date").first()
+            "-reported_date").first()
 
         if sample:
             return sample.volume
         else:
             return 'NA'
-
-        
-
-
-
-        
-
 
 
 class SampleType(models.Model):
@@ -349,7 +353,8 @@ class Courier(models.Model):
                 if trip_logged_facilities or visit_logged_facilities:
                     for route in routes:
                         matched_facilities = list(
-                            set(route.facilities.all().values_list('id', flat=True)) & (set(trip_logged_facilities) | set(visit_logged_facilities))
+                            set(route.facilities.all().values_list('id', flat=True)) & (
+                                set(trip_logged_facilities) | set(visit_logged_facilities))
                         )
                         if matched_facilities:
                             # assignments.append((courier, route))
@@ -393,7 +398,11 @@ class Route(models.Model):
 
     def get_facilities(self):
         facilities_string = ""
-        list_of_facilities = self.facilities.all()
+        list_of_facilities = ""
+        try:
+            list_of_facilities = self.facilities.all()
+        except:
+            pass
 
         if list_of_facilities:
             for facility in list_of_facilities:
@@ -472,6 +481,7 @@ class Visit(models.Model):
     courier = models.ForeignKey(Courier, on_delete=models.SET_NULL, null=True)
     district = models.ForeignKey(District, models.SET_NULL, null=True)
     sample_volumes = models.JSONField(null=True)
+    results = models.JSONField(null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     created_by = models.ForeignKey(
         User, blank=True, null=True, on_delete=models.SET_NULL

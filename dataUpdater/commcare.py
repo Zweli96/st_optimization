@@ -56,6 +56,7 @@ def get_visits():
     facility = ""
     courier = ""
     samples = {}
+    results = {}
 
     data = fetch(start_date, end_date, case_type)
 
@@ -77,7 +78,8 @@ def get_visits():
             )
             district = facility.district
         except ObjectDoesNotExist:
-            error = {"case_id": visit["case_id"], "error": "Facility doesn't exist"}
+            error = {"case_id": visit["case_id"],
+                     "error": "Facility doesn't exist"}
             error_data.append(error)
             print("Facilitiy doesn't exist")
             continue
@@ -94,7 +96,8 @@ def get_visits():
         try:
             courier = Courier.objects.get(commcare_user_id=visit["opened_by"])
         except ObjectDoesNotExist:
-            error = {"case_id": visit["case_id"], "error": "Courier doesn't exist"}
+            error = {"case_id": visit["case_id"],
+                     "error": "Courier doesn't exist"}
             error_data.append(error)
             print("Courier doesn't exist")
             continue
@@ -119,9 +122,21 @@ def get_visits():
         new_visit.courier = courier
 
         for st in SAMPLE_TYPE:
-            samples.update({st[1]: int(visit["properties"][st[1] + "_samples"])})
+            if st[1] + "_samples" in visit["properties"]:
+                samples.update(
+                    {st[1]: int(visit["properties"][st[1] + "_samples"])})
+            else:
+                samples.update(
+                    {st[1]: 0})
+            if st[1] + "_results" in visit["properties"]:
+                results.update(
+                    {st[1]: int(visit["properties"][st[1] + "_results"])})
+            else:
+                results.update(
+                    {st[1]: 0})
 
         new_visit.sample_volumes = json.dumps(samples)
+        new_visit.results = json.dumps(results)
 
         new_visit.save()
         success = {"case_id": visit["case_id"]}
@@ -190,6 +205,12 @@ def get_trips():
                 commcare_name=trip["properties"]["start_location"]
             )
             district = start_location.district
+        except KeyError:
+            error = {
+                "case_id": trip["case_id"],
+                "error": "Start location key not present in data",
+                "name":  trip["properties"]["district"],
+            }
         except ObjectDoesNotExist:
             error = {
                 "case_id": trip["case_id"],
@@ -218,6 +239,12 @@ def get_trips():
             end_location = Facility.objects.get(
                 commcare_name=trip["properties"]["end_location"]
             )
+        except KeyError:
+            error = {
+                "case_id": trip["case_id"],
+                "error": "End location key not present in data",
+                "name":  trip["properties"]["district"],
+            }
         except ObjectDoesNotExist:
             error = {
                 "case_id": trip["case_id"],
@@ -240,6 +267,8 @@ def get_trips():
             error_data.append(error)
             print("Multiple end locations have that name")
             continue
+
+        
 
         # Get the courier
         try:
