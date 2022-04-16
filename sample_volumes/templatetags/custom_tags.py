@@ -49,3 +49,7 @@ def jsonify(data):
 @register.simple_tag
 def get_previously_reported_volume(facility, date, sample_type):
     return Facility.get_previously_reported_volumes(facility,date, sample_type)
+
+@register.simple_tag
+def get_last_reporter(facility, date):
+    return Facility.get_last_reporter(facility, date)

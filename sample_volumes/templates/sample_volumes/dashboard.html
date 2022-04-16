@@ -90,6 +90,7 @@
 
         <tbody>
           {% for facility in facilities %}
+          {% get_last_reporter facility selected_date as last_reported%}
           <tr>
             <td>{{facility.name}}</td>
             <td>{{facility.district}}</td>
@@ -105,10 +106,12 @@
                 class="btn btn-primary btn-sm"
                 data-toggle="modal"
                 data-target="#editModal"
-                data-id="{{facility.id}}"
-                data-reported-date="{{facility.get_last_reported|date:'D d-M'}}"
-                data-reporter="{{facility.get_last_reporter}}"
+                data-facility-id="{{facility.id}}"
+                data-facility-name="{{facility.name}}"
+                data-last-reported="{{last_reported.text}}"
                 data-volumes="{{sample_volumes}}"
+                data-reported="{{last_reported.reported}}"
+                data-on-time="{{last_reported.on_time}}"
                 title="edit/view"
                 >View</a>
             </td>
@@ -144,11 +147,10 @@
         </button>
       </div>
       <div class="modal-body">
-        <span class="badge badge-success">Reported today</span>
-        <p>
-          Last reported by
-          <span id="reporter"></span>
-          on <span id="reported-date-time"></span>
+        <span id="reported-check" class="badge"></span>
+        <span id="on-time-check" class="badge"></span>
+        <p id="last_reported">
+          
         </p>
         <div style="margin: 30px">
           <div class="form-group row">
@@ -163,6 +165,7 @@
                 placeholder="vl"
                 min="0"
                 max="500"
+                readonly
               />
             </div>
           </div>
@@ -178,6 +181,7 @@
                 placeholder="eid"
                 min="0"
                 max="500"
+                readonly
               />
             </div>
           </div>
@@ -193,6 +197,7 @@
                 placeholder="tb"
                 min="0"
                 max="500"
+                readonly
               />
             </div>
           </div>
@@ -208,15 +213,16 @@
                 placeholder="other-samples"
                 min="0"
                 max="500"
+                readonly
               />
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">
-            Cancel
+            Close
           </button>
-          <a class="btn btn-primary" href="#">Update</a>
+          {% comment %} <a class="btn btn-primary" href="#">Update</a> {% endcomment %}
         </div>
       </div>
     </div>

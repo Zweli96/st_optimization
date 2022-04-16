@@ -124,7 +124,12 @@ class Facility(models.Model):
         return self.name
 
     def get_daily_sample_volumes(self, format="string", selected_date=None):
-        # today = date.today()
+        incorrectly_reported = {}
+
+        volumes = {}
+        volume_string = ""
+        total_volumes = 0
+
         if selected_date is None:
             selected_date = datetime.now()
         today = selected_date
@@ -141,10 +146,6 @@ class Facility(models.Model):
         if samples.count() == 0 and format != "types":
             return "not yet reported"
 
-        volumes = {}
-        volume_string = ""
-        total_volumes = 0
-
         for s in SAMPLE_TYPE:
             # Get the most recently reported sample on that day
             sample = samples.filter(sample_type=s[0]).order_by(
@@ -154,6 +155,12 @@ class Facility(models.Model):
                 # VL = the volume in the volumes dictionary
                 volumes[s[1]] = sample.volume
                 total_volumes += sample.volume
+
+                # incorect_sample = sample.check_if_correct()
+                # if incorect_samples:
+                #     incorrectly_reported.update({self.id: []})
+                #     incorrectly_reported[self.id].append(incorrect_sample)
+
             else:
                 volumes[s[1]] = "NA"
 
@@ -187,16 +194,46 @@ class Facility(models.Model):
             return "NA"
 
     def get_last_reporter(self, selected_date):
+        recent_sample = ""
+        reporting_info = {}
+        reported = "no"
+        reported_at = ""
+        reported_by = ""
+        on_time = "no"
+        text = ""
+        on_time_reported = datetime.now().replace(
+            hour=14, minute=0, second=0, microsecond=0)
+
         todays_sample = self.sample_volumes_set.all().filter(reported_date__year=selected_date.year,
                                                              reported_date__month=selected_date.month,
                                                              reported_date__day=selected_date.day).first()
+        # Reported date check
+        if todays_sample:
+            reported = "yes"
+            # on time check
+            if todays_sample.reported_date.time() < on_time_reported.time():
+                on_time = "yes"
+            # who reported and when
+            reported_by, reported_at = todays_sample.reporter()
 
-        if todays_sammple:
-            pass
         else:
             recent_sample = self.sample_volumes_set.all().order_by("-reported_date").first()
+            if recent_sample:
+                # who reported and when
+                reported_by, reported_at = recent_sample.reporter()
 
-        return {}
+        if not recent_sample and not todays_sample:
+            text = "Facility has never reported"
+        else:
+            text = f'Last reported by {reported_by} on {reported_at}'
+
+        reporting_info.update({
+            "reported": reported,
+            "on_time": on_time,
+            "text": text
+        })
+
+        return reporting_info
 
     def days_since_last_visit(self):
         recent_visit = self.get_last_visit()
@@ -290,6 +327,41 @@ class Sample_Volumes(models.Model):
 
     def __str__(self):
         return f'{self.facility.district}_{self.facility}_{self.sample_type}_{self.reported_date.strftime("%d-%m-%Y")}'
+
+    def reporter(self):
+        '''
+        Returns name, number of the reporter and date when the sample was reported
+        '''
+        reporter = ""
+        phonenumber = self.reported_by.replace("+", "")
+        phonenumber = int(float(phonenumber))
+        phonenumber = "+" + str(phonenumber)
+
+        try:
+            reporter = Health_Worker.objects.get(phone_number=phonenumber)
+        except:
+            pass
+
+        if not reporter:
+            reporter = self.reported_by
+        else:
+            reporter = f'{reporter.name} ({reporter.phone_number})'
+
+        return (reporter, self.reported_date.strftime("%a %d-%b @%H:%M"))
+
+    def check_if_correct(self, reported_date):
+        # Check when it was last reported
+        facility = self.facility
+        previous_sample = facility.sample_volumes_set.filter(
+            sample_type=self.sample_type, reported_date__lt=reported_date).order_by("-reported_date").first()
+        if self.volume < previous_sample.volume:
+            last_visit = facility.get_last_visit()
+            if isinstance(facility.get_last_visit, date):
+                if last_visit < previous_sample.reported_date.date():
+                    return {"sample_type": self.sample_type, "previous_volume": previous_sample.volume, "last_reported_date": previous_sample.reported_date}
+
+        # reported
+        pass
 
 
 class Health_Worker(models.Model):

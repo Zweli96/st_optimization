@@ -1,22 +1,24 @@
 {% extends 'sample_volumes/main.html' %} {% block content %}
 <div class="col-md-12">
   <div class="row">
-    <h2>Routes</h2>
+    <h2>View Routes</h2>
   </div>
   <br />
   <form class="form-inline" method="post" action="">
     {% csrf_token %}
+    {% if selected_date %} {{ selected_date|json_script:"selected_date" }}
+    {% endif %}
     <label class="sr-only" for="date">Route Date</label>
     <div class="input-group mb-2 mr-sm-2 route_date_picker">
       <input
         type="date"
         name="date"
         class="form-control"
-        id="default_date"
+        id="datePicker2"
         placeholder="Select Date"
       />
     </div>
-    <button type="submit" class="btn btn-primary mb-2">Submit</button>
+    <button type="submit" class="btn btn-primary mb-2">Search</button>
   </form>
   <div class="card card-body">
     <table

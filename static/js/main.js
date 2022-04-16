@@ -35,17 +35,61 @@ $(document).ready(function () {
   // Turn tables into data tables
   $("#data_table").DataTable();
 
-  
   // Modal on the dashboard to put in the samples
-  $(document).on('show.bs.modal','#editModal', function (e) {
-    console.log('Activated')
-    var reportedBy = $(e.relatedTarget).attr("data-name");
+  $(document).on("show.bs.modal", "#editModal", function (e) {
+    var reportedTodayText = "Reported today";
+    var didNotReportTodayText = "Did not report today";
+    var onTimeText = "On time";
+    var lateText = "Late";
+    var reportedToday = $(e.relatedTarget).attr("data-reported");
+    var reportedOnTime = $(e.relatedTarget).attr("data-on-time");
+    var facility_name = $(e.relatedTarget).attr("data-facility-name");
+    var reportedBy = $(e.relatedTarget).attr("data-last-reported");
     var sample_volumes = $(e.relatedTarget).attr("data-volumes");
-    var sample_volumes = sample_volumes.split("_"); 
+    var sample_volumes = sample_volumes.split("_");
     $(e.currentTarget).find('input[id="vl-samples"]').val(sample_volumes[0]);
     $(e.currentTarget).find('input[id="eid-samples"]').val(sample_volumes[1]);
     $(e.currentTarget).find('input[id="tb-samples"]').val(sample_volumes[2]);
     $(e.currentTarget).find('input[id="other-samples"]').val(sample_volumes[3]);
+    $(e.currentTarget).find('p[id="last_reported"]').html(reportedBy);
+    $(e.currentTarget).find('span[id="facility-name"]').html(facility_name);
+    if (reportedToday == "yes") {
+      $(e.currentTarget)
+        .find('span[id="reported-check"]')
+        .html(reportedTodayText);
+      $(e.currentTarget)
+        .find('span[id="reported-check"]')
+        .removeClass("badge-danger");
+      $(e.currentTarget)
+        .find('span[id="reported-check"]')
+        .addClass("badge-success");
+      if (reportedOnTime == "yes") {
+        $(e.currentTarget).find('span[id="on-time-check"]').html(onTimeText);
+        $(e.currentTarget)
+          .find('span[id="on-time-check"]')
+          .removeClass("badge-dark")
+          .addClass("badge-light");
+      } else {
+        $(e.currentTarget).find('span[id="on-time-check"]').html(lateText);
+        $(e.currentTarget)
+          .find('span[id="on-time-check"]')
+          .removeClass("badge-light")
+          .addClass("badge-dark");
+      }
+    }
+    if (reportedToday == "no") {
+      //
+      $(e.currentTarget).find('span[id="on-time-check"]').html("");
+      $(e.currentTarget)
+        .find('span[id="reported-check"]')
+        .html(didNotReportTodayText);
+      $(e.currentTarget)
+        .find('span[id="reported-check"]')
+        .removeClass("badge-success");
+      $(e.currentTarget)
+        .find('span[id="reported-check"]')
+        .addClass("badge-danger");
+    }
   });
 
   var groupColumn = 2;
@@ -156,6 +200,7 @@ $(document).ready(function () {
 
   // Save the routes when the
   $(document).on("click", "#save_routes", function () {
+    $("#make-route-spinner").show();
     var csrftoken = getCookie("csrftoken");
 
     var routes = [];
@@ -186,21 +231,33 @@ $(document).ready(function () {
         routes: JSON.stringify(routes),
         selected_district: JSON.stringify(parseInt(selected_district)),
         courier_count: JSON.stringify(courier_count),
-        user_id: JSON.parse(document.getElementById("user_id").textContent),
+        user_id: JSON.stringify(document.getElementById("user_id").textContent),
+        selected_date: JSON.stringify(
+          document.getElementById("selected_date").textContent
+        ),
       },
-      success: function (data) {
+      content_type: "application/json",
+    })
+      .done(function (data) {
         // console.log(data.created_routes);
+        $("#make-route-spinner").hide();
         alert(
           "Routes for " +
             selected_district_name +
             " have been successfully created"
         );
-      },
-      content_type: "application/json",
-    });
+        location.href = "/view_routes";
+      })
+      .fail(function (xhr, status, error) {
+        $("#make-route-spinner").hide();
+        alert("An error has occured " + error);
+      });
   });
 
   // Get todays date for the date picker
+  var default_route_date = new Date();
+  default_route_date.setDate(default_route_date.getDate() + 1);
+
   if (document.getElementById("selected_date")) {
     if (JSON.parse(document.getElementById("selected_date").textContent)) {
       $("#datePicker").val(
@@ -209,11 +266,19 @@ $(document).ready(function () {
           10
         )
       );
+      $("#datePicker2").val(
+        JSON.parse(document.getElementById("selected_date").textContent).slice(
+          0,
+          10
+        )
+      );
     } else {
       $("#datePicker").val(new Date().toJSON().slice(0, 10));
+      $("#datePicker2").val(default_route_date.toJSON().slice(0, 10));
     }
   } else {
     $("#datePicker").val(new Date().toJSON().slice(0, 10));
+    $("#datePicker2").val(default_route_date.toJSON().slice(0, 10));
   }
 
   // Make the facilities group a select 2
@@ -225,5 +290,4 @@ $(document).ready(function () {
     );
     $("#facility_group_facilities_select").trigger("change");
   }
-
 });

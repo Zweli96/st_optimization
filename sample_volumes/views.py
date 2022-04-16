@@ -290,6 +290,8 @@ def makeRoutes(request, pk=""):
     context = {}
     districts = District.objects.order_by("name")
     date_list = []
+    route_date = ""
+    future_date = False
 
     route_status = {
         "status": "not_published",
@@ -317,18 +319,19 @@ def makeRoutes(request, pk=""):
     courier_count = 0
 
     if request.method == "POST":
-        route_date = date.today() + timedelta(days=1)
+        if "date" in request.POST:
+            route_date = datetime.strptime(request.POST["date"], "%Y-%m-%d")
         if "district" in request.POST:
             # if you have selected a district show information on when route was saved
             selected_district = districts.get(id=request.POST["district"])
-            tomorrows_routes = Route.objects.filter(
+            routes_for_selected_date = Route.objects.filter(
                 district=selected_district.id, route_date=route_date
             ).order_by("-created_at")
             # if the route has been created
-            if tomorrows_routes.count() > 0:
-                tr = tomorrows_routes.first()
+            if routes_for_selected_date.count() > 0:
+                tr = routes_for_selected_date.first()
                 route_created_by = tr.created_by
-                route_created_at = localtime(tr.created_at)
+                route_created_at = tr.created_at
                 route_created_at = route_created_at.strftime(
                     "%a, %d %b %I:%M %p")
                 route_status["status"] = "published"
@@ -341,13 +344,15 @@ def makeRoutes(request, pk=""):
         # When you click save or update routes check if all
         if all(
             params in request.POST
-            for params in ("routes", "selected_district", "courier_count")
+            for params in ("routes", "selected_district", "courier_count", "selected_date")
         ):
             routes = json.loads(request.POST["routes"])
             selected_district = json.loads(request.POST["selected_district"])
             courier_count = json.loads(request.POST["courier_count"])
             user_id = json.loads(request.POST["user_id"])
-            route_date = date.today() + timedelta(days=1)
+            route_date = json.loads(request.POST["selected_date"])
+            route_date = datetime.strptime(
+                route_date[1:11].replace('"', ""), "%Y-%m-%d")
             created_routes = []
             updated = True
 
@@ -393,9 +398,14 @@ def makeRoutes(request, pk=""):
         courier_count = Courier.objects.filter(
             district=selected_district.id).count()
 
+    if route_date:
+        future_date = route_date.date() >= date.today()
+
     context.update(
         {
             "districts": districts,
+            "selected_date": route_date,
+            "future_date": future_date,
             "route_status": route_status,
             "facilities": facilities,
             "date_list": date_list,
@@ -424,7 +434,7 @@ def viewRoutes(request):
         ).order_by("-created_at")[:num_of_couriers]
         routes += district_routes
 
-    context = {"routes": routes}
+    context = {"routes": routes, "selected_date": route_date}
     return render(request, "sample_volumes/routes.html", context)
 
 
@@ -461,7 +471,7 @@ def daily_sample_report(request):
             date = datetime.strptime(date, "%Y-%m-%d")
             district = District.objects.get(id=district)
 
-            facilities = Facility.objects.filter(district=district)
+            facilities = Facility.objects.filter(district=district).order_by("name")
             facility_count = facilities.count()
 
             for facility in facilities:
@@ -486,7 +496,7 @@ def daily_sample_report(request):
             html,
             dest=response,
         )
-        # if error then show some funy view
+
         if pisa_status.err:
             return HttpResponse("We had some errors <pre>" + html + "</pre>")
         return response
@@ -619,7 +629,8 @@ def report_design(request):
         })
 
         # Rendered
-        html_string = render_to_string('sample_volumes/report_design.html', context)
+        html_string = render_to_string(
+            'sample_volumes/report_design.html', context)
         html = HTML(string=html_string, base_url=request.build_absolute_uri())
         result = html.write_pdf()
 

@@ -1,9 +1,21 @@
 {% extends 'sample_volumes/main.html' %} {% load custom_tags %} {% block content %}
 <div class="row">
-  <div class="col-md-4">
+  <div class="col-md-6">
     <form method="POST" action="" class="form-inline">
       {% csrf_token %}
       <div class="form-group py-2 px-2">
+        {% if selected_date %} {{ selected_date|json_script:"selected_date" }}
+        {% endif %}
+        <label class="mr-sm-2" for="default_date">Route date:</label>
+        <input
+        type="date"
+        name="date"
+        class="form-control"
+        id="datePicker2"
+        placeholder="Select Date"
+        required
+      />
+        &nbsp;        
         <label for="districtList" class="sr-only">Select District</label>
         <select class="form-control" id="select_district" name="district">
           <option value="" disabled selected>Select your district</option>
@@ -26,33 +38,22 @@
       </button>
     </form>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-5">
     <div class="row py-2 px-2">
-      <p>
-        Route Date:
-        <span class="badge badge-pill badge-dark"
-          ><script>
-            var tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            const options = {
-              weekday: "long",
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            };
-            document.write(tomorrow.toLocaleDateString(undefined, options));
-          </script></span
-        >
-      </p>
-      &nbsp;
       <p>
         Route Status:
         <span class="badge badge-{{route_status.badge_color}} route_status">{{route_status.display_text}}</span>
       </p>
     </div>
   </div>
-  <div class="col-md-4 d-flex justify-content-center" style="height:40px;">
-    <button type="button" class="btn btn-sm btn-success" id="save_routes">{{route_status.button_text}}</button>
+  <div class="col-md-1 d-flex justify-content-center" style="height:40px;">
+    
+    {% if future_date %}
+    
+    &nbsp;
+      <button type="button" class="btn btn-sm btn-success" id="save_routes">{{route_status.button_text}} <span id="make-route-spinner" style="display:none"><i class="fas fa-spinner fa-lg fa-spin"></i></span></button>
+    {% endif %}
+      
   </div>
 </div>
 </div>
@@ -63,10 +64,10 @@
   <div class="col-md-8">
     <div class="card card-inverse card-primary">
       <div class="card-body">
-        <h4 class="card-description">{{selected_district.name}}</h4>
+        <h4 class="card-description">{{selected_district.name}} routes for {{selected_date|date:"D d M Y"}} </h4>
         <small>USSD Reporting (VL_EID_TB_Other)</small>
         <div style="overflow-x: hidden">
-          <table class="table table-sm" id="data_table_routes">
+          <table class="table table-sm table-bordered" id="data_table_routes">
             <thead class="thead-light">
               <tr>
                 <th scope="col">Route</th>
@@ -110,7 +111,7 @@
                 {% endfor %} {% endcomment %}
                 <td>{{facility.days_since_last_visit}}</td>
                 {% for date in date_list %}
-                <td>{% get_daily_volumes_from_facility facility 'string' date.date %}</td>
+                <td style="text-align:center">{% get_daily_volumes_from_facility facility 'string' date.date %}</td>
                 {% endfor %}
               </tr>
               {% endfor %}

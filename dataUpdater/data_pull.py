@@ -23,7 +23,7 @@ def progress4(filename, size, sent, peername):
 
 def pull():
     ssh = createSSHClient('eosloan.mit.edu', 22, 'zgolowa', 'RxxZXX10..44')
-    scp = SCPClient(ssh.get_transport(), progress4=progress4)
+    scp = SCPClient(ssh.get_transport(), progress4=progress4, socket_timeout=20.0)
 
     # scp.get(remote_path="/home/zgolowa/projects/STOpt_proj/USSD_Data/push/ussd.proj/sample_collection-20211216214540.csv",
     #         local_path="C:/Users/itszw/Desktop/Sample Volumes/sample_collection-20211216214540.csv")

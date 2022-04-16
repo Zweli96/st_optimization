@@ -7,16 +7,16 @@ from dataUpdater.commcare import get_visits, get_trips
 
 def start():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(dataFetch.updateData, "interval", minutes=10)
-    scheduler.add_job(
-        send_sms.send_sms_notifications, "cron", day_of_week="mon-fri", hour=8
-    )
-    scheduler.add_job(
-        send_sms.send_sms_reminders, "cron", day_of_week="mon-fri", hour=14
-    )
+    scheduler.add_job(dataFetch.updateData, "interval", minutes=5)
+    # scheduler.add_job(
+    #     send_sms.send_sms_notifications, "cron", day_of_week="mon-fri", hour=8
+    # )
+    # scheduler.add_job(
+    #     send_sms.send_sms_reminders, "cron", day_of_week="mon-fri", hour=14,
+    # )
     scheduler.add_job(get_visits, "interval", minutes=10)
     scheduler.add_job(get_trips, "interval", minutes=10)
     scheduler.start()
     # get_visits()
     # dataFetch.updateData()
-    # print('No Import')
+    # print('No Import') 
