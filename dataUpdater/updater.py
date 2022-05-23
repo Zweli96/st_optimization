@@ -17,6 +17,6 @@ def start():
     scheduler.add_job(get_visits, "interval", minutes=10)
     scheduler.add_job(get_trips, "interval", minutes=10)
     scheduler.start()
-    # get_visits()
+    get_trips()
     # dataFetch.updateData()
     # print('No Import') 

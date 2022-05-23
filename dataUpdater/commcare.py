@@ -297,12 +297,16 @@ def get_trips():
             continue
 
         new_trip = Trip()
-        new_trip.trip_id = trip["case_id"]
-        new_trip.trip_date = datetime.strptime(
-            trip["properties"]["start_date"], "%Y-%m-%d"
-        )
-        new_trip.start_time = trip["properties"]["start_time"][:8]
-        new_trip.end_time = trip["properties"]["end_time"][:8]
+        try:
+            new_trip.trip_id = trip["case_id"]
+            new_trip.trip_date = datetime.strptime(
+                trip["properties"]["start_date"], "%Y-%m-%d"
+            )
+            new_trip.start_time = trip["properties"]["start_time"][:8]
+            new_trip.end_time = trip["properties"]["end_time"][:8]
+        except Exception as e:
+            print("Unable to capture trip", e)
+            break
 
         new_trip.start_location = start_location
         new_trip.end_location = end_location
