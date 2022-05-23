@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<data version="1"
+      uiVersion="1"
+      xmlns="{{ form_xmlns }}">
+
+  <meta xmlns="http://openrosa.org/jr/xforms"
+        xmlns:cc="http://commcarehq.org/xforms">
+    <deviceID>{{ device_id }}</deviceID>
+    <timeStart>{{ now_utc }}</timeStart>
+    <timeEnd>{{ now_utc }}</timeEnd>
+    <username>{{ cchq_username }}</username>
+    <userID>{{ cchq_user_id }}</userID>
+    <instanceID>{{ submission_id }}</instanceID>
+    <cc:appVersion/>
+  </meta>
+
+  {% for case in cases %}
+  <case case_id="{{ case.id }}"
+        date_modified="{{ case.modified_on }}"
+        user_id="{{ cchq_user_id }}"
+        xmlns="http://commcarehq.org/case/transaction/v2">
+    {% if not case.server_modified_on %}
+    <create>
+      <case_type>{{ case.type }}</case_type>
+      <case_name>{{ case.name }}</case_name>
+      <owner_id>{{ case.owner_id }}</owner_id>
+    </create>
+    {% endif %}
+    <update>
+      <district>{{ case.district }}</district>
+      <day>{{ case.day }}</day>
+      <route>{{ case.route }}</route>
+      <route_date>{{ case.route_date }}</route_date>
+      <approved>{{ case.approved }}</approved>
+    </update>
+  </case>
+  {% endfor %}
+
+</data>
