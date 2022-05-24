@@ -313,6 +313,7 @@ class Sample_Volumes(models.Model):
         SampleType, null=True, on_delete=models.SET_NULL)
     volume = models.IntegerField(default=0)
     reported_date = models.DateTimeField(null=True)
+    session_id = models.IntegerField(default=0)
     reported_by = models.CharField(max_length=200, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
