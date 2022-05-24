@@ -20,6 +20,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
+os.putenv('CCHQ_API_AUTH', 'ApiKey zgolowa@r4hmw.org:6ea3c44d076af61142b613e236809f2789c8eac9')
+
 
 def fetch(start_date, end_date, case_type):
     payload = {}

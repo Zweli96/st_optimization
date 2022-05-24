@@ -43,7 +43,7 @@ def pull():
         if latestfile != getMostRecentFile():
             print('newer file available \n downloading latest file')
             scp.get("/home/zgolowa/projects/STOpt_proj/USSD_Data/push/ussd.proj/" +
-                    latestfile, "C:/Users/itszw/Desktop/Sample Volumes/" + latestfile)
+                    latestfile, "/home/r4h/st_optimization/reported_volumes/" + latestfile)
             return latestfile
         else:
             print("Data up to date")
@@ -52,7 +52,7 @@ def pull():
 
 def getMostRecentFile():
     # * means all if need specific format then *.csv
-    list_of_files = glob.glob('C:/Users/itszw/Desktop/Sample Volumes/*.csv')
+    list_of_files = glob.glob('/home/r4h/st_optimization/reported_volumes/*.csv')
     latest_file = max(list_of_files, key=os.path.getmtime)
     head, tail = os.path.split(latest_file)
     return tail

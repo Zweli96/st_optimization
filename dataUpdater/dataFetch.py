@@ -13,7 +13,7 @@ VALID_SAMPLE_CODES = [1, 2, 3, 4]
 def _get_dataset(latest_file):
 
     # Read in the file
-    with open('C:/Users/itszw/Desktop/Sample Volumes/'+latest_file, 'r') as file:
+    with open('/home/r4h/st_optimization/reported_volumes/'+latest_file, 'r') as file:
         filedata = file.read()
 
     # Replace the target string
@@ -21,12 +21,12 @@ def _get_dataset(latest_file):
     filedata = filedata.replace('* Closing connection 0', '')
 
     # Write the file out again
-    with open('C:/Users/itszw/Desktop/Sample Volumes/'+latest_file, 'w') as file:
+    with open('/home/r4h/st_optimization/reported_volumes/'+latest_file, 'w') as file:
         file.write(filedata)
 
     try:
         df = pd.read_csv(
-            'C:/Users/itszw/Desktop/Sample Volumes/'+latest_file)
+            '/home/r4h/st_optimization/reported_volumes/'+latest_file)
         print('success fetching')
     except:
         return 'Error fetching'
