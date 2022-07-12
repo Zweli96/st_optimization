@@ -7,6 +7,7 @@ import requests
 from requests.structures import CaseInsensitiveDict
 from datetime import datetime, timedelta
 from django.conf import settings
+from dataUpdater import dataFetch
 
 
 
@@ -62,7 +63,7 @@ def pull():
         return file
     else:
         pull_direct()
-        pull()
+        dataFetch.updateData()
 
 
 

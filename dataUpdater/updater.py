@@ -20,5 +20,5 @@ def start():
 
     # get_trips()
     # get_visits()
-    dataFetch.updateData()
+    # dataFetch.updateData()
     # print('No Import') 

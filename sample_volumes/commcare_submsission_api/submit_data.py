@@ -131,7 +131,7 @@ def as_cases(data: Iterable[dict]) -> Iterable[Case]:
         yield Case(
             id=dict_.get('commcare_id'),
             name=f'{dict_["route_date"].strftime("%A")}{dict_["route_number"]}',
-            type=os.environ['CCHQ_CASE_TYPE'],
+            type='route',
             modified_on=dict_.get('modified_on', now_utc()),
             owner_id=District.objects.get(
                 id=dict_["district"]).commcare_district_group_id,
@@ -153,8 +153,8 @@ def render_xform(cases: Iterable[Case]) -> str:
         'form_xmlns': FORM_XMLNS,
         'device_id': DEVICE_ID,
         'now_utc': now_utc(),
-        'cchq_username': os.environ['CCHQ_USERNAME'],
-        'cchq_user_id': os.environ['CCHQ_USER_ID'],
+        'cchq_username': "zgolowa@r4hmw.org",
+        'cchq_user_id': "d18362736224a4493fee8c07b5060a68",
         'submission_id': uuid.uuid4().hex,
         'cases': list(cases),
     }
@@ -177,8 +177,8 @@ def submit_xform(xform: str) -> Tuple[bool, str]:
     failure_message) on failure.
     """
     url = join_url(COMMCARE_URL,
-                   f'/a/{os.environ["CCHQ_PROJECT_SPACE"]}/receiver/api/')
-    auth = (os.environ['CCHQ_USERNAME'], os.environ['CCHQ_PASSWORD'])
+                   f'/a/sample-22/receiver/api/')
+    auth = ("zgolowa@r4hmw.org", "Linda15..")
     headers = {'Content-Type': 'text/html; charset=UTF-8'}
     response = requests.post(url, xform.encode('utf-8'),
                              headers=headers, auth=auth)

@@ -13,7 +13,7 @@ import uuid
 app_key = "600184"
 app_password = "mit@uc&*!"
 
-sms_template_dir = f'{settings.BASE_DIR}\json'
+sms_template_dir = f'{settings.BASE_DIR}{os.sep}json'
 sms_template_name = 'sms_template.json'
 sms_template_path = os.path.join(sms_template_dir, sms_template_name)
 

@@ -63,7 +63,7 @@ def updateData():
 
     if sample_volume_data is not None:
         # Open file to log the
-        log_dir = f'{settings.BASE_DIR}\logs'
+        log_dir = f'{settings.BASE_DIR}{os.sep}logs'
         log_file_name = f'Import Log {date.today()}_{uuid.uuid4()}.txt'
         filepath = os.path.join(log_dir, log_file_name)
         if not os.path.exists(log_dir):
