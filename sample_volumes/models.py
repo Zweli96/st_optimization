@@ -364,11 +364,12 @@ class Sample_Volumes(models.Model):
         # reported
         pass
 
-class DataUpdates(models.Model):
+class DataUpdate(models.Model):
     time_started = models.DateTimeField(auto_now_add=True)
     time_completed = models.DateTimeField(null=True)
     completed = models.BooleanField(null=True, default=False)
     user = models.CharField(null=True,max_length=200)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Health_Worker(models.Model):

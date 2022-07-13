@@ -5,7 +5,7 @@ from datetime import datetime, date, timedelta
 from django.conf import settings
 from .data_pull import pull
 
-from sample_volumes.models import Sample_Volumes, Facility, SampleType
+from sample_volumes.models import Sample_Volumes, Facility, SampleType, DataUpdate
 
 VALID_SAMPLE_CODES = [1, 2, 3, 4]
 
@@ -48,96 +48,121 @@ def _get_dataset(latest_file):
         return df[df['date'].between(end_day, start_day)]
 
 
-def updateData():
-    latest_file = pull()
+def updateData(downloaded=False):
+    current_update = DataUpdate.objects.filter(completed=False)
 
-    sample_volume_data = None
-
-    if latest_file:
-        sample_volume_data = _get_dataset(latest_file)
-
-    sample_volumes_added = {'total_added': 0, 'session_ids': []}
-
-    sample_volumes_rejected = {'total_rejected': 0,
-                               'session_ids': [], 'reason_for_rejection': []}
-
-    if sample_volume_data is not None:
-        # Open file to log the
-        log_dir = f'{settings.BASE_DIR}{os.sep}logs'
-        log_file_name = f'Import Log {date.today()}_{uuid.uuid4()}.txt'
-        filepath = os.path.join(log_dir, log_file_name)
-        if not os.path.exists(log_dir):
-            os.makedirs(log_dir)
-        f = open(filepath, "w")
-
-        # Loop through dataset and save the sample volumes to the database
-        for index, row in sample_volume_data.iterrows():
-            try:
-                reported_volume_object = Sample_Volumes.objects.get(session_id=int(row['id']))
-            except:
-                reported_volume_object = None
-
-            if not reported_volume_object:
-                new_sample_volume = Sample_Volumes()
-
-                if int(row['sample'] in VALID_SAMPLE_CODES):
-                    new_sample_volume.sample_type = SampleType.objects.get(
-                        sample_code=int(row['sample']))
-                else:
-                    sample_volumes_rejected['total_rejected'] += 1
-                    sample_volumes_rejected['session_ids'].append(row['session'])
-                    sample_volumes_rejected['reason_for_rejection'].append(
-                        'Invalid Sample Code')
-                    continue
-                if not isinstance(row['collected'], bool) and isinstance(row['collected'], (int, float)) and not pd.isna(row['collected']):
-                    new_sample_volume.volume = int(row['collected'])
-                else:
-                    sample_volumes_rejected['total_rejected'] += 1
-                    sample_volumes_rejected['session_ids'].append(row['session'])
-                    sample_volumes_rejected['reason_for_rejection'].append(
-                        'Reported volume missing')
-                    continue
-
-                try:
-                    new_sample_volume.facility = Facility.objects.get(
-                        facility_code=int(row['facility']))
-                except:
-                    sample_volumes_rejected['total_rejected'] += 1
-                    sample_volumes_rejected['session_ids'].append(row['session'])
-                    sample_volumes_rejected['reason_for_rejection'].append(
-                        'facility not in database')
-                    continue
-
-                new_sample_volume.reported_date = row['date']
-                new_sample_volume.reported_by = "+" + str(int(row['msisdn']))
-                new_sample_volume.session_id = int(row['id'])
-
-                new_sample_volume.save()
-                sample_volumes_added['total_added'] += 1
-                sample_volumes_added['session_ids'].append(row['session'])
-                print("saving..")
-            else:
-                print("Sample already exists")
-
-        # Log the records that have been added
-        f.write(
-            f'Total Records Added {sample_volumes_added["total_added"]} \n')
-        f.write("#.,ID\n")
-        i = 0
-
-        for added in sample_volumes_added['session_ids']:
-            f.write(f'{i},{added}\n')
-            i += 1
-
-        # Log the records that have been rejected
-        f.write(
-            f'Total Records Reject {sample_volumes_rejected["total_rejected"]} \n')
-        # f.write("#,ID,Reason for rejection\n")
-        # i = j = 0
-        # for (rejected, reason) in zip(sample_volumes_rejected['total_rejected'], sample_volumes_rejected['reason_for_rejection']):
-        #     f.write(f'{i},{rejected},{reason}\n')
-
-        f.close()
-
+    if not downloaded:
+        if current_update:
+            return
+        else:
+            update = DataUpdate()
+            update.completed = False
+            update.user = 'system'
+            update.save()
     else:
-        return 'no data set'
+        update = current_update.first()
+
+    try:
+        latest_file = pull()
+
+        sample_volume_data = None
+
+        if latest_file:
+            sample_volume_data = _get_dataset(latest_file)
+
+        sample_volumes_added = {'total_added': 0, 'session_ids': []}
+
+        sample_volumes_rejected = {'total_rejected': 0,
+                                'session_ids': [], 'reason_for_rejection': []}
+
+        if sample_volume_data is not None:
+            # Open file to log the
+            log_dir = f'{settings.BASE_DIR}{os.sep}logs'
+            log_file_name = f'Import Log {date.today()}_{uuid.uuid4()}.txt'
+            filepath = os.path.join(log_dir, log_file_name)
+            if not os.path.exists(log_dir):
+                os.makedirs(log_dir)
+            f = open(filepath, "w")
+
+            # Loop through dataset and save the sample volumes to the database
+            for index, row in sample_volume_data.iterrows():
+                try:
+                    reported_volume_object = Sample_Volumes.objects.get(session_id=int(row['id']))
+                except:
+                    reported_volume_object = None
+
+                if not reported_volume_object:
+                    new_sample_volume = Sample_Volumes()
+
+                    if int(row['sample'] in VALID_SAMPLE_CODES):
+                        new_sample_volume.sample_type = SampleType.objects.get(
+                            sample_code=int(row['sample']))
+                    else:
+                        sample_volumes_rejected['total_rejected'] += 1
+                        sample_volumes_rejected['session_ids'].append(row['session'])
+                        sample_volumes_rejected['reason_for_rejection'].append(
+                            'Invalid Sample Code')
+                        continue
+                    if not isinstance(row['collected'], bool) and isinstance(row['collected'], (int, float)) and not pd.isna(row['collected']):
+                        new_sample_volume.volume = int(row['collected'])
+                    else:
+                        sample_volumes_rejected['total_rejected'] += 1
+                        sample_volumes_rejected['session_ids'].append(row['session'])
+                        sample_volumes_rejected['reason_for_rejection'].append(
+                            'Reported volume missing')
+                        continue
+
+                    try:
+                        new_sample_volume.facility = Facility.objects.get(
+                            facility_code=int(row['facility']))
+                    except:
+                        sample_volumes_rejected['total_rejected'] += 1
+                        sample_volumes_rejected['session_ids'].append(row['session'])
+                        sample_volumes_rejected['reason_for_rejection'].append(
+                            'facility not in database')
+                        continue
+
+                    new_sample_volume.reported_date = row['date']
+                    new_sample_volume.reported_by = "+" + str(int(row['msisdn']))
+                    new_sample_volume.session_id = int(row['id'])
+
+                    new_sample_volume.save()
+                    sample_volumes_added['total_added'] += 1
+                    sample_volumes_added['session_ids'].append(row['session'])
+                    print("saving..")
+                else:
+                    print("Sample already exists")
+
+            # Log the records that have been added
+            f.write(
+                f'Total Records Added {sample_volumes_added["total_added"]} \n')
+            f.write("#.,ID\n")
+            i = 0
+
+            for added in sample_volumes_added['session_ids']:
+                f.write(f'{i},{added}\n')
+                i += 1
+
+            # Log the records that have been rejected
+            f.write(
+                f'Total Records Reject {sample_volumes_rejected["total_rejected"]} \n')
+            # f.write("#,ID,Reason for rejection\n")
+            # i = j = 0
+            # for (rejected, reason) in zip(sample_volumes_rejected['total_rejected'], sample_volumes_rejected['reason_for_rejection']):
+            #     f.write(f'{i},{rejected},{reason}\n')
+
+            f.close()
+            update.time_completed = datetime.now()
+            update.completed = True
+            update.save()
+            return
+
+        else:
+            return 'no data set'
+            update.time_completed = datetime.now()
+            update.completed = True
+            update.save()
+    except:
+        update.delete()
+        return
+

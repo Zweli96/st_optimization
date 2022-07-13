@@ -72,6 +72,12 @@
 
   <div class="col-md-9">
     <h1>Volumes</h1>
+    <p> Last Updated {{last_update_time|date:'D d-M H:i'}}
+      {% if currently_updating %} 
+        <a>Updating Now</a>
+      {% else %}
+        
+      {% endif %}  
     <div class="card card-body">
       <table
         class="table table-sm table-striped table-bordered table-sm"

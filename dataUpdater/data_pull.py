@@ -63,24 +63,18 @@ def pull():
         return file
     else:
         pull_direct()
-        dataFetch.updateData()
-
-
-
-
-
-
+        dataFetch.updateData(downloaded=True)
 
 def getMostRecentFile():
     # * means all if need specific format then *.csv
     #list_of_files = glob.glob('/home/r4h/st_optimization/reported_volumes/*.csv')
-    reported_volumes_dir = f"{settings.BASE_DIR}/reported_volumes"
-    list_of_files = glob.glob(f'{reported_volumes_dir}/*.csv')
+    reported_volumes_dir = f"{settings.BASE_DIR}{os.sep}reported_volumes"
+    list_of_files = glob.glob(f'{reported_volumes_dir}{os.sep}*.csv')
 
     latest_file = max(list_of_files, key=os.path.getmtime)
     head, tail = os.path.split(latest_file)
 
-    thirty_minutes_ago = datetime.now() - timedelta(minutes=30)
+    thirty_minutes_ago = datetime.now() - timedelta(minutes=10)
     file_time = datetime.fromtimestamp(os.path.getmtime(os.path.join(head,tail)))
     if file_time < thirty_minutes_ago:
         current_data = False
@@ -125,3 +119,4 @@ def pull_direct():
     # with open(f'/home/r4h/st_optimization/reported_volumes/sample_collection-{date_time_stamp}.csv', 'wb') as f:
     with open(f'C:/Users/itszw/Dev/st_optimization/reported_volumes/sample_collection-{date_time_stamp}.csv', 'wb') as f:
         f.write(resp.content)
+    return

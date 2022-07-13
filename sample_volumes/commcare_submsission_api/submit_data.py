@@ -138,7 +138,7 @@ def as_cases(data: Iterable[dict]) -> Iterable[Case]:
             district=District.objects.get(id=dict_["district"]).name,
             day=f'{dict_["route_date"].strftime("%A")}',
             route=facilities,
-            route_date=dict_.get('route_date'),
+            route_date=dict_.get('route_date').strftime("%Y-%m-%d"),
             server_modified_on=dict_.get('server_modified_on', updated_case()),
             approved='yes',
             confirmed=dict_.get('confirmed'),

@@ -47,7 +47,7 @@ def get_visits():
     success_data = []
 
     # start_date = date(year=2021, month=11, day=30)
-    start_date = date.today() - timedelta(days=1)
+    start_date = date.today() - timedelta(days=8)
     start_date = start_date.strftime("%Y-%m-%d")
 
     end_date = date.today() + timedelta(days=1)
@@ -126,13 +126,13 @@ def get_visits():
         for st in SAMPLE_TYPE:
             if st[1] + "_samples" in visit["properties"]:
                 samples.update(
-                    {st[1]: int(visit["properties"][st[1] + "_samples"])})
+                    {st[1]: int('0'+visit["properties"][st[1] + "_samples"])})
             else:
                 samples.update(
                     {st[1]: 0})
             if st[1] + "_results" in visit["properties"]:
                 results.update(
-                    {st[1]: int(visit["properties"][st[1] + "_results"])})
+                    {st[1]: int('0'+visit["properties"][st[1] + "_results"])})
             else:
                 results.update(
                     {st[1]: 0})
@@ -176,7 +176,7 @@ def get_trips():
     success_data = []
 
     # start_date = date(year=2021, month=11, day=30)
-    start_date = date.today() - timedelta(days=1)
+    start_date = date.today() - timedelta(days=8)
     start_date = start_date.strftime("%Y-%m-%d")
 
     end_date = date.today() + timedelta(days=1)

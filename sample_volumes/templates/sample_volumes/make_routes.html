@@ -74,11 +74,11 @@
                 <th scope="col">Facility</th>
                 <th scope="col">Group</th>
                 <th scope="col">Visits This Week</th>
-                <th scope="col">Previous Visit</th>
                 <th scope="col">Days Since Last Visit</th>
                 {% for date in date_list %}
                 <th scope="col">{{date.date_string}}</th>
                 {% endfor %}
+                <th scope="col">Previous Visit</th>
               </tr>
             </thead>
             <tbody>
@@ -105,7 +105,6 @@
                 <td>{{facility.name}}</td>
                 <td>{{facility.facility_group}}</td>
                 <td>NA</td>
-                <td>{{facility.get_last_visit|date:"D j-M"}}</td>
                 {% comment %} {% for date in date_list %}
                 <td>{% get_daily_volumes_from_faciliy facility 'types' date.date %}</td>
                 {% endfor %} {% endcomment %}
@@ -113,6 +112,7 @@
                 {% for date in date_list %}
                 <td style="text-align:center">{% get_daily_volumes_from_facility facility 'string' date.date %}</td>
                 {% endfor %}
+                <td>{{facility.get_last_visit|date:"D j-M"}}</td>
               </tr>
               {% endfor %}
             </tbody>

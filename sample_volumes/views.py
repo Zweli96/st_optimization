@@ -18,6 +18,7 @@ from .models import (
     Route,
     FacilityGroup,
     SAMPLE_TYPE,
+    DataUpdate
 )
 from .forms import (
     DistrictForm,
@@ -89,6 +90,15 @@ def dashboard(request, pk=""):
 
     selected_district = ""
 
+    last_update = DataUpdate.objects.filter(completed=True).order_by('-created_at').first()
+    current_update = DataUpdate.objects.filter(completed=False)
+
+    last_update_time = last_update.created_at
+    currently_updating = False
+    if current_update:
+        currently_updating = True
+
+
     if request.method == "POST":
         selected_district = request.POST["district"]
         if request.POST["date"]:
@@ -123,7 +133,10 @@ def dashboard(request, pk=""):
             "selected_date": selected_date,
             "reported_facilities_count": reported_facilities_count,
             "non_reporting_count": non_reporting_count,
-            "reporting_percentage": reporting_percentage
+            "reporting_percentage": reporting_percentage,
+            "last_update_time": last_update_time,
+            "currently_updating": currently_updating 
+
         }
     )
 
@@ -385,7 +398,7 @@ def makeRoutes(request, pk=""):
                 route_number += 1
             success, message = main(created_routes, updated)
 
-            if request.is_ajax():
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                 return JsonResponse(
                     {"created_routes": "created successfully"}, status=200
                 )
