@@ -20,7 +20,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
-os.putenv('CCHQ_API_AUTH', 'ApiKey zgolowa@r4hmw.org:6ea3c44d076af61142b613e236809f2789c8eac9')
+os.putenv('CCHQ_API_AUTH',
+          'ApiKey zgolowa@r4hmw.org:6ea3c44d076af61142b613e236809f2789c8eac9')
 
 
 def fetch(start_date, end_date, case_type):
@@ -47,7 +48,7 @@ def get_visits():
     success_data = []
 
     # start_date = date(year=2021, month=11, day=30)
-    start_date = date.today() - timedelta(days=8)
+    start_date = date.today() - timedelta(days=10)
     start_date = start_date.strftime("%Y-%m-%d")
 
     end_date = date.today() + timedelta(days=1)
@@ -69,7 +70,7 @@ def get_visits():
         try:
             exists = Visit.objects.get(visit_id=visit["case_id"])
             if exists:
-                break
+                continue
         except ObjectDoesNotExist:
             pass
 
@@ -176,7 +177,7 @@ def get_trips():
     success_data = []
 
     # start_date = date(year=2021, month=11, day=30)
-    start_date = date.today() - timedelta(days=8)
+    start_date = date.today() - timedelta(days=10)
     start_date = start_date.strftime("%Y-%m-%d")
 
     end_date = date.today() + timedelta(days=1)
@@ -197,7 +198,7 @@ def get_trips():
         try:
             exists = Trip.objects.get(trip_id=trip["case_id"])
             if exists:
-                break
+                continue
         except ObjectDoesNotExist:
             pass
 
@@ -270,8 +271,6 @@ def get_trips():
             print("Multiple end locations have that name")
             continue
 
-        
-
         # Get the courier
         try:
             courier = Courier.objects.get(commcare_user_id=trip["opened_by"])
@@ -308,7 +307,7 @@ def get_trips():
             new_trip.end_time = trip["properties"]["end_time"][:8]
         except Exception as e:
             print("Unable to capture trip", e)
-            break
+            continue
 
         new_trip.start_location = start_location
         new_trip.end_location = end_location

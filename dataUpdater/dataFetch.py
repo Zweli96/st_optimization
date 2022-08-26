@@ -28,13 +28,14 @@ def _get_dataset(latest_file):
 
     try:
         #df = pd.read_csv('/home/r4h/st_optimization/reported_volumes/'+latest_file)
-        df = pd.read_csv('C:/Users/itszw/Dev/st_optimization/reported_volumes/'+latest_file)
+        df = pd.read_csv(
+            'C:/Users/itszw/Dev/st_optimization/reported_volumes/'+latest_file)
         print('success fetching')
     except:
         return 'Error fetching'
 
     date_today = datetime.now() + timedelta(days=1)
-    date_yesterday = date_today - timedelta(days=10)
+    date_yesterday = date_today - timedelta(days=1)
 
     if df is not None:
         df['date'] = pd.to_datetime(df.date)
@@ -73,7 +74,7 @@ def updateData(downloaded=False):
         sample_volumes_added = {'total_added': 0, 'session_ids': []}
 
         sample_volumes_rejected = {'total_rejected': 0,
-                                'session_ids': [], 'reason_for_rejection': []}
+                                   'session_ids': [], 'reason_for_rejection': []}
 
         if sample_volume_data is not None:
             # Open file to log the
@@ -87,7 +88,8 @@ def updateData(downloaded=False):
             # Loop through dataset and save the sample volumes to the database
             for index, row in sample_volume_data.iterrows():
                 try:
-                    reported_volume_object = Sample_Volumes.objects.get(session_id=int(row['id']))
+                    reported_volume_object = Sample_Volumes.objects.get(
+                        session_id=int(row['id']))
                 except:
                     reported_volume_object = None
 
@@ -99,7 +101,8 @@ def updateData(downloaded=False):
                             sample_code=int(row['sample']))
                     else:
                         sample_volumes_rejected['total_rejected'] += 1
-                        sample_volumes_rejected['session_ids'].append(row['session'])
+                        sample_volumes_rejected['session_ids'].append(
+                            row['session'])
                         sample_volumes_rejected['reason_for_rejection'].append(
                             'Invalid Sample Code')
                         continue
@@ -107,7 +110,8 @@ def updateData(downloaded=False):
                         new_sample_volume.volume = int(row['collected'])
                     else:
                         sample_volumes_rejected['total_rejected'] += 1
-                        sample_volumes_rejected['session_ids'].append(row['session'])
+                        sample_volumes_rejected['session_ids'].append(
+                            row['session'])
                         sample_volumes_rejected['reason_for_rejection'].append(
                             'Reported volume missing')
                         continue
@@ -117,13 +121,15 @@ def updateData(downloaded=False):
                             facility_code=int(row['facility']))
                     except:
                         sample_volumes_rejected['total_rejected'] += 1
-                        sample_volumes_rejected['session_ids'].append(row['session'])
+                        sample_volumes_rejected['session_ids'].append(
+                            row['session'])
                         sample_volumes_rejected['reason_for_rejection'].append(
                             'facility not in database')
                         continue
 
                     new_sample_volume.reported_date = row['date']
-                    new_sample_volume.reported_by = "+" + str(int(row['msisdn']))
+                    new_sample_volume.reported_by = "+" + \
+                        str(int(row['msisdn']))
                     new_sample_volume.session_id = int(row['id'])
 
                     new_sample_volume.save()
@@ -165,4 +171,3 @@ def updateData(downloaded=False):
     except:
         update.delete()
         return
-

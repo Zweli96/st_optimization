@@ -14,12 +14,10 @@ def start():
     # scheduler.add_job(
     #     send_sms.send_sms_reminders, "cron", day_of_week="mon-fri", hour=14,
     # )
+    get_trips()
+    get_visits()
+    scheduler.start()
     scheduler.add_job(get_visits, "interval", minutes=10)
     scheduler.add_job(get_trips, "interval", minutes=10)
-    # get_trips()
-    # get_visits()
-    dataFetch.updateData()
-    scheduler.start()
-
     # dataFetch.updateData()
-    # print('No Import') 
+    # print('No Import')
