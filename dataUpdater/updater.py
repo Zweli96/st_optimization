@@ -3,6 +3,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from dataUpdater import dataFetch
 from dataUpdater.sms import send_sms
 from dataUpdater.commcare import get_visits, get_trips
+from sample_volumes.emails import sendEmail
 
 
 def start():
@@ -14,10 +15,11 @@ def start():
     # scheduler.add_job(
     #     send_sms.send_sms_reminders, "cron", day_of_week="mon-fri", hour=14,
     # )
-    get_trips()
-    get_visits()
+    # get_trips()
+    # get_visits()
+    # sendEmail('courier')
+    dataFetch.updateData()
     scheduler.start()
     scheduler.add_job(get_visits, "interval", minutes=10)
     scheduler.add_job(get_trips, "interval", minutes=10)
-    # dataFetch.updateData()
     # print('No Import')

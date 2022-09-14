@@ -242,74 +242,8 @@
       <br>
       {% endfor %}
     </div>
-    <div class="container" style="page-break-before: always">
-      <img
-        src="file:///C:/Users/itszw/Dev/st_optimization/static/images/r4h_logo.png"
-        alt="logo"
-        style="width: 100px; height: 32px"
-      />
-      <h1>{{ district.name }} USSD Sample Reporting</h1>
-      <h2>Date: {{ date|date:"d-m-Y" }}</h2>
-      <table style="border-collapse: collapse" width="60%" class="container">
-        <thead>
-          <tr style="border-top: 1pt solid black">
-            <th style="width: 10%">&nbsp;</th>
-            <th style="width: 40%">&nbsp;</th>
-            <th style="border-bottom: 1pt solid black" colspan="4">
-              Sample Volumes
-            </th>
-          </tr>
-          <tr style="border-bottom: 1pt solid black">
-            <th style="width: 15%">Code</th>
-            <th style="text-align: left; width: 40%">Facility</th>
-            <th>VL</th>
-            <th>EID</th>
-            <th>TB</th>
-            <th>Other</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for facility, info in data.items %}
-          <tr>
-            <td style="text-align: center">{{info.code}}</td>
-            <td style="text-align: left">{{facility}}</td>
-            <td
-              style="text-align: center"
-              class="{% if info.VL == 'NA' %}red{% endif %}"
-            >
-              {{info.VL}}
-            </td>
-            <td
-              style="text-align: center"
-              class="{% if info.EID == 'NA' %}red{% endif %}"
-            >
-              {{info.EID}}
-            </td>
-            <td
-              style="text-align: center"
-              class="{% if info.TB == 'NA' %}red{% endif %}"
-            >
-              {{info.TB}}
-            </td>
-            <td
-              style="text-align: center"
-              class="{% if info.Other == 'NA' %}red{% endif %}"
-            >
-              {{info.Other}}
-            </td>
-          </tr>
-          {% endfor %}
-          <tr style="border-top: 1pt solid black">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
-      <p><span style="color: red">NA</span> = not reported</p>
+    <div style="page-break-before: always" >
+      page2
     </div>
   </body>
 </html>

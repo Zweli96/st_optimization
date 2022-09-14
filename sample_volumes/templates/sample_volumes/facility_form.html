@@ -1,6 +1,9 @@
 {% extends 'sample_volumes/main.html' %} {% block content %}
-<form action="" method="POST">
-  {% csrf_token %} {{form}}
-  <input type="submit" value="submit" />
-</form>
+<div class="col-9">
+  <h1>{{action}} Facility</h1>
+  <form action="" method="POST">
+    {% csrf_token %} {{form.as_p}}
+    <input type="submit" value="submit" />
+  </form>
+</div>
 {% endblock %}

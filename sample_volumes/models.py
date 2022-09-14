@@ -39,6 +39,12 @@ DISTRICT_REGIONS = (
     ("Central Region", "Central Region"),
 )
 
+USER_ROLES = (
+    ("Route_Optimization_Officer", "Route_Optimization_Officer"),
+    ("System_Administrator", "System_Administrator"),
+)
+
+
 
 class District(models.Model):
     name = models.CharField(max_length=200)
@@ -55,6 +61,7 @@ class District(models.Model):
     # deleted_at = models.DateTimeField(blank=True, null=True)
     # deleted_by = models.ForeignKey(to, on_delete)
     status = models.CharField(max_length=200, choices=STATUS, null=True)
+    optimization_district = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -599,3 +606,7 @@ class Trip(models.Model):
     # deleted_at = models.DateTimeField(blank=True, null=True)
     # deleted_by = models.ForeignKey(to, on_delete, null=True)
     status = models.CharField(max_length=200, choices=STATUS, null=True)
+
+# class Profile(models.Model):
+#    user = models.OneToOneField(User, on_delete=models.CASCADE)
+#    role = models.CharField(max_length=50, null=True)

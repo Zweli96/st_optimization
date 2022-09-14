@@ -1,12 +1,12 @@
 {% extends 'sample_volumes/main.html' %} {% block content %}
 <div class="col-md-9">
   <div class="row">
-    <h2>Facility Group</h2>
+    <h2>Users</h2>
     <a
-      href="{% url 'create_facility_group' %}"
+      href="{% url 'register' %}"
       class="btn btn-sm btn-info ml-auto mr-3 d-flex align-items-center"
     >
-      Add Facility Group
+      Add User
     </a>
   </div>
   <br />
@@ -18,34 +18,34 @@
       <thead>
         <tr>
           <th>Name</th>
-          <th>Code</th>
-          <th>District</th>
-          <th>Facilities</th>
+          <th>Username</th>
+          <th>Email</th>
           <th>Action</th>
         </tr>
       </thead>
 
-      {% for fgroup in facility_groups %}
       <tbody>
+        {% for user in users %}
+
         <tr>
-          <td>{{fgroup.name}}</td>
-          <td>{{fgroup.code}}</td>
-          <td>{{fgroup.district}}</td>
-          <td>{{fgroup.get_facilities|truncatechars:70}}</td>
+          <td>{{user.get_full_name}}</td>
+          <td>{{user.username}}</td>
+          <td>{{user.email}}</td>
           <td>
-            <a href="{% url 'update_facility_group' fgroup.id %}"
+            <a href="{% url 'update_user' user.id %}"
               ><i class="fas fa-edit"></i
             ></a>
-            <a href="{% url 'delete_facility_group' fgroup.id %}"
+            <a href="{% url 'delete_user' user.id %}"
               ><i class="fas fa-trash"></i
             ></a>
-            <a href="{% url 'facility_group_facilities' fgroup.id %}"
-              ><i class="fas fa-clinic-medical"></i
+            <a href="{% url 'reset_password' user.id %}"
+              ><i class="fas fa-lock"></i
             ></a>
           </td>
         </tr>
+
+        {% endfor %}
       </tbody>
-      {% endfor %}
     </table>
   </div>
 </div>

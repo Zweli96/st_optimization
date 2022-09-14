@@ -1,4 +1,5 @@
-from django.urls import path
+from django.urls import path, re_path
+from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
@@ -6,6 +7,7 @@ urlpatterns = [
     path('login/', views.loginPage, name="login"),
     path('logout/', views.logoutUser, name="logout"),
     path('register/', views.registerUser, name="register"),
+    path('users/', views.users, name="users"),
     path('volumes/', views.dashboard, name="home"),
     path('volumes/<str:pk>/', views.dashboard, name="home"),
     path('sample_volumes/', views.sample_volumes, name="sample_volumes"),
@@ -27,6 +29,10 @@ urlpatterns = [
          name="create_health_worker"),
     path('create_courier/', views.createCourier,
          name="create_courier"),
+    path('update_courier/<str:pk>/',
+         views.updateCourier, name="update_courier"),
+    path('delete_courier/<str:pk>/',
+         views.deleteCourier, name="delete_courier"),
     path('update_health_worker/<str:pk>/',
          views.updateHealth_Worker, name="update_health_worker"),
     path('delete_health_worker/<str:pk>/',
@@ -38,10 +44,20 @@ urlpatterns = [
          name="create_facility_group"),
     path('facility_group_facilities/<str:pk>', views.facilityGroupFacilities,
          name="facility_group_facilities"),
+    path('update_facility_group/<str:pk>/',
+         views.updateFacilityGroup, name="update_facility_group"),
+    path('delete_facility_group/<str:pk>/',
+         views.deleteFacilityGroup, name="delete_facility_group"),
     path('daily_sample_report/', views.daily_sample_report,
          name='daily_sample_report'),
     path('daily_courier_report/', views.daily_courier_report,
          name='daily_courier_report'),
     path('report_design/', views.report_design,
-         name='report_design')
+         name='report_design'),
+    path('reset_password/<str:pk>/',
+         views.resetPassword, name="reset_password"),
+    path('update_user/<str:pk>/',
+         views.updateUser, name="update_user"),
+    path('delete_user/<str:pk>/',
+         views.deleteUser, name="delete_user"),
 ]

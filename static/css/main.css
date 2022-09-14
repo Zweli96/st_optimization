@@ -38,3 +38,7 @@ td {
   height: 35px;
   line-height: 35px;
 }
+
+body {
+  background-color: #f8f8ff;
+}

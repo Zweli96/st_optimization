@@ -27,6 +27,7 @@ from .forms import (
     CreateUserForm,
     CourierForm,
     FacilityGroupForm,
+    PasswordResetCustomForm
 )
 from datetime import date, datetime, timedelta
 from django.utils.timezone import localtime
@@ -45,6 +46,12 @@ import json
 
 
 # Create your views here.
+ACTIONS = (
+    ("CREATE", "Create"),
+    ("UPDATE", "Update"),
+    ("DELETE", "Delete"),
+    ("RESET PASSWORD", "Reset Password"),
+)
 
 
 def loginPage(request):
@@ -90,14 +97,14 @@ def dashboard(request, pk=""):
 
     selected_district = ""
 
-    last_update = DataUpdate.objects.filter(completed=True).order_by('-created_at').first()
+    last_update = DataUpdate.objects.filter(
+        completed=True).order_by('-created_at').first()
     current_update = DataUpdate.objects.filter(completed=False)
 
     last_update_time = last_update.created_at
     currently_updating = False
     if current_update:
         currently_updating = True
-
 
     if request.method == "POST":
         selected_district = request.POST["district"]
@@ -135,7 +142,7 @@ def dashboard(request, pk=""):
             "non_reporting_count": non_reporting_count,
             "reporting_percentage": reporting_percentage,
             "last_update_time": last_update_time,
-            "currently_updating": currently_updating 
+            "currently_updating": currently_updating
 
         }
     )
@@ -173,52 +180,62 @@ def districts(request):
 
 def createDistrict(request):
     form = DistrictForm
-    context = {"form": form}
+    action = ACTIONS[0][1]
+    context = {"form": form, "action": action}
 
     if request.method == "POST":
         # print('Printing POST: ', request.POST)
         form = DistrictForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("home")
+            district = form.cleaned_data.get("name")
+            messages.success(request, f"District {district} was created")
+            return redirect("districts")
 
     return render(request, "sample_volumes/district_form.html", context)
 
 
 def updateDistrict(request, pk):
+
     district = District.objects.get(id=pk)
     form = DistrictForm(instance=district)
+    action = ACTIONS[1][1]
+    context = {"form": form, "action": action}
 
     if request.method == "POST":
         # print('Printing POST: ', request.POST)
         form = DistrictForm(request.POST, instance=district)
         if form.is_valid():
             form.save()
-            return redirect("home")
+            messages.success(request, f"District {district.name} was updated")
+            return redirect("districts")
 
-    context = {"form": form}
     return render(request, "sample_volumes/district_form.html", context)
 
 
 def deleteDistrict(request, pk):
     district = District.objects.get(id=pk)
     if request.method == "POST":
+        messages.success(request, f"District {district.name} was deleted")
         district.delete()
-        return redirect("home")
+        return redirect("districts")
     context = {"item": district}
     return render(request, "sample_volumes/delete.html", context)
 
 
 def createFacility(request):
     form = FacilityForm
-    context = {"form": form}
+    action = ACTIONS[0][1]
+    context = {"form": form, "action": action}
 
     if request.method == "POST":
         # print('Printing POST: ', request.POST)
         form = FacilityForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("home")
+            facility = form.cleaned_data.get("name")
+            messages.success(request, f"Facility {facility} was created")
+            return redirect("facilities")
 
     return render(request, "sample_volumes/facility_form.html", context)
 
@@ -226,67 +243,108 @@ def createFacility(request):
 def updateFacility(request, pk):
     facility = Facility.objects.get(id=pk)
     form = FacilityForm(instance=facility)
+    action = ACTIONS[1][1]
+    context = {"form": form, "action": action}
 
     if request.method == "POST":
         # print('Printing POST: ', request.POST)
         form = FacilityForm(request.POST, instance=facility)
         if form.is_valid():
             form.save()
-            return redirect("home")
+            messages.success(request, f"Facility {facility.name} was updated")
+            return redirect("facilities")
 
-    context = {"form": form}
     return render(request, "sample_volumes/facility_form.html", context)
 
 
 def deleteFacility(request, pk):
     facility = Facility.objects.get(id=pk)
     if request.method == "POST":
+        messages.success(request, f"Facility {facility.name} was deleted")
         facility.delete()
-        return redirect("home")
+        return redirect("facilities")
     context = {"item": facility}
     return render(request, "sample_volumes/delete.html", context)
 
 
 def createHealth_Worker(request):
     form = Health_WorkerForm
-    context = {"form": form}
+    action = ACTIONS[0][1]
+    context = {"form": form, "action": action}
 
     if request.method == "POST":
         # print('Printing POST: ', request.POST)
         form = Health_WorkerForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("home")
+            health_worker = form.cleaned_data.get("name")
+            messages.success(
+                request, f"Health Worker {health_worker} was created")
+            return redirect("health_workers")
 
     return render(request, "sample_volumes/health_worker_form.html", context)
 
 
 def createCourier(request):
     form = CourierForm()
-    context = {"form": form}
+    action = ACTIONS[0][1]
+    context = {"form": form, "action": action}
 
     if request.method == "POST":
         # print('Printing POST: ', request.POST)
         form = CourierForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("home")
+            courier = form.cleaned_data.get("name")
+            messages.success(request, f"Courier {courier} was created")
+            return redirect("couriers")
 
     return render(request, "sample_volumes/courier_form.html", context)
+
+
+def updateCourier(request, pk):
+    courier = Courier.objects.get(id=pk)
+    form = CourierForm(instance=courier)
+    action = ACTIONS[1][1]
+    context = {"form": form, "action": action}
+
+    if request.method == "POST":
+        # print('Printing POST: ', request.POST)
+        form = CourierForm(request.POST, instance=courier)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"Courier {courier.name} was updated")
+            return redirect("couriers")
+
+    return render(request, "sample_volumes/courier_form.html", context)
+
+
+def deleteCourier(request, pk):
+    courier = Courier.objects.get(id=pk)
+    if request.method == "POST":
+        courier.delete()
+        messages.success(
+            request, f"Courier {courier.name} was deleted")
+        return redirect("couriers")
+    context = {"item": courier}
+    return render(request, "sample_volumes/delete.html", context)
 
 
 def updateHealth_Worker(request, pk):
     health_worker = Health_Worker.objects.get(id=pk)
     form = Health_WorkerForm(instance=health_worker)
+    action = ACTIONS[1][1]
+    context = {"form": form, "action": action}
 
     if request.method == "POST":
         # print('Printing POST: ', request.POST)
         form = Health_WorkerForm(request.POST, instance=health_worker)
         if form.is_valid():
             form.save()
-            return redirect("home")
+            messages.success(
+                request, f"Health worker {health_worker.name} was updated")
+            return redirect("health_workers")
 
-    context = {"form": form}
     return render(request, "sample_volumes/health_worker_form.html", context)
 
 
@@ -294,7 +352,9 @@ def deleteHealth_Worker(request, pk):
     health_worker = Health_Worker.objects.get(id=pk)
     if request.method == "POST":
         health_worker.delete()
-        return redirect("home")
+        messages.success(
+            request, f"Health worker {health_worker.name} was deleted")
+        return redirect("health_workers")
     context = {"item": health_worker}
     return render(request, "sample_volumes/delete.html", context)
 
@@ -459,14 +519,17 @@ def facilityGroups(request):
 
 def createFacilityGroup(request):
     form = FacilityGroupForm
-    context = {"form": form}
+    action = ACTIONS[0][1]
+    context = {"form": form, "action": action}
 
     if request.method == "POST":
         # print('Printing POST: ', request.POST)
         form = FacilityGroupForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("home")
+            facility_group = form.cleaned_data.get("name")
+            messages.success(request, f"Facility {facility_group} was created")
+            return redirect("facility_groups")
 
     return render(request, "sample_volumes/facility_group_form.html", context)
 
@@ -484,7 +547,8 @@ def daily_sample_report(request):
             date = datetime.strptime(date, "%Y-%m-%d")
             district = District.objects.get(id=district)
 
-            facilities = Facility.objects.filter(district=district).order_by("name")
+            facilities = Facility.objects.filter(
+                district=district).order_by("name")
             facility_count = facilities.count()
 
             for facility in facilities:
@@ -652,3 +716,87 @@ def report_design(request):
         return response
 
     # return render(request, "sample_volumes/report_design.html", context)
+
+
+def updateFacilityGroup(request, pk):
+    facility_group = FacilityGroup.objects.get(id=pk)
+    form = FacilityGroupForm(instance=facility_group)
+    action = ACTIONS[1][1]
+    context = {"form": form, "action": action}
+
+    if request.method == "POST":
+        # print('Printing POST: ', request.POST)
+        form = FacilityGroupForm(request.POST, instance=facility_group)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, f"Facility group {facility_group.name} was updated")
+            return redirect("facility_groups")
+
+    return render(request, "sample_volumes/facility_group_form.html", context)
+
+
+def deleteFacilityGroup(request, pk):
+    facility_group = FacilityGroup.objects.get(id=pk)
+    if request.method == "POST":
+        facility_group.delete()
+        messages.success(
+            request, f"Facility group {facility_group.name} was deleted")
+        return redirect("facility_groups")
+    context = {"item": facility_group}
+    return render(request, "sample_volumes/delete.html", context)
+
+
+def users(request):
+    users = User.objects.all()
+    context = {"users": users}
+    return render(request, "sample_volumes/users.html", context)
+
+
+def deleteUser(request, pk):
+    # facility_group = FacilityGroup.objects.get(id=pk)
+    # if request.method == "POST":
+    #     facility_group.delete()
+    #     messages.success(
+    #         request, f"Facility group {facility_group.name} was deleted")
+    #     return redirect("facility_groups")
+    # context = {"item": facility_group}
+    # return render(request, "sample_volumes/delete.html", context)
+    pass
+
+
+def updateUser(request, pk):
+    # facility_group = FacilityGroup.objects.get(id=pk)
+    # form = FacilityGroupForm(instance=facility_group)
+    # action = ACTIONS[1][1]
+    # context = {"form": form, "action": action}
+
+    # if request.method == "POST":
+    #     # print('Printing POST: ', request.POST)
+    #     form = FacilityGroupForm(request.POST, instance=facility_group)
+    #     if form.is_valid():
+    #         form.save()
+    #         messages.success(
+    #             request, f"Facility group {facility_group.name} was updated")
+    #         return redirect("facility_groups")
+
+    # return render(request, "sample_volumes/facility_group_form.html", context)
+    pass
+
+
+def resetPassword(request, pk):
+    user = User.objects.get(id=pk)
+    form = PasswordResetCustomForm(instance=user)
+    action = ACTIONS[3][1]
+    context = {"form": form, "action": action, "user": user}
+
+    if request.method == "POST":
+        # print('Printing POST: ', request.POST)
+        form = PasswordResetCustomForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, f"User password for {user.get_full_name} was updated")
+            return redirect("users")
+
+    return render(request, "sample_volumes/reset_password.html", context)
