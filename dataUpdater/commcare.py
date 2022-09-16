@@ -48,7 +48,7 @@ def get_visits():
     success_data = []
 
     # start_date = date(year=2021, month=11, day=30)
-    start_date = date.today() - timedelta(days=10)
+    start_date = date.today() - timedelta(days=1)
     start_date = start_date.strftime("%Y-%m-%d")
 
     end_date = date.today() + timedelta(days=1)
@@ -177,7 +177,7 @@ def get_trips():
     success_data = []
 
     # start_date = date(year=2021, month=11, day=30)
-    start_date = date.today() - timedelta(days=10)
+    start_date = date.today() - timedelta(days=1)
     start_date = start_date.strftime("%Y-%m-%d")
 
     end_date = date.today() + timedelta(days=1)

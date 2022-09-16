@@ -4,6 +4,7 @@ import uuid
 from datetime import datetime, date, timedelta
 from django.conf import settings
 from .data_pull import pull
+import pytz
 
 from sample_volumes.models import Sample_Volumes, Facility, SampleType, DataUpdate
 
@@ -13,8 +14,8 @@ VALID_SAMPLE_CODES = [1, 2, 3, 4]
 def _get_dataset(latest_file):
 
     # Read in the file
-    # with open('/home/r4h/st_optimization/reported_volumes/'+latest_file, 'r') as file:
-    with open('C:/Users/itszw/Dev/st_optimization/reported_volumes/'+latest_file, 'r') as file:
+    with open('/home/routeopt-user/st_optimization/reported_volumes/'+latest_file, 'r') as file:
+    # with open('C:/Users/itszw/Dev/st_optimization/reported_volumes/'+latest_file, 'r') as file:
         filedata = file.read()
 
     # Replace the target string
@@ -22,14 +23,14 @@ def _get_dataset(latest_file):
     filedata = filedata.replace('* Closing connection 0', '')
 
     # Write the file out again
-    # with open('/home/r4h/st_optimization/reported_volumes/'+latest_file, 'w') as file:
-    with open('C:/Users/itszw/Dev/st_optimization/reported_volumes/'+latest_file, 'w') as file:
+    with open('/home/routeopt-user/st_optimization/reported_volumes/'+latest_file, 'w') as file:
+    # with open('C:/Users/itszw/Dev/st_optimization/reported_volumes/'+latest_file, 'w') as file:
         file.write(filedata)
 
     try:
-        #df = pd.read_csv('/home/r4h/st_optimization/reported_volumes/'+latest_file)
-        df = pd.read_csv(
-            'C:/Users/itszw/Dev/st_optimization/reported_volumes/'+latest_file)
+        df = pd.read_csv('/home/routeopt-user/st_optimization/reported_volumes/'+latest_file)
+        # df = pd.read_csv(
+        #     'C:/Users/itszw/Dev/st_optimization/reported_volumes/'+latest_file)
         print('success fetching')
     except:
         return 'Error fetching'
@@ -50,18 +51,30 @@ def _get_dataset(latest_file):
 
 
 def updateData(downloaded=False):
-    current_update = DataUpdate.objects.filter(completed=False)
+    # current_update = DataUpdate.objects.filter(completed=False)
+
+    current_update = DataUpdate.objects.filter(
+        completed=False).order_by('-created_at').first()
+    six_minutes_ago = datetime.utcnow().replace(
+        tzinfo=pytz.UTC) - timedelta(minutes=6)
 
     if not downloaded:
         if current_update:
-            return
+            if current_update.created_at > six_minutes_ago:
+                print("pull samples has been invoked but the samples are currently being pulled or have recently been pulled")
+                return
+            else:
+                # otherwise this was more that 6 minutes ago so close up the one that started here
+                current_update.completed = True
+                current_update.time_completed = datetime.now()
+                current_update.save()
         else:
             update = DataUpdate()
             update.completed = False
             update.user = 'system'
             update.save()
     else:
-        update = current_update.first()
+        update = current_update
 
     try:
         latest_file = pull()
@@ -164,10 +177,10 @@ def updateData(downloaded=False):
             return
 
         else:
-            return 'no data set'
             update.time_completed = datetime.now()
             update.completed = True
             update.save()
+            return 'no data set'
     except:
         update.delete()
         return

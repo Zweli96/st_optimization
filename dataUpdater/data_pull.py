@@ -71,17 +71,21 @@ def getMostRecentFile():
     reported_volumes_dir = f"{settings.BASE_DIR}{os.sep}reported_volumes"
     list_of_files = glob.glob(f'{reported_volumes_dir}{os.sep}*.csv')
 
-    latest_file = max(list_of_files, key=os.path.getmtime)
-    head, tail = os.path.split(latest_file)
+    try:
+        latest_file = max(list_of_files, key=os.path.getmtime)
+        head, tail = os.path.split(latest_file)
 
-    thirty_minutes_ago = datetime.now() - timedelta(minutes=10)
-    file_time = datetime.fromtimestamp(os.path.getmtime(os.path.join(head,tail)))
-    if file_time < thirty_minutes_ago:
-        current_data = False
-    else:
-        current_data = True
+        thirty_minutes_ago = datetime.now() - timedelta(minutes=10)
+        file_time = datetime.fromtimestamp(os.path.getmtime(os.path.join(head,tail)))
+        if file_time < thirty_minutes_ago:
+            current_data = False
+        else:
+            current_data = True
 
-    return tail, current_data
+        return tail, current_data
+    except:
+        nothing = None
+        return nothing, False
 
 
 def pull_direct():
@@ -116,7 +120,7 @@ def pull_direct():
     date_time_stamp = now.strftime("%Y%m%d%H%M%S")
     	
 
-    # with open(f'/home/r4h/st_optimization/reported_volumes/sample_collection-{date_time_stamp}.csv', 'wb') as f:
-    with open(f'C:/Users/itszw/Dev/st_optimization/reported_volumes/sample_collection-{date_time_stamp}.csv', 'wb') as f:
+    with open(f'/home/routeopt-user/st_optimization/reported_volumes/sample_collection-{date_time_stamp}.csv', 'wb') as f:
+    # with open(f'C:/Users/itszw/Dev/st_optimization/reported_volumes/sample_collection-{date_time_stamp}.csv', 'wb') as f:
         f.write(resp.content)
     return

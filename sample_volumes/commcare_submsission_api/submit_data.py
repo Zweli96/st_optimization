@@ -158,7 +158,7 @@ def render_xform(cases: Iterable[Case]) -> str:
         'submission_id': uuid.uuid4().hex,
         'cases': list(cases),
     }
-    temp_dir = f"{settings.BASE_DIR}\sample_volumes\commcare_submsission_api"
+    temp_dir = f"{settings.BASE_DIR}{os.sep}sample_volumes{os.sep}commcare_submsission_api"
     temp_file_name = "xform.xml.j2"
     filepath = os.path.join(temp_dir, temp_file_name)
 
