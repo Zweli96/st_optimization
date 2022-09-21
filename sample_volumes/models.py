@@ -151,7 +151,7 @@ class Facility(models.Model):
         # reported_date__year=2021, reported_date__month=12, reported_date__day=6
 
         if samples.count() == 0 and format != "types":
-            return "not yet reported"
+            return "*_*_*_*"
 
         for s in SAMPLE_TYPE:
             # Get the most recently reported sample on that day
@@ -169,7 +169,7 @@ class Facility(models.Model):
                 #     incorrectly_reported[self.id].append(incorrect_sample)
 
             else:
-                volumes[s[1]] = "NA"
+                volumes[s[1]] = "*"
 
         for key, value in volumes.items():
             volume_string += f"{value}_"

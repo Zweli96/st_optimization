@@ -42,3 +42,7 @@ td {
 body {
   background-color: #f8f8ff;
 }
+
+.current-day {
+  background-color: #FFFDD0;
+}
