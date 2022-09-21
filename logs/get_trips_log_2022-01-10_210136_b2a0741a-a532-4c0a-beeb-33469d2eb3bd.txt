@@ -1,2 +1,0 @@
-Total Visits Successfully Saved: 0#, id, messageTotal Visits With Errors: 2#, id, message1,13250d6d-3fcb-45d6-9dac-12e406663aa6,Start location doesn't exist,Luwawa_Mzimba_South
-2,60a9035c-06cd-472c-b90f-a12130520ad5,Start location doesn't exist,Mzimba_South_DHO_Mzimba_South

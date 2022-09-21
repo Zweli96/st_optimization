@@ -1,6 +1,0 @@
-Total Visits Successfully Saved: 0#, id, messageTotal Visits With Errors: 6#, id, message1,b6097525-71bb-4991-9013-1451b7852ad8,Start location doesn't exist,opd_Balaka
-2,7febd960-2ce4-4b14-b6d7-32bc53e73976,Start location doesn't exist,namanolo_Balaka
-3,5808599d-50c0-4679-a117-ed3cc092e10a,Start location doesn't exist,ulongwe_Balaka
-4,ce22c216-9d5b-4a8c-a57d-d252cd01c56d,Start location doesn't exist,kalembo_Balaka
-5,29647b52-87cb-4013-b188-1ab096e9497b,Start location doesn't exist,nandumbo_Balaka
-6,85a82bb5-e177-4071-b77b-2106dcf09b16,Start location doesn't exist,Balaka_dho_Balaka

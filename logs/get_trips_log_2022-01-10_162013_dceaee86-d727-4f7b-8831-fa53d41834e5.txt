@@ -1,8 +1,0 @@
-Total Visits Successfully Saved: 0#, id, messageTotal Visits With Errors: 8#, id, message1,ec4b7560-5edf-47b2-af5d-8d75b54f42fd,Start location doesn't exist,Lengwe_Chikwawa
-2,2d75597c-0b16-4a9d-9421-17f6e48d57dc,Start location doesn't exist,Illovo_Mwanza_Chikwawa
-3,b3cd210b-7fad-4f24-a47a-6a48a515022b,Start location doesn't exist,Kalulu_Chikwawa
-4,6170c3ed-dda1-4dcd-9351-1ca0a55abe5a,Start location doesn't exist,Illovo_Factory_Chikwawa
-5,dd1f60fe-87a5-406b-90a0-0e82f433fc68,Start location doesn't exist,Hunger_Chikwawa
-6,5b63f2cd-ccd1-49ee-94b7-3f6688771fff,Start location doesn't exist,Illovo Alumeda_Chikwawa
-7,c927aca4-11e4-451a-976a-2748effa443b,Start location doesn't exist,Chikwawa_DHO_Chikwawa
-8,80b2ce48-dc81-4aa9-a2c8-6ae40e9963e7,Start location doesn't exist,Atupere_Karonga
