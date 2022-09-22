@@ -83,8 +83,9 @@ def send_sms_notifications():
 
     results = []
     for hw in health_workers:
-        result = send_sms(str(hw.phone_number), to_visit_message)
-        results.append(result)
+        if hw.phone_number:
+            result = send_sms(str(hw.phone_number), to_visit_message)
+            results.append(result)
 
     i = 1
     for r in results:
@@ -143,8 +144,9 @@ def send_sms_reminders():
                 "[arg:sample_types]", missing_samples_string)
 
             for hw in health_workers:
-                result = send_sms(str(hw.phone_number), reminder_message)
-                results.append(result)
+                if hw.phone_number:
+                    result = send_sms(str(hw.phone_number), reminder_message)
+                    results.append(result)
 
         i = 1
         for r in results:
