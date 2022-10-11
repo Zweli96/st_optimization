@@ -46,3 +46,11 @@ body {
 .current-day {
   background-color: #FFFDD0;
 }
+
+td.make-routes-present-day {
+  background-color: #FFFF8F !important;
+}
+
+.make-routes-div {
+  transform: scale(0.55);
+}

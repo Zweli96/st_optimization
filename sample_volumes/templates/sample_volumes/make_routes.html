@@ -61,7 +61,7 @@
 
 {% if selected_district %}
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-9">
     <div class="card card-inverse card-primary">
       <div class="card-body">
         <h4 class="card-description">{{selected_district.name}} routes for {{selected_date|date:"D d M Y"}} </h4>
@@ -110,7 +110,7 @@
                 {% endfor %} {% endcomment %}
                 <td>{{facility.days_since_last_visit}}</td>
                 {% for date in date_list %}
-                <td style="text-align:center">{% get_daily_volumes_from_facility facility 'string' date.date %}</td>
+                <td {% if forloop.last %} class='make-routes-present-day'{% endif %} style="text-align:center">{% get_daily_volumes_from_facility facility 'string' date.date %}</td>
                 {% endfor %}
                 <td>{{facility.get_last_visit|date:"D j-M"}}</td>
               </tr>
@@ -121,7 +121,7 @@
       </div>
     </div>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-3">
     <div id="accordion">
       {% for x in courier_count%}
         <div class="card">
