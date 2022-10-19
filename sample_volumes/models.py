@@ -132,6 +132,7 @@ class Facility(models.Model):
 
     def get_daily_sample_volumes(self, format="string", selected_date=None):
         incorrectly_reported = {}
+        visited = False
 
         volumes = {}
         volume_string = ""
@@ -148,9 +149,20 @@ class Facility(models.Model):
             reported_date__month=today.month,
             reported_date__day=today.day,
         )
+
+        if format == "string_if_visited":
+            visits_on_date = self.visit_set.filter(
+                visit_date__year=today.year,
+                visit_date__month=today.month,
+                visit_date__day=today.day,
+            )
+
+            if visits_on_date and format != "types":
+                visited = True
+        
         # reported_date__year=2021, reported_date__month=12, reported_date__day=6
 
-        if samples.count() == 0 and format != "types":
+        if samples.count() == 0 and format == "string":
             return "*_*_*_*"
 
         for s in SAMPLE_TYPE:
@@ -181,6 +193,8 @@ class Facility(models.Model):
             return volumes
         elif format == "total":
             return
+        elif format == "string_if_visited":
+            return [volume_string, visited]
 
         # return samples
         # for sample in samples:

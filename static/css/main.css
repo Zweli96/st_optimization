@@ -54,3 +54,8 @@ td.make-routes-present-day {
 .make-routes-div {
   transform: scale(0.55);
 }
+
+td.facility-visited {
+  background-color: #6F7378 !important;
+  font-weight: bold !important;
+}

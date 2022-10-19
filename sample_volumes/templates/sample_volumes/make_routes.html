@@ -110,7 +110,8 @@
                 {% endfor %} {% endcomment %}
                 <td>{{facility.days_since_last_visit}}</td>
                 {% for date in date_list %}
-                <td {% if forloop.last %} class='make-routes-present-day'{% endif %} style="text-align:center">{% get_daily_volumes_from_facility facility 'string' date.date %}</td>
+                {% get_daily_volumes_from_facility facility 'string_if_visited' date.date as volume_visit %}
+                <td class='{% if forloop.last %}make-routes-present-day{% endif %} {% if volume_visit.1  %}facility-visited{% endif %}' style="text-align:center">{{volume_visit.0}}</td>
                 {% endfor %}
                 <td>{{facility.get_last_visit|date:"D j-M"}}</td>
               </tr>
