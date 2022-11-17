@@ -60,7 +60,7 @@ def updateData(downloaded=False):
 
     if not downloaded:
         if current_update:
-            if current_update.created_at > six_minutes_ago:
+            if current_update.created_at.replace(tzinfo=pytz.UTC) > six_minutes_ago:
                 print("pull samples has been invoked but the samples are currently being pulled or have recently been pulled")
                 return
             else:
