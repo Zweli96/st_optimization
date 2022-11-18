@@ -553,7 +553,7 @@ def daily_sample_report(request):
 
             for facility in facilities:
                 data[facility.name] = facility.get_daily_sample_volumes(
-                    format="types", selected_date=date
+                    format="types", selected_date=date, report=True
                 )
                 data[facility.name]["code"] = facility.facility_code
 

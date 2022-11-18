@@ -130,7 +130,7 @@ class Facility(models.Model):
     def __str__(self):
         return self.name
 
-    def get_daily_sample_volumes(self, format="string", selected_date=None):
+    def get_daily_sample_volumes(self, format="string", selected_date=None, report=False):
         incorrectly_reported = {}
         visited = False
 
@@ -181,7 +181,10 @@ class Facility(models.Model):
                 #     incorrectly_reported[self.id].append(incorrect_sample)
 
             else:
-                volumes[s[1]] = "*"
+                if report:
+                    volumes[s[1]] = "NA"
+                else:
+                    volumes[s[1]] = "*"
 
         for key, value in volumes.items():
             volume_string += f"{value}_"
