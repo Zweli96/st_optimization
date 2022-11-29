@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.core.mail import EmailMessage
-from weasyprint import HTML
+# from weasyprint import HTML
 from django.template.loader import render_to_string
 import os
 from .models import (
@@ -34,10 +34,10 @@ def courier_report(selected_date, district):
 
     HOST = "http://localhost:8000/static/"
 
-    html = HTML(string=html_string, base_url=HOST)
-    pdf = html.write_pdf()
+    # html = HTML(string=html_string, base_url=HOST)
+    # pdf = html.write_pdf()
 
-    return pdf
+    # return pdf
 
     # return render(request, "sample_volumes/report_design.html", context)
 
