@@ -45,7 +45,6 @@ USER_ROLES = (
 )
 
 
-
 class District(models.Model):
     name = models.CharField(max_length=200)
     region = models.CharField(choices=DISTRICT_REGIONS, max_length=200)
@@ -103,6 +102,7 @@ class FacilityGroup(models.Model):
 class Facility(models.Model):
     name = models.CharField(max_length=200)
     commcare_name = models.CharField(max_length=200, blank=True, null=True)
+    commcare_id = models.CharField(max_length=200, blank=True, null=True)
     district = models.ForeignKey(
         District, null=True, on_delete=models.SET_NULL)
     facility_code = models.CharField(
@@ -159,7 +159,7 @@ class Facility(models.Model):
 
             if visits_on_date and format != "types":
                 visited = True
-        
+
         # reported_date__year=2021, reported_date__month=12, reported_date__day=6
 
         if samples.count() == 0 and format == "string":
@@ -388,11 +388,12 @@ class Sample_Volumes(models.Model):
         # reported
         pass
 
+
 class DataUpdate(models.Model):
     time_started = models.DateTimeField(auto_now_add=True)
     time_completed = models.DateTimeField(null=True)
     completed = models.BooleanField(null=True, default=False)
-    user = models.CharField(null=True,max_length=200)
+    user = models.CharField(null=True, max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
