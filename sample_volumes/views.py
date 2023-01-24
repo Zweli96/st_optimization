@@ -548,7 +548,7 @@ def daily_sample_report(request):
             district = District.objects.get(id=district)
 
             facilities = Facility.objects.filter(
-                district=district).order_by("facility_code")
+                district=district).order_by("name")
             facility_count = facilities.count()
 
             for facility in facilities:
