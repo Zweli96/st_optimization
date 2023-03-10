@@ -14,8 +14,8 @@ def start():
     #dataFetch.updateData()
     scheduler.start()
     scheduler.add_job(dataFetch.updateData, "interval", minutes=15)
-    scheduler.add_job(get_visits, "interval", minutes=10)
-    scheduler.add_job(get_trips, "interval", minutes=10)
+    scheduler.add_job(get_visits, "interval", minutes=40)
+    scheduler.add_job(get_trips, "interval", minutes=40)
     scheduler.add_job(
         send_sms.send_sms_notifications, "cron", day_of_week="mon-fri", hour=8
     )
