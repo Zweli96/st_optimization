@@ -36,7 +36,7 @@ def _get_dataset(latest_file):
         return 'Error fetching'
 
     date_today = datetime.now() + timedelta(days=1)
-    date_yesterday = date_today - timedelta(days=1)
+    date_yesterday = date_today - timedelta(days=8)
 
     if df is not None:
         df['date'] = pd.to_datetime(df.date)
