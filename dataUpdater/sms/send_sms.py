@@ -89,8 +89,9 @@ def send_sms_notifications():
 
     i = 1
     for r in results:
-        f.write(f'{i},{r["status"]},{r["code"]},{r["ref"]},To Visit\n')
-        i += 1
+        if r:
+            f.write(f'{i},{r["status"]},{r["code"]},{r["ref"]},To Visit\n')
+            i += 1
 
     results = []
     for hwnv in health_workers_not_visiting:
@@ -99,8 +100,9 @@ def send_sms_notifications():
 
     i = 1
     for r in results:
-        f.write(f'{i},{r["status"]},{r["code"]},{r["ref"]},To Not Visit\n')
-        i += 1
+        if r:
+            f.write(f'{i},{r["status"]},{r["code"]},{r["ref"]},To Not Visit\n')
+            i += 1
 
     f.close()
 
@@ -150,8 +152,9 @@ def send_sms_reminders():
 
         i = 1
         for r in results:
-            f.write(
-                f'{i},{r["status"]},{r["code"]},{r["ref"]}, Reminder to report\n')
-            i += 1
+            if r:
+                f.write(
+                    f'{i},{r["status"]},{r["code"]},{r["ref"]}, Reminder to report\n')
+                i += 1
 
     f.close()
