@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.template.loader import render_to_string
+import xlsxwriter
 from weasyprint import HTML
 import tempfile
 
@@ -29,6 +30,8 @@ from .forms import (
     FacilityGroupForm,
     PasswordResetCustomForm
 )
+
+from .utils import get_weekdays
 from datetime import date, datetime, timedelta
 from django.utils.timezone import localtime
 from .commcare_submsission_api.submit_data import main
@@ -111,7 +114,7 @@ def dashboard(request, pk=""):
         if request.POST["date"]:
             selected_date = datetime.strptime(request.POST["date"], "%Y-%m-%d")
             context.update({"selected_date": selected_date})
-            #context.update({"selected_date": request.POST["date"]})
+            # context.update({"selected_date": request.POST["date"]})
 
     if selected_district:
         context.update({"selected_district": selected_district})
@@ -800,3 +803,83 @@ def resetPassword(request, pk):
             return redirect("users")
 
     return render(request, "sample_volumes/reset_password.html", context)
+
+
+def compliance_report(request):
+    target = 0
+    compliance_data = []
+    data = {}
+    context = {}
+    districts = District.objects.order_by("name")
+
+    if request.method == "POST":
+        start_date_str = request.POST["start_date"]
+        end_date_str = request.POST["end_date"]
+        district = request.POST["district"]
+
+        if start_date_str and end_date_str and district:
+            start_date = datetime.strptime(start_date_str, "%Y-%m-%d").date()
+            end_date = datetime.strptime(end_date_str, "%Y-%m-%d").date()
+            district = District.objects.get(id=district)
+
+            facilities = Facility.objects.filter(
+                district=district).order_by("name")
+
+            weekday_list = get_weekdays(start_date, end_date)
+            target = len(weekday_list)
+
+            for facility in facilities:
+                reported_count = 0
+                for weekday in weekday_list:
+                    reported = 0
+                    reported = len(Sample_Volumes.objects.filter(facility=facility,
+                                                                 reported_date__year=weekday.year,
+                                                                 reported_date__month=weekday.month,
+                                                                 reported_date__day=weekday.day).values_list('facility', flat=True)
+                                   .distinct())
+                    if reported > 0:
+                        reported_count += 1
+
+                quotient = reported_count / target
+                percentage = quotient * 100
+                rounded_percentage = round(percentage)
+
+                facility_compliance = {
+                    'facility': facility.name,
+                    'target': target,
+                    'reported': reported_count,
+                    'percentage': rounded_percentage
+                }
+
+                compliance_data.append(facility_compliance)
+
+            # Create a response with the Excel file
+            response = HttpResponse(
+                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            response['Content-Disposition'] = f'attachment; filename="{district.name}_Compliance_{start_date}-{end_date}_.xlsx"'
+
+            # Create a new workbook and worksheet
+            workbook = xlsxwriter.Workbook(response, {'in_memory': True})
+            worksheet = workbook.add_worksheet()
+
+            # Write the headings to the worksheet
+            headings = ['Facility', 'Target', 'Reported', 'Percentage %']
+            for col, heading in enumerate(headings):
+                worksheet.write(0, col, heading)
+
+            # Write the data to the worksheet
+            for row, item in enumerate(compliance_data, start=1):
+                worksheet.write(row, 0, item['facility'])
+                worksheet.write(row, 1, item['target'])
+                worksheet.write(row, 2, item['reported'])
+                worksheet.write(row, 3, item['percentage'])
+
+            # Save the workbook
+            workbook.close()
+
+            # Create a response with the Excel file
+
+            return response
+
+    context.update({"districts": districts})
+    return render(request, "sample_volumes/compliance_report.html", context)

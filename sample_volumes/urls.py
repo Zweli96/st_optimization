@@ -52,6 +52,8 @@ urlpatterns = [
          name='daily_sample_report'),
     path('daily_courier_report/', views.daily_courier_report,
          name='daily_courier_report'),
+    path('compliance_report/', views.compliance_report,
+         name='compliance_report'),
     path('report_design/', views.report_design,
          name='report_design'),
     path('reset_password/<str:pk>/',
