@@ -11,7 +11,7 @@ def start():
     # get_trips()
     # get_visits()
     # # sendEmail('courier')
-    #dataFetch.updateData()
+    dataFetch.updateData()
     scheduler.start()
     scheduler.add_job(dataFetch.updateData, "interval", minutes=15)
     scheduler.add_job(get_visits, "interval", minutes=40)

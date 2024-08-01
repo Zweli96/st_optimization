@@ -32,14 +32,15 @@
           <tr style="border-top: 1pt solid black">
             <th style="width: 10%">&nbsp;</th>
             <th style="width: 40%">&nbsp;</th>
-            <th style="border-bottom: 1pt solid black" colspan="4">
+            <th style="border-bottom: 1pt solid black" colspan="5">
               Sample Volumes
             </th>
           </tr>
           <tr style="border-bottom: 1pt solid black">
             <th style="width: 15%">Code</th>
             <th style="text-align: left; width: 40%">Facility</th>
-            <th>VL</th>
+            <th>DBS</th>
+            <th>Plasma</th>
             <th>EID</th>
             <th>TB</th>
             <th>Other</th>
@@ -55,6 +56,12 @@
               class="{% if info.VL == 'NA' %}red{% endif %}"
             >
               {{info.VL}}
+            </td>
+            <td
+              style="text-align: center"
+              class="{% if info.Plasma == 'NA' %}red{% endif %}"
+            >
+              {{info.Plasma}}
             </td>
             <td
               style="text-align: center"

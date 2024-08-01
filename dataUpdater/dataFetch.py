@@ -8,14 +8,14 @@ import pytz
 
 from sample_volumes.models import Sample_Volumes, Facility, SampleType, DataUpdate
 
-VALID_SAMPLE_CODES = [1, 2, 3, 4]
+VALID_SAMPLE_CODES = [1, 2, 3, 4, 6]
 
 
 def _get_dataset(latest_file):
 
     # Read in the file
     with open('/home/routeopt-user/st_optimization/reported_volumes/'+latest_file, 'r') as file:
-    # with open('C:/Users/itszw/Dev/st_optimization/reported_volumes/'+latest_file, 'r') as file:
+        # with open('C:/Users/itszw/Dev/st_optimization/reported_volumes/'+latest_file, 'r') as file:
         filedata = file.read()
 
     # Replace the target string
@@ -24,11 +24,12 @@ def _get_dataset(latest_file):
 
     # Write the file out again
     with open('/home/routeopt-user/st_optimization/reported_volumes/'+latest_file, 'w') as file:
-    # with open('C:/Users/itszw/Dev/st_optimization/reported_volumes/'+latest_file, 'w') as file:
+        # with open('C:/Users/itszw/Dev/st_optimization/reported_volumes/'+latest_file, 'w') as file:
         file.write(filedata)
 
     try:
-        df = pd.read_csv('/home/routeopt-user/st_optimization/reported_volumes/'+latest_file)
+        df = pd.read_csv(
+            '/home/routeopt-user/st_optimization/reported_volumes/'+latest_file)
         # df = pd.read_csv(
         #     'C:/Users/itszw/Dev/st_optimization/reported_volumes/'+latest_file)
         print('success fetching')
@@ -61,7 +62,8 @@ def updateData(downloaded=False):
     if not downloaded:
         if current_update:
             if current_update.created_at.replace(tzinfo=pytz.UTC) > six_minutes_ago:
-                print("pull samples has been invoked but the samples are currently being pulled or have recently been pulled")
+                print(
+                    "pull samples- has been invoked but the samples are currently being pulled or have recently been pulled")
                 return
             else:
                 # otherwise this was more that 6 minutes ago so close up the one that started here

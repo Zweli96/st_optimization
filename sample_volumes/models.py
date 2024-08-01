@@ -28,6 +28,7 @@ FACILITY_TYPE = (
 
 SAMPLE_TYPE = (
     ("1", "VL"),
+    ("6", "Plasma"),
     ("2", "EID"),
     ("3", "TB"),
     ("4", "Other"),
@@ -163,7 +164,7 @@ class Facility(models.Model):
         # reported_date__year=2021, reported_date__month=12, reported_date__day=6
 
         if samples.count() == 0 and format == "string":
-            return "*_*_*_*"
+            return "*_*_*_*_*"
 
         for s in SAMPLE_TYPE:
             # Get the most recently reported sample on that day

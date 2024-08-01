@@ -161,7 +161,7 @@
         <div style="margin: 30px">
           <div class="form-group row">
             <label for="vl-samples" class="col-sm-9 col-form-label"
-              >VL Samples</label
+              >VL DBS Samples</label
             >
             <div class="col-sm-3">
               <input
@@ -169,6 +169,22 @@
                 class="form-control"
                 id="vl-samples"
                 placeholder="vl"
+                min="0"
+                max="500"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="plasma-samples" class="col-sm-9 col-form-label"
+              >VL Plasma samples</label
+            >
+            <div class="col-sm-3">
+              <input
+                type="number"
+                class="form-control"
+                id="plasma-samples"
+                placeholder="plasma"
                 min="0"
                 max="500"
                 readonly

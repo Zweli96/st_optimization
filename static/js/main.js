@@ -48,9 +48,10 @@ $(document).ready(function () {
     var sample_volumes = $(e.relatedTarget).attr("data-volumes");
     var sample_volumes = sample_volumes.split("_");
     $(e.currentTarget).find('input[id="vl-samples"]').val(sample_volumes[0]);
-    $(e.currentTarget).find('input[id="eid-samples"]').val(sample_volumes[1]);
-    $(e.currentTarget).find('input[id="tb-samples"]').val(sample_volumes[2]);
-    $(e.currentTarget).find('input[id="other-samples"]').val(sample_volumes[3]);
+    $(e.currentTarget).find('input[id="plasma-samples"]').val(sample_volumes[1]);
+    $(e.currentTarget).find('input[id="eid-samples"]').val(sample_volumes[2]);
+    $(e.currentTarget).find('input[id="tb-samples"]').val(sample_volumes[3]);
+    $(e.currentTarget).find('input[id="other-samples"]').val(sample_volumes[4]);
     $(e.currentTarget).find('p[id="last_reported"]').html(reportedBy);
     $(e.currentTarget).find('span[id="facility-name"]').html(facility_name);
     if (reportedToday == "yes") {
