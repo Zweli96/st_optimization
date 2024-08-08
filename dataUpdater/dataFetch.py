@@ -102,6 +102,8 @@ def updateData(downloaded=False):
 
             # Loop through dataset and save the sample volumes to the database
             for index, row in sample_volume_data.iterrows():
+                if int(row['id']) == 424367:
+                    print("my plasma")
                 try:
                     reported_volume_object = Sample_Volumes.objects.get(
                         session_id=int(row['id']))
