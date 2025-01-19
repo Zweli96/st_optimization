@@ -50,28 +50,23 @@ def _get_dataset(latest_file):
 
         return df[df['date'].between(end_day, start_day)]
 
+# This is the function that starts a calls the data pull and processes the pulled data
+# and saves each reported sample re
+
 
 def updateData(downloaded=False):
-    # current_update = DataUpdate.objects.filter(completed=False)
 
     current_update = DataUpdate.objects.filter(
         completed=False).order_by('-created_at').first()
-    six_minutes_ago = datetime.utcnow().replace(
-        tzinfo=pytz.UTC) - timedelta(minutes=6)
+
+    update = DataUpdate()
 
     if not downloaded:
         if current_update:
-            if current_update.created_at.replace(tzinfo=pytz.UTC) > six_minutes_ago:
-                print(
-                    "pull samples- has been invoked but the samples are currently being pulled or have recently been pulled")
-                return
-            else:
-                # otherwise this was more that 6 minutes ago so close up the one that started here
-                current_update.completed = True
-                current_update.time_completed = datetime.now()
-                current_update.save()
+            current_update.completed = True
+            current_update.time_completed = datetime.now()
+            current_update.save()
         else:
-            update = DataUpdate()
             update.completed = False
             update.user = 'system'
             update.save()
@@ -186,5 +181,6 @@ def updateData(downloaded=False):
             update.save()
             return 'no data set'
     except:
-        update.delete()
+        if update:
+            update.delete()
         return

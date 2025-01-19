@@ -62,6 +62,8 @@ def pull():
     else:
         pull_direct()
         dataFetch.updateData(downloaded=True)
+        return
+    return
 
 
 def getMostRecentFile():
@@ -74,10 +76,10 @@ def getMostRecentFile():
         latest_file = max(list_of_files, key=os.path.getmtime)
         head, tail = os.path.split(latest_file)
 
-        thirty_minutes_ago = datetime.now() - timedelta(minutes=10)
+        two_minutes_ago = datetime.now() - timedelta(minutes=2)
         file_time = datetime.fromtimestamp(
             os.path.getmtime(os.path.join(head, tail)))
-        if file_time < thirty_minutes_ago:
+        if file_time < two_minutes_ago:
             current_data = False
         else:
             current_data = True
@@ -86,6 +88,7 @@ def getMostRecentFile():
     except:
         nothing = None
         return nothing, False
+    return
 
 
 def pull_direct():
