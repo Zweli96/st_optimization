@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
@@ -393,6 +394,7 @@ def makeRoutes(request, pk=""):
 
     selected_district = ""
     courier_count = 0
+    courier_list = []
 
     if request.method == "POST":
         if "date" in request.POST:
@@ -425,6 +427,7 @@ def makeRoutes(request, pk=""):
             routes = json.loads(request.POST["routes"])
             selected_district = json.loads(request.POST["selected_district"])
             courier_count = json.loads(request.POST["courier_count"])
+
             user_id = json.loads(request.POST["user_id"])
             route_date = json.loads(request.POST["selected_date"])
             route_date = datetime.strptime(
@@ -436,6 +439,7 @@ def makeRoutes(request, pk=""):
             route_number = 1
             for route in routes:
                 # Check if route exists or a new one is being created.
+                courier = route["courier"]
                 created_route = Route.objects.filter(
                     district=selected_district,
                     route_date=route_date,
@@ -473,6 +477,8 @@ def makeRoutes(request, pk=""):
         facilities = Facility.objects.filter(district=selected_district.id)
         courier_count = Courier.objects.filter(
             district=selected_district.id).count()
+        courier_list = Courier.objects.filter(
+            district=selected_district.id).order_by("name")
 
     if route_date:
         future_date = route_date.date() >= date.today()
@@ -486,6 +492,7 @@ def makeRoutes(request, pk=""):
             "facilities": facilities,
             "date_list": date_list,
             "courier_count": range(courier_count),
+            "courier_list": courier_list,
         }
     )
 
@@ -560,7 +567,10 @@ def daily_sample_report(request):
                 )
                 data[facility.name]["code"] = facility.facility_code
 
-        context.update({"date": date, "district": district, "data": data})
+        logo_path = os.path.join(
+            settings.BASE_DIR, "static/images/r4h_logo.png")
+        context.update({"date": date, "district": district,
+                       "data": data, "logo_path": logo_path})
         template_path = "sample_volumes/daily_report_template.html"
         # Create a Django response object, and specify content_type as pdf
         response = HttpResponse(content_type="application/pdf")

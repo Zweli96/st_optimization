@@ -48,7 +48,9 @@ $(document).ready(function () {
     var sample_volumes = $(e.relatedTarget).attr("data-volumes");
     var sample_volumes = sample_volumes.split("_");
     $(e.currentTarget).find('input[id="vl-samples"]').val(sample_volumes[0]);
-    $(e.currentTarget).find('input[id="plasma-samples"]').val(sample_volumes[1]);
+    $(e.currentTarget)
+      .find('input[id="plasma-samples"]')
+      .val(sample_volumes[1]);
     $(e.currentTarget).find('input[id="eid-samples"]').val(sample_volumes[2]);
     $(e.currentTarget).find('input[id="tb-samples"]').val(sample_volumes[3]);
     $(e.currentTarget).find('input[id="other-samples"]').val(sample_volumes[4]);
@@ -179,6 +181,7 @@ $(document).ready(function () {
     );
     console.log("list id  " + list_id);
     console.log("list item  " + list_item[0].outerHTML);
+    console.log("parent: " + parent);
 
     $(list_item).appendTo($("#" + list_id));
     $(".route_list").sortable("refresh");
@@ -206,8 +209,12 @@ $(document).ready(function () {
 
     var routes = [];
 
-    $(".route_list").each(function (route_index) {
-      var route_facilities = { route: route_index + 1, facilities: [] };
+    $(".route_list").each(function (route_index, courier_index) {
+      var route_facilities = {
+        route: route_index + 1,
+        facilities: [],
+        courier: 0,
+      };
       $(this)
         .sortable("refreshPositions")
         .children(".route_list_item")
@@ -218,7 +225,10 @@ $(document).ready(function () {
           );
           route_facilities.facilities.push(facility_id);
         });
+      courier_id = parseInt($(this).attr("courier"));
+      route_facilities.courier = courier_id;
       routes.push(route_facilities);
+      // debugger;
     });
 
     console.log(routes);

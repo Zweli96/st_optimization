@@ -16,12 +16,15 @@
       .red {
         color: red;
       }
+      body {
+         font-family: "Times-Roman", serif;
+        }
     </style>
   </head>
-  <body font-family="Didot">
+  <body>
     <div class="container">
       <img
-        src="/home/routeopt-user/st_optimization/static/images/r4h_logo.png"
+        src="{{ logo_path }}"
         alt="logo"
         style="width: 100px; height: 32px"
       />
@@ -47,6 +50,14 @@
           </tr>
         </thead>
         <tbody>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
           {% for facility, info in data.items %}
           <tr>
             <td style="text-align: center">{{info.code}}</td>

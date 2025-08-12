@@ -164,7 +164,7 @@ def get_visits():
 
 def get_trips():
     # Open file to log the
-    log_dir = f"{settings.BASE_DIR}\logs"
+    log_dir = f"{settings.BASE_DIR}{os.sep}logs"
     log_file_name = (
         f"get_trips_log_{datetime.now().strftime('%Y-%m-%d_%H%M%S')}_{uuid.uuid4()}.txt"
     )
