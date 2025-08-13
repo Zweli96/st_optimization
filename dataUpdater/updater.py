@@ -42,5 +42,5 @@ def start():
 
     # Afternoon reminders — runs update first, both inside lock
     scheduler.add_job(
-        send_reminders_with_fresh_data, "cron", day_of_week="mon-fri", hour=15, minute=30
+        send_reminders_with_fresh_data, "cron", day_of_week="mon-fri", hour=15, minute=45
     )
