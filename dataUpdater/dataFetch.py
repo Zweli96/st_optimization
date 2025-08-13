@@ -14,8 +14,7 @@ VALID_SAMPLE_CODES = [1, 2, 3, 4, 6]
 def _get_dataset(latest_file):
 
     # Read in the file
-    with open('/home/routeopt-user/st_optimization/reported_volumes/'+latest_file, 'r') as file:
-        # with open('C:/Users/itszw/Dev/st_optimization/reported_volumes/'+latest_file, 'r') as file:
+    with open(f"{settings.BASE_DIR}{os.sep}reported_volumes{os.sep}"+latest_file, 'r') as file:
         filedata = file.read()
 
     # Replace the target string
@@ -23,15 +22,12 @@ def _get_dataset(latest_file):
     filedata = filedata.replace('* Closing connection 0', '')
 
     # Write the file out again
-    with open('/home/routeopt-user/st_optimization/reported_volumes/'+latest_file, 'w') as file:
-        # with open('C:/Users/itszw/Dev/st_optimization/reported_volumes/'+latest_file, 'w') as file:
+    with open(f"{settings.BASE_DIR}{os.sep}reported_volumes{os.sep}"+latest_file, 'w') as file:
         file.write(filedata)
 
     try:
         df = pd.read_csv(
-            '/home/routeopt-user/st_optimization/reported_volumes/'+latest_file)
-        # df = pd.read_csv(
-        #     'C:/Users/itszw/Dev/st_optimization/reported_volumes/'+latest_file)
+            f"{settings.BASE_DIR}{os.sep}reported_volumes{os.sep}"+latest_file)
         print('success fetching')
     except:
         return 'Error fetching'
@@ -97,20 +93,22 @@ def updateData(downloaded=False):
 
             # Loop through dataset and save the sample volumes to the database
             for index, row in sample_volume_data.iterrows():
-                if int(row['id']) == 424367:
-                    print("my plasma")
                 try:
                     reported_volume_object = Sample_Volumes.objects.get(
                         session_id=int(row['id']))
                 except:
                     reported_volume_object = None
 
+                # if there is no sample volume in the data base with the  same id as from the CSV, it doesnt exist
+                # proceed to saving
                 if not reported_volume_object:
                     new_sample_volume = Sample_Volumes()
 
+                    # if its a valid sample from the codes crete a new object for it
                     if int(row['sample'] in VALID_SAMPLE_CODES):
                         new_sample_volume.sample_type = SampleType.objects.get(
                             sample_code=int(row['sample']))
+
                     else:
                         sample_volumes_rejected['total_rejected'] += 1
                         sample_volumes_rejected['session_ids'].append(
@@ -118,6 +116,8 @@ def updateData(downloaded=False):
                         sample_volumes_rejected['reason_for_rejection'].append(
                             'Invalid Sample Code')
                         continue
+
+                    # This checks if the column has an integer
                     if not isinstance(row['collected'], bool) and isinstance(row['collected'], (int, float)) and not pd.isna(row['collected']):
                         new_sample_volume.volume = int(row['collected'])
                     else:
@@ -128,6 +128,7 @@ def updateData(downloaded=False):
                             'Reported volume missing')
                         continue
 
+                    # To check if the facility exists
                     try:
                         new_sample_volume.facility = Facility.objects.get(
                             facility_code=int(row['facility']))

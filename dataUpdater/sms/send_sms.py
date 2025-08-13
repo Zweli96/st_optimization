@@ -9,6 +9,8 @@ from django.conf import settings
 import os
 import uuid
 
+from sample_volumes.views import facilities
+
 # App variables
 app_key = "600184"
 app_password = "mit@uc&*!"
@@ -19,40 +21,55 @@ sms_template_path = os.path.join(sms_template_dir, sms_template_name)
 
 
 def send_sms(phone_number, message):
-    timestamp = datetime.now()
-    timestamp = timestamp.strftime("%Y%m%d%H%M%S")
-    auth_key_string = app_key+timestamp+app_password
-    auth_key = hashlib.md5(auth_key_string.encode('utf-8')).hexdigest()
-    ref = timestamp+"N" + \
-        phone_number.replace("+265", "")+str(random.randint(1001, 9999))
-    phone_number = valid_number(phone_number)
+    try:
+        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+        auth_key_string = app_key + timestamp + app_password
+        auth_key = hashlib.md5(auth_key_string.encode('utf-8')).hexdigest()
+        ref = f"{timestamp}N{phone_number.replace('+265', '')}{random.randint(1001, 9999)}"
+        phone_number = valid_number(phone_number)
 
-    if phone_number:
-        template = open(sms_template_path, 'r+')
-        data = template.read()
-        data = data.replace("[arg:timestamp]", timestamp)
-        data = data.replace("[arg:auth]", auth_key)
-        data = data.replace("[arg:ref]", auth_key)
-        data = data.replace("[arg:message]", message)
-        data = data.replace("[arg:phone_number]", phone_number)
+        if phone_number:
+            with open(sms_template_path, 'r') as template:
+                data = template.read()
+            data = data.replace("[arg:timestamp]", timestamp)
+            data = data.replace("[arg:auth]", auth_key)
+            data = data.replace("[arg:ref]", auth_key)
+            data = data.replace("[arg:message]", message)
+            data = data.replace("[arg:phone_number]", phone_number)
 
-        url = "http://206.225.81.36/ucm_api/index.php"
-        header = {"Content-Type": "application/json"}
-        request = requests.post(url=url, data=data, headers=header)
-        request_data = json.loads(request.text)
-        if str(request_data['code']) == "000":
-            print(request.text)
-            status = "success"
-            code = request_data['code']
+            url = "http://206.225.81.36/ucm_api/index.php"
+            header = {"Content-Type": "application/json"}
+            try:
+                request = requests.post(
+                    url=url, data=data, headers=header, timeout=10)
+                request.raise_for_status()
+                request_data = json.loads(request.text)
+
+                if str(request_data.get('code')) == "000":
+                    print(f"[SUCCESS] SMS sent to {phone_number} | Ref: {ref}")
+                    status = "success"
+                    code = request_data['code']
+                else:
+                    status = "failure"
+                    code = request_data.get('code', 'no code')
+                    print(
+                        f"[FAILURE] SMS to {phone_number} failed with code: {code}")
+
+            except requests.exceptions.RequestException as e:
+                print(f"[ERROR] Failed to send SMS to {phone_number}: {e}")
+                status = "error"
+                code = "network_error"
+
+            return {"status": status, "code": code, "ref": ref}
+
         else:
-            status = "failure"
-            if request_data['code']:
-                code = request_data['code']
-            else:
-                code = "no code"
+            print(f"[INVALID] Phone number invalid: {phone_number}")
+            return {"status": "invalid_number", "code": None, "ref": None}
 
-        result = {"status": status, "code": code, "ref": ref}
-        return result
+    except Exception as e:
+        print(
+            f"[EXCEPTION] Unexpected error in send_sms for {phone_number}: {e}")
+        return {"status": "exception", "code": None, "ref": None}
 
 
 def valid_number(phone_number):
@@ -64,13 +81,6 @@ def valid_number(phone_number):
 
 
 def send_sms_notifications():
-    # Open file to log the
-    log_dir = f'{settings.BASE_DIR}\logs'
-    log_file_name = f'sms_notification_log_{date.today()}_{uuid.uuid4()}.txt'
-    filepath = os.path.join(log_dir, log_file_name)
-    if not os.path.exists(log_dir):
-        os.makedirs(log_dir)
-    f = open(filepath, "w")
 
     to_visit_message = f'A courier will visit your facility on {date.today()}. Please prepare samples for transportation. Please send reports for all VL; EID; TB and Other samples by 2pm.'
     not_visiting_message = f'R4H couriers will not visit your facility on {date.today()}. You will be notified before the next visit. Please report all VL; EID; TB and Other samples by 2pm.'
@@ -81,42 +91,53 @@ def send_sms_notifications():
     health_workers_not_visiting = Health_Worker.objects.exclude(
         id__in=health_workers)
 
-    results = []
     for hw in health_workers:
-        if hw.phone_number:
-            result = send_sms(str(hw.phone_number), to_visit_message)
-            results.append(result)
+        if not hw.phone_number:
+            print(
+                f"[SKIP] No phone number for health worker ID {hw.id}")
+            continue
 
-    i = 1
-    for r in results:
-        if r:
-            f.write(f'{i},{r["status"]},{r["code"]},{r["ref"]},To Visit\n')
-            i += 1
+        try:
+            # Try parsing and validating the number
+            parsed_number = phonenumbers.parse(
+                str(hw.phone_number), "MW")  # "MW" for Malawi
+            if not phonenumbers.is_valid_number(parsed_number):
+                print(
+                    f"[INVALID] Phone number for {hw.id} is not valid: {hw.phone_number}")
+                continue
 
-    results = []
+            send_sms(str(hw.phone_number), to_visit_message)
+
+        except phonenumbers.NumberParseException as e:
+            print(
+                f"[PARSE ERROR] Could not parse number for {hw.id}: {hw.phone_number} ({e})")
+
     for hwnv in health_workers_not_visiting:
-        result = send_sms(str(hwnv.phone_number), not_visiting_message)
-        results.append(result)
+        if not hwnv.phone_number:
+            print(
+                f"[SKIP] No phone number for health worker ID {hwnv.id}")
+            continue
 
-    i = 1
-    for r in results:
-        if r:
-            f.write(f'{i},{r["status"]},{r["code"]},{r["ref"]},To Not Visit\n')
-            i += 1
+        try:
+            # Try parsing and validating the number
+            parsed_number = phonenumbers.parse(
+                str(hwnv.phone_number), "MW")  # "MW" for Malawi
+            if not phonenumbers.is_valid_number(parsed_number):
+                print(
+                    f"[INVALID] Phone number for {hwnv.id} is not valid: {hwnv.phone_number}")
+                continue
 
-    f.close()
+            send_sms(str(hwnv.phone_number), not_visiting_message)
+
+        except phonenumbers.NumberParseException as e:
+            print(
+                f"[PARSE ERROR] Could not parse number for {hwnv.id}: {hwnv.phone_number} ({e})")
 
 
 def send_sms_reminders():
-    # Open file to log the
-    log_dir = f'{settings.BASE_DIR}\logs'
-    log_file_name = f'sms_reminder_log_{date.today()}_{uuid.uuid4()}.txt'
-    filepath = os.path.join(log_dir, log_file_name)
-    if not os.path.exists(log_dir):
-        os.makedirs(log_dir)
-    f = open(filepath, "w")
 
     facilities = Facility.objects.all()
+
     facilities_not_yet_reported = []
     for facility in facilities:
         missing_volumes = []
@@ -135,7 +156,6 @@ def send_sms_reminders():
                 {"facility": facility, 'missing_volumes': missing_volumes})
 
     if len(facilities_not_yet_reported) > 0:
-        results = []
         for fnyr in facilities_not_yet_reported:
             health_workers = Health_Worker.objects.filter(
                 facility=fnyr["facility"])
@@ -146,15 +166,22 @@ def send_sms_reminders():
                 "[arg:sample_types]", missing_samples_string)
 
             for hw in health_workers:
-                if hw.phone_number:
-                    result = send_sms(str(hw.phone_number), reminder_message)
-                    results.append(result)
+                if not hw.phone_number:
+                    print(
+                        f"[SKIP] No phone number for health worker ID {hw.id}")
+                    continue
 
-        i = 1
-        for r in results:
-            if r:
-                f.write(
-                    f'{i},{r["status"]},{r["code"]},{r["ref"]}, Reminder to report\n')
-                i += 1
+                try:
+                    # Try parsing and validating the number
+                    parsed_number = phonenumbers.parse(
+                        str(hw.phone_number), "MW")  # "MW" for Malawi
+                    if not phonenumbers.is_valid_number(parsed_number):
+                        print(
+                            f"[INVALID] Phone number for {hw.id} is not valid: {hw.phone_number}")
+                        continue
 
-    f.close()
+                    send_sms(str(hw.phone_number), reminder_message)
+
+                except phonenumbers.NumberParseException as e:
+                    print(
+                        f"[PARSE ERROR] Could not parse number for {hw.id}: {hw.phone_number} ({e})")

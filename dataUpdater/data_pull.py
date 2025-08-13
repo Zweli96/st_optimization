@@ -25,33 +25,6 @@ def progress4(filename, size, sent, peername):
     sys.stdout.write("(%s:%s) %s's progress: %.2f%%   \r" % (
         peername[0], peername[1], filename, float(sent)/float(size)*100))
 
-
-# def pull():
-#     ssh = createSSHClient('eosloan.mit.edu', 22, 'zgolowa', 'RxxZXX10..44')
-#     scp = SCPClient(ssh.get_transport(), progress4=progress4, socket_timeout=20.0)
-
-
-#     sftp = ssh.open_sftp()
-#     sftp.chdir("/home/zgolowa/projects/STOpt_proj/USSD_Data/push/ussd.proj")
-
-#     latest = 0
-#     latestfile = None
-
-#     for fileattr in sftp.listdir_attr():
-#         if fileattr.filename.startswith('sample_collection') and fileattr.st_mtime > latest:
-#             latest = fileattr.st_mtime
-#             latestfile = fileattr.filename
-
-#     if latestfile is not None:
-#         if latestfile != getMostRecentFile():
-#             print('newer file available \n downloading latest file')
-#             scp.get("/home/zgolowa/projects/STOpt_proj/USSD_Data/push/ussd.proj/" +
-#                     latestfile, "/home/r4h/st_optimization/reported_volumes/" + latestfile)
-#             return latestfile
-#         else:
-#             print("Data up to date")
-#             return False
-
 def pull():
     # see get most recent file
     # if the file is older than 30 minutes
@@ -67,8 +40,6 @@ def pull():
 
 
 def getMostRecentFile():
-    # * means all if need specific format then *.csv
-    # list_of_files = glob.glob('/home/r4h/st_optimization/reported_volumes/*.csv')
     reported_volumes_dir = f"{settings.BASE_DIR}{os.sep}reported_volumes"
     list_of_files = glob.glob(f'{reported_volumes_dir}{os.sep}*.csv')
 
@@ -94,7 +65,7 @@ def getMostRecentFile():
 def pull_direct():
 
     url = "http://206.225.84.201/riders_test/sample_collection_export.php"
-
+    
     headers = CaseInsensitiveDict()
     headers["Accept"] = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
     headers["Accept-Language"] = "en-GB,en-US;q=0.9,en;q=0.8"
@@ -122,7 +93,6 @@ def pull_direct():
     now = datetime.now()  # current date and time
     date_time_stamp = now.strftime("%Y%m%d%H%M%S")
 
-    with open(f'/home/routeopt-user/st_optimization/reported_volumes/sample_collection-{date_time_stamp}.csv', 'wb') as f:
-        # with open(f'C:/Users/itszw/Dev/st_optimization/reported_volumes/sample_collection-{date_time_stamp}.csv', 'wb') as f:
+    with open(f"{settings.BASE_DIR}{os.sep}reported_volumes{os.sep}sample_collection-{date_time_stamp}.csv", 'wb') as f:
         f.write(resp.content)
     return
