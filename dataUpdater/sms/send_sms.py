@@ -143,6 +143,9 @@ def send_sms_reminders():
         missing_volumes = []
         facility_volumes = Sample_Volumes.objects.filter(
             facility=facility, reported_date__date=date.today())
+        if facility_volumes.exists():
+            # If at least one sample type is reported, skip this facility
+            continue
         if len(facility_volumes) > 0:
             for s in SAMPLE_TYPE:
                 type_count = facility_volumes.filter(sample_type=s[0])
