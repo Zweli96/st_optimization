@@ -18,7 +18,7 @@ def safe_update_data():
 def send_reminders_with_fresh_data():
     """Updates data first, then sends reminders."""
     with data_lock:
-        # dataFetch.updateData()
+        dataFetch.updateData()
         send_sms.send_sms_reminders()
 
 
@@ -26,8 +26,8 @@ def start():
     scheduler = BackgroundScheduler()
 
     # Initial run to ensure we start with fresh data
-    safe_update_data()
     scheduler.start()
+    safe_update_data()
 
     # Regular updates (with lock)
     scheduler.add_job(safe_update_data, "interval",
@@ -42,5 +42,5 @@ def start():
 
     # Afternoon reminders — runs update first, both inside lock
     scheduler.add_job(
-        send_reminders_with_fresh_data, "cron", day_of_week="mon-fri", hour=16
+        send_reminders_with_fresh_data, "cron", day_of_week="mon-fri", hour=14
     )
